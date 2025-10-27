@@ -1,0 +1,26 @@
+npx webpack dopo ogni cambiamento al file
+
+se modifico la mappa uguale 
+
+🔹 Metodo 2: Aggiunta dinamica da un file esterno
+Se vuoi caricare un file JS esterno che aggiunge funzioni a window.pageFunctions senza rigenerare bundle.js, puoi farlo così:
+
+📌 Crea un file extra-functions.js con il codice seguente:
+
+javascript
+Copia
+Modifica
+window.pageFunctions.nuovaPagina = {
+  execute: function () {
+    console.log("Nuova funzione eseguita da extra-functions.js!");
+  },
+  cleanup: function () {
+    console.log("Pulizia nuova funzione!");
+  }
+};
+✅ Poi carica lo script nel sito (es. in Webflow o nel tuo HTML):
+
+html
+Copia
+Modifica
+<script src="extra-functions.js" defer></script>
