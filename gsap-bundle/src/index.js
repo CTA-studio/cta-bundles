@@ -1,39 +1,32 @@
-// Importa GSAP da UMD
-import { gsap } from "gsap/dist/gsap";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { SplitText } from "gsap/SplitText";
+import { Draggable } from "gsap/Draggable";
+import { InertiaPlugin } from "gsap/InertiaPlugin";
 
-// Importa i plugin di GSAP da dist/
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
-import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
-import { SplitText } from "gsap/dist/SplitText";
-
-
-// Importa gli altri moduli
 import barba from "@barba/core";
 import Lenis from "lenis";
 import SplitType from "split-type";
 
-// Registra i plugin con GSAP
 gsap.registerPlugin(
-  ScrollTrigger, 
-  ScrollToPlugin,
+  ScrollTrigger,
   DrawSVGPlugin,
-  SplitText
+  SplitText,
+  Draggable,
+  InertiaPlugin
 );
 
-// Esporta tutto su window per accesso globale
 if (typeof window !== "undefined") {
   window.gsap = gsap;
   window.barba = barba;
   window.Lenis = Lenis;
   window.SplitType = SplitType;
 
-  // Plugin singoli se servono da richiamare separatamente
-  window.ScrollTrigger = ScrollTrigger; 
-  window.ScrollToPlugin = ScrollToPlugin;
-  window.DrawSVGPlugin = DrawSVGPlugin; 
-  window.SplitText = SplitText; 
- }
-
-
+  window.ScrollTrigger = ScrollTrigger;
+  window.DrawSVGPlugin = DrawSVGPlugin;
+  window.SplitText = SplitText;
+  window.Draggable = Draggable;
+  window.InertiaPlugin = InertiaPlugin;
+}
 
