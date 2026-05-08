@@ -1,3 +1,9 @@
+const snapPx = (v) => {
+  const dpr = window.devicePixelRatio || 1;
+  const n = parseFloat(v);
+  return Math.round(n * dpr) / dpr + "px";
+};
+
 const backHomeLink = document.getElementById("home-link") || null;
 const burger = document.getElementById("burger") || null;
 
@@ -3480,6 +3486,7 @@ Object.assign(window, {
   headerElements,
   footerBody,
   burgerElements,
+  snapPx,
   initBarbaWithGSAP,
   OnLoadHeroDefault,
 });

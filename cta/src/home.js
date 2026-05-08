@@ -1,10 +1,14 @@
 /** HOME */
-
-const snapPx = (v) => {
+const snapPx = window.snapPx || ((v) => {
   const dpr = window.devicePixelRatio || 1;
   const n = parseFloat(v);
   return Math.round(n * dpr) / dpr + "px";
-};
+});
+
+const header = window.header || {};
+const transitionElementsObj = window.transitionElementsObj || {};
+const burgerElements = window.burgerElements || {};
+
 //Animazioni Specifiche HOME
 window.ctaStickyTransition = window.ctaStickyTransition || {
   // Variabili e oggetti
