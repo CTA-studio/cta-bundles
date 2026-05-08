@@ -1,7 +1,5 @@
 "use strict";
 
-export default { cookieManager: window.cookieManager, uiManager: window.uiManager };
-
 // Configurazione di base
 const cookieConfig = {
   mode: "opt-in",
@@ -44,11 +42,18 @@ window.cookieManager = window.cookieManager || {
       date.setTime(date.getTime() + days * 86400000);
       expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = `${name}=${value || ""}${expires}; path=/; SameSite=None; Secure`;
+    document.cookie = `${name}=${
+      value || ""
+    }${expires}; path=/; SameSite=None; Secure`;
   },
   getCookie: (name) => {
     const nameEQ = `${name}=`;
-    return document.cookie.split("; ").find((c) => c.indexOf(nameEQ) === 0)?.substring(nameEQ.length) || null;
+    return (
+      document.cookie
+        .split("; ")
+        .find((c) => c.indexOf(nameEQ) === 0)
+        ?.substring(nameEQ.length) || null
+    );
   },
   eraseCookie: (name) => {
     document.cookie = `${name}=; Max-Age=-99999999; path=/; SameSite=None; Secure`;
@@ -87,9 +92,30 @@ window.uiManager = window.uiManager || {
   handlePreferences: () => {
     cookiePreferences();
     const saved = JSON.parse(cookieManager.getCookie("cta")) || {};
-    toggleCheckboxAnimation("#cookie-marketing", "marketing", "marketing", "marketing", saved.marketing, true);
-    toggleCheckboxAnimation("#cookie-analytics", "analytics", "analytics", "analytics", saved.analytics, true);
-    toggleCheckboxAnimation("#cookie-personalization", "personalization", "personalization", "personalization", saved.personalization, true);
+    toggleCheckboxAnimation(
+      "#cookie-marketing",
+      "marketing",
+      "marketing",
+      "marketing",
+      saved.marketing,
+      true
+    );
+    toggleCheckboxAnimation(
+      "#cookie-analytics",
+      "analytics",
+      "analytics",
+      "analytics",
+      saved.analytics,
+      true
+    );
+    toggleCheckboxAnimation(
+      "#cookie-personalization",
+      "personalization",
+      "personalization",
+      "personalization",
+      saved.personalization,
+      true
+    );
   },
 };
 
@@ -127,18 +153,51 @@ window.addEventListener("load", () => {
 // Consent Manager
 const consentManager = {
   allowAll: () => {
-    const allTrue = { essential: true, analytics: true, marketing: true, personalization: true };
-    gtag("consent", "update", Object.fromEntries(Object.keys(allTrue).map(k => [k + "_storage", "granted"])));
-    cookieManager.setCookie("cta", JSON.stringify(allTrue), cookieConfig.cookieMaxAge);
+    const allTrue = {
+      essential: true,
+      analytics: true,
+      marketing: true,
+      personalization: true,
+    };
+    gtag(
+      "consent",
+      "update",
+      Object.fromEntries(
+        Object.keys(allTrue).map((k) => [k + "_storage", "granted"])
+      )
+    );
+    cookieManager.setCookie(
+      "cta",
+      JSON.stringify(allTrue),
+      cookieConfig.cookieMaxAge
+    );
     gtmManager.fireGTMEvent("allCookiesAccepted");
     activateScripts();
     uiManager.hideBanner();
     closeCookiePreferences();
   },
   denyAll: () => {
-    const defaults = { essential: true, analytics: false, marketing: false, personalization: false };
-    gtag("consent", "update", Object.fromEntries(Object.keys(defaults).map(k => [k + "_storage", defaults[k] ? "granted" : "denied"])));
-    cookieManager.setCookie("cta", JSON.stringify(defaults), cookieConfig.cookieMaxAge);
+    const defaults = {
+      essential: true,
+      analytics: false,
+      marketing: false,
+      personalization: false,
+    };
+    gtag(
+      "consent",
+      "update",
+      Object.fromEntries(
+        Object.keys(defaults).map((k) => [
+          k + "_storage",
+          defaults[k] ? "granted" : "denied",
+        ])
+      )
+    );
+    cookieManager.setCookie(
+      "cta",
+      JSON.stringify(defaults),
+      cookieConfig.cookieMaxAge
+    );
     cookieManager.clearTrackingCookies();
     gtmManager.fireGTMEvent("allCookiesDenied");
     uiManager.hideBanner();
@@ -153,8 +212,21 @@ const consentManager = {
       marketing: c("#cookie-marketing"),
       personalization: c("#cookie-personalization"),
     };
-    cookieManager.setCookie("cta", JSON.stringify(consents), cookieConfig.cookieMaxAge);
-    gtag("consent", "update", Object.fromEntries(Object.keys(consents).map(k => [k + "_storage", consents[k] ? "granted" : "denied"])));
+    cookieManager.setCookie(
+      "cta",
+      JSON.stringify(consents),
+      cookieConfig.cookieMaxAge
+    );
+    gtag(
+      "consent",
+      "update",
+      Object.fromEntries(
+        Object.keys(consents).map((k) => [
+          k + "_storage",
+          consents[k] ? "granted" : "denied",
+        ])
+      )
+    );
     if (consents.analytics || consents.marketing) activateScripts();
     gtmManager.updateConsentMode(consents);
     closeCookiePreferences();
@@ -163,7 +235,10 @@ const consentManager = {
 
 ["[cta='allow']", "[cta='deny']"].forEach((sel) => {
   document.querySelectorAll(sel).forEach((b) => {
-    b.addEventListener("click", sel.includes("allow") ? consentManager.allowAll : consentManager.denyAll);
+    b.addEventListener(
+      "click",
+      sel.includes("allow") ? consentManager.allowAll : consentManager.denyAll
+    );
   });
 });
 
@@ -174,15 +249,22 @@ document.querySelectorAll("[cta='open-preferences']").forEach((b) => {
   });
 });
 
-const preferencesForm = document.querySelector("#wf-form-Cookie-Preferences-form");
-if (preferencesForm) preferencesForm.addEventListener("submit", consentManager.handleFormSubmit);
+const preferencesForm = document.querySelector(
+  "#wf-form-Cookie-Preferences-form"
+);
+if (preferencesForm)
+  preferencesForm.addEventListener("submit", consentManager.handleFormSubmit);
 
-document.querySelector("#preferences-close")?.addEventListener("click", closeCookiePreferences);
+document
+  .querySelector("#preferences-close")
+  ?.addEventListener("click", closeCookiePreferences);
 document.querySelector("[cta='submit']")?.addEventListener("click", (e) => {
   e.preventDefault();
   consentManager.handleFormSubmit(e);
 });
-document.querySelector("#banner-close")?.addEventListener("click", uiManager.closeBannerWithoutConsent);
+document
+  .querySelector("#banner-close")
+  ?.addEventListener("click", uiManager.closeBannerWithoutConsent);
 
 const gtmManager = {
   fireGTMEvent: (event) => {
@@ -191,7 +273,13 @@ const gtmManager = {
   },
   updateConsentMode: (c) => {
     if (!cookieConfig.consentMode || !window.gtag) return;
-    gtag("consent", "update", Object.fromEntries(Object.keys(c).map(k => [k + "_storage", c[k] ? "granted" : "denied"])));
+    gtag(
+      "consent",
+      "update",
+      Object.fromEntries(
+        Object.keys(c).map((k) => [k + "_storage", c[k] ? "granted" : "denied"])
+      )
+    );
   },
 };
 
@@ -210,7 +298,14 @@ function activateScripts() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleCheckboxAnimation = (id, attr, toggleAttr, category, checked, skipAnim = false) => {
+  const toggleCheckboxAnimation = (
+    id,
+    attr,
+    toggleAttr,
+    category,
+    checked,
+    skipAnim = false
+  ) => {
     const box = document.querySelector(id);
     const container = document.querySelector(`[cta-checkbox='${attr}']`);
     const toggle = container?.querySelector(`[cta-toggle='${toggleAttr}']`);
@@ -218,23 +313,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
     box.checked = checked;
     if (skipAnim) {
-      gsap.set(toggle, { x: checked ? 20 : 0 });
-      gsap.set(container, { backgroundColor: checked ? "#ff006e" : "" });
+      gsap.set(toggle, {
+        x: checked ? 20 : 0,
+        backgroundColor: checked ? "#f9f9f7" : "",
+      });
+      gsap.set(container, {
+        backgroundColor: checked ? "#ff006e" : "",
+      });
     } else {
-      gsap.to(toggle, { x: checked ? 20 : 0, duration: 0.3, ease: "power2.inOut" });
-      gsap.to(container, { backgroundColor: checked ? "#ff006e" : "", duration: 0.3, ease: "power2.inOut" });
+      gsap.to(toggle, {
+        x: checked ? 20 : 0,
+        backgroundColor: checked ? "#f9f9f7" : "",
+        duration: 0.3,
+        ease: "power2.inOut",
+      });
+      gsap.to(container, {
+        backgroundColor: checked ? "#ff006e" : "",
+        duration: 0.3,
+        ease: "power2.inOut",
+      });
     }
 
     if (!box.dataset.listenerAttached) {
       box.addEventListener("click", () => {
         const state = box.checked;
-        gsap.to(toggle, { x: state ? 20 : 0, duration: 0.3, ease: "power2.inOut" });
-        gsap.to(container, { backgroundColor: state ? "#ff006e" : "", duration: 0.3, ease: "power2.inOut" });
+        gsap.to(toggle, {
+          x: state ? 20 : 0,
+          backgroundColor: state ? "#f9f9f7" : "",
+          duration: 0.3,
+          ease: "power2.inOut",
+        });
+        gsap.to(container, {
+          backgroundColor: state ? "#ff006e" : "",
+          duration: 0.3,
+          ease: "power2.inOut",
+        });
 
         const current = JSON.parse(cookieManager.getCookie("cta")) || {};
         current[category] = state;
-        cookieManager.setCookie("cta", JSON.stringify(current), cookieConfig.cookieMaxAge);
-        gtag("consent", "update", Object.fromEntries(Object.keys(current).map(k => [k + "_storage", current[k] ? "granted" : "denied"])));
+        cookieManager.setCookie(
+          "cta",
+          JSON.stringify(current),
+          cookieConfig.cookieMaxAge
+        );
+        gtag(
+          "consent",
+          "update",
+          Object.fromEntries(
+            Object.keys(current).map((k) => [
+              k + "_storage",
+              current[k] ? "granted" : "denied",
+            ])
+          )
+        );
       });
       box.dataset.listenerAttached = "true";
     }
@@ -244,20 +375,23 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function animateBanner() {
+  const container = document.getElementById("cta-cookie-wrap");
   const banner = document.getElementById("banner-cookie");
-  if (!banner) return;
-  gsap.set(banner, { display: "flex" });
-  gsap.to(banner, { y: "0rem", duration: 1, delay: 1.4, ease: "power2.inOut" });
+  if (!banner || !container) return;
+  container.classList.add("is-active");
+  gsap.to(banner, { y: 0, duration: 0.6, delay: 1.2, ease: "power2.inOut" });
 }
 
 function animateBannerClose() {
+  const container = document.getElementById("cta-cookie-wrap");
   const banner = document.getElementById("banner-cookie");
-  if (!banner) return;
+  if (!banner || !container) return;
+
   gsap.to(banner, {
-    y: "10rem",
+    yPercent: 110,
     duration: 0.5,
     ease: "power2.inOut",
-    onComplete: () => (banner.style.display = "none"),
+    onComplete: container.classList.remove("is-active"),
   });
 }
 
