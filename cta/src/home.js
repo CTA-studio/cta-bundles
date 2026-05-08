@@ -2499,3 +2499,15 @@ function initPropositoHeaderIntro() {
     onEnter: () => tl.play(),
   });
 }
+
+
+Object.assign(window, {
+  showcaseTextContentMobile,
+  showcasePanelsScrollMobile,
+  setupShowcaseButtons,
+  setupVerticalShowcaseButtons,
+  scrollProgressLine,
+  initCtaContactsIntro,
+  initStudioWrapperIntro,
+  initPropositoHeaderIntro,
+});

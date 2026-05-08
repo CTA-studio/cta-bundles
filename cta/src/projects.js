@@ -444,3 +444,8 @@ function projectCloseBtn() {
     }
   }
 }
+
+Object.assign(window, {
+  initSliderCTA,
+  projectCloseBtn,
+});

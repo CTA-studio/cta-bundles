@@ -4708,3 +4708,19 @@ function initProjectGridDirectionalHover() {
     }
   });
 }
+
+Object.assign(window, {
+  setupPrimaryButtons,
+  setupContactLinkButtons,
+  setupContactFormModal,
+  expertisePanelsReveal,
+  initSkillWrapperIntro,
+  initSectionEmo,
+  initProcessAccordion,
+  initStudioMsBlocks,
+  initTeamCards,
+  initParallaxImages,
+  initProjectGridDirectionalHover,
+  calendar,
+  initSliderCTA,
+});

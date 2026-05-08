@@ -1755,3 +1755,7 @@ function calendar() {
     }
   };
 }
+
+Object.assign(window, {
+  calendar,
+});

@@ -441,3 +441,8 @@ function videoPause() {
     createVideoTrigger(container, video);
   });
 }
+
+Object.assign(window, {
+  setupScrollColorChange,
+  videoPause,
+});

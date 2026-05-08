@@ -3471,3 +3471,9 @@ window.pageEnterFx =
       introExpertiseSub,
     };
   })();
+
+
+  Object.assign(window, {
+  initBarbaWithGSAP,
+  OnLoadHeroDefault,
+});

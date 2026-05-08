@@ -414,3 +414,12 @@ function closeCookiePreferences() {
     });
   }
 }
+
+
+Object.assign(window, {
+  animateBanner,
+  animateBannerClose,
+  cookiePreferences,
+  closeCookiePreferences,
+  activateScripts,
+});
