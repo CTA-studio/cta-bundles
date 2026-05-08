@@ -18,7 +18,7 @@ const cookieConfig = {
 // Inizializza Google Consent Mode V2 con le impostazioni predefinite
 window.dataLayer = window.dataLayer || [];
 function gtag() {
-  dataLayer.push(arguments);
+  window.dataLayer.push(arguments);
 }
 window.gtag = gtag;
 
@@ -75,14 +75,14 @@ window.cookieManager = window.cookieManager || {
 };
 
 window.resetCookies = () => {
-  cookieManager.clearAllCookies();
-  cookieManager.clearTrackingCookies();
+  window.cookieManager.clearAllCookies();
+  window.cookieManager.clearTrackingCookies();
   closeCookiePreferences();
   setTimeout(() => location.reload(), 100);
 };
 
 const resetButton = document.querySelector("[cta='reset']");
-if (resetButton) resetButton.addEventListener("click", resetCookies);
+if (resetButton) resetButton.addEventListener("click", window.resetCookies);
 
 // UI Manager
 window.uiManager = window.uiManager || {
@@ -91,42 +91,42 @@ window.uiManager = window.uiManager || {
   closeBannerWithoutConsent: () => animateBannerClose(),
   handlePreferences: () => {
     cookiePreferences();
-    const saved = JSON.parse(cookieManager.getCookie("cta")) || {};
-    toggleCheckboxAnimation(
+    const saved = JSON.parse(window.cookieManager.getCookie("cta")) || {};
+    window.toggleCheckboxAnimation?.(
       "#cookie-marketing",
       "marketing",
       "marketing",
       "marketing",
       saved.marketing,
-      true
+      true,
     );
-    toggleCheckboxAnimation(
+    window.toggleCheckboxAnimation?.(
       "#cookie-analytics",
       "analytics",
       "analytics",
       "analytics",
       saved.analytics,
-      true
+      true,
     );
-    toggleCheckboxAnimation(
+    window.toggleCheckboxAnimation?.(
       "#cookie-personalization",
       "personalization",
       "personalization",
       "personalization",
       saved.personalization,
-      true
+      true,
     );
   },
 };
 
 // Init post-load
 window.addEventListener("load", () => {
-  const raw = cookieManager.getCookie("cta");
+  const raw = window.cookieManager.getCookie("cta");
 
   if (!raw) {
     // Nessun consenso ancora dato → mostra banner subito dopo load (idle)
     window.safeRequestIdleCallback(() => {
-      uiManager.showBanner();
+      window.uiManager.showBanner();
     });
   } else {
     // Consenso già dato → aspetta un po' prima di attivare GTM e script
@@ -163,17 +163,17 @@ const consentManager = {
       "consent",
       "update",
       Object.fromEntries(
-        Object.keys(allTrue).map((k) => [k + "_storage", "granted"])
-      )
+        Object.keys(allTrue).map((k) => [k + "_storage", "granted"]),
+      ),
     );
-    cookieManager.setCookie(
+    window.cookieManager.setCookie(
       "cta",
       JSON.stringify(allTrue),
-      cookieConfig.cookieMaxAge
+      cookieConfig.cookieMaxAge,
     );
     gtmManager.fireGTMEvent("allCookiesAccepted");
     activateScripts();
-    uiManager.hideBanner();
+    window.uiManager.hideBanner();
     closeCookiePreferences();
   },
   denyAll: () => {
@@ -190,17 +190,17 @@ const consentManager = {
         Object.keys(defaults).map((k) => [
           k + "_storage",
           defaults[k] ? "granted" : "denied",
-        ])
-      )
+        ]),
+      ),
     );
-    cookieManager.setCookie(
+    window.cookieManager.setCookie(
       "cta",
       JSON.stringify(defaults),
-      cookieConfig.cookieMaxAge
+      cookieConfig.cookieMaxAge,
     );
-    cookieManager.clearTrackingCookies();
+    window.cookieManager.clearTrackingCookies();
     gtmManager.fireGTMEvent("allCookiesDenied");
-    uiManager.hideBanner();
+    window.uiManager.hideBanner();
     closeCookiePreferences();
   },
   handleFormSubmit: (e) => {
@@ -212,10 +212,10 @@ const consentManager = {
       marketing: c("#cookie-marketing"),
       personalization: c("#cookie-personalization"),
     };
-    cookieManager.setCookie(
+    window.cookieManager.setCookie(
       "cta",
       JSON.stringify(consents),
-      cookieConfig.cookieMaxAge
+      cookieConfig.cookieMaxAge,
     );
     gtag(
       "consent",
@@ -224,8 +224,8 @@ const consentManager = {
         Object.keys(consents).map((k) => [
           k + "_storage",
           consents[k] ? "granted" : "denied",
-        ])
-      )
+        ]),
+      ),
     );
     if (consents.analytics || consents.marketing) activateScripts();
     gtmManager.updateConsentMode(consents);
@@ -237,20 +237,20 @@ const consentManager = {
   document.querySelectorAll(sel).forEach((b) => {
     b.addEventListener(
       "click",
-      sel.includes("allow") ? consentManager.allowAll : consentManager.denyAll
+      sel.includes("allow") ? consentManager.allowAll : consentManager.denyAll,
     );
   });
 });
 
 document.querySelectorAll("[cta='open-preferences']").forEach((b) => {
   b.addEventListener("click", () => {
-    uiManager.closeBannerWithoutConsent();
-    uiManager.handlePreferences();
+    window.uiManager.closeBannerWithoutConsent();
+    window.uiManager.handlePreferences();
   });
 });
 
 const preferencesForm = document.querySelector(
-  "#wf-form-Cookie-Preferences-form"
+  "#wf-form-Cookie-Preferences-form",
 );
 if (preferencesForm)
   preferencesForm.addEventListener("submit", consentManager.handleFormSubmit);
@@ -264,7 +264,7 @@ document.querySelector("[cta='submit']")?.addEventListener("click", (e) => {
 });
 document
   .querySelector("#banner-close")
-  ?.addEventListener("click", uiManager.closeBannerWithoutConsent);
+  ?.addEventListener("click", window.uiManager.closeBannerWithoutConsent);
 
 const gtmManager = {
   fireGTMEvent: (event) => {
@@ -277,8 +277,11 @@ const gtmManager = {
       "consent",
       "update",
       Object.fromEntries(
-        Object.keys(c).map((k) => [k + "_storage", c[k] ? "granted" : "denied"])
-      )
+        Object.keys(c).map((k) => [
+          k + "_storage",
+          c[k] ? "granted" : "denied",
+        ]),
+      ),
     );
   },
 };
@@ -298,13 +301,15 @@ function activateScripts() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (!window.gsap) return;
+  const { gsap } = window;
   const toggleCheckboxAnimation = (
     id,
     attr,
     toggleAttr,
     category,
     checked,
-    skipAnim = false
+    skipAnim = false,
   ) => {
     const box = document.querySelector(id);
     const container = document.querySelector(`[cta-checkbox='${attr}']`);
@@ -349,12 +354,12 @@ document.addEventListener("DOMContentLoaded", () => {
           ease: "power2.inOut",
         });
 
-        const current = JSON.parse(cookieManager.getCookie("cta")) || {};
+        const current = JSON.parse(window.cookieManager.getCookie("cta")) || {};
         current[category] = state;
-        cookieManager.setCookie(
+        window.cookieManager.setCookie(
           "cta",
           JSON.stringify(current),
-          cookieConfig.cookieMaxAge
+          cookieConfig.cookieMaxAge,
         );
         gtag(
           "consent",
@@ -363,8 +368,8 @@ document.addEventListener("DOMContentLoaded", () => {
             Object.keys(current).map((k) => [
               k + "_storage",
               current[k] ? "granted" : "denied",
-            ])
-          )
+            ]),
+          ),
         );
       });
       box.dataset.listenerAttached = "true";
@@ -375,6 +380,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function animateBanner() {
+  if (!window.gsap) return;
+  const { gsap } = window;
   const container = document.getElementById("cta-cookie-wrap");
   const banner = document.getElementById("banner-cookie");
   if (!banner || !container) return;
@@ -383,6 +390,8 @@ function animateBanner() {
 }
 
 function animateBannerClose() {
+  if (!window.gsap) return;
+  const { gsap } = window;
   const container = document.getElementById("cta-cookie-wrap");
   const banner = document.getElementById("banner-cookie");
   if (!banner || !container) return;
@@ -391,11 +400,13 @@ function animateBannerClose() {
     yPercent: 110,
     duration: 0.5,
     ease: "power2.inOut",
-    onComplete: container.classList.remove("is-active"),
+    onComplete: () => container.classList.remove("is-active"),
   });
 }
 
 function cookiePreferences() {
+  if (!window.gsap) return;
+  const { gsap } = window;
   const preferences = document.querySelector("#cookie-preferences");
   if (preferences) {
     preferences.style.display = "flex";
@@ -404,6 +415,8 @@ function cookiePreferences() {
 }
 
 function closeCookiePreferences() {
+  if (!window.gsap) return;
+  const { gsap } = window;
   const preferences = document.querySelector("#cookie-preferences");
   if (preferences) {
     gsap.to(preferences, {
@@ -414,7 +427,6 @@ function closeCookiePreferences() {
     });
   }
 }
-
 
 Object.assign(window, {
   animateBanner,

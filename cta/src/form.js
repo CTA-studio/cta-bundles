@@ -1329,6 +1329,12 @@ window.MultiStepForm =
   })();
 
 function calendar() {
+  if (!window.gsap) {
+    console.warn("calendar: gsap non disponibile");
+    return;
+  }
+
+  const { gsap } = window;
   const inputFields = document.querySelectorAll(".form-text-field-2");
   const calendarModal = document.getElementById("calendar-modal");
   const timeSelectionModal = document.getElementById("time-selection-modal");
@@ -1737,12 +1743,24 @@ function calendar() {
   currentInputField =
     inputFields[0] || document.querySelector(".form-text-field-2");
 
-  if (backBtn) {
-    backBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      updateCalStep("date");
-    });
+if (backBtn) {
+  const handleBackClick = (e) => {
+    e.preventDefault();
+    updateCalStep("date");
+  };
+
+  backBtn.addEventListener("click", handleBackClick);
+
+  if (!Array.isArray(window.pageSpecificListeners)) {
+    window.pageSpecificListeners = [];
   }
+
+  window.pageSpecificListeners.push({
+    element: backBtn,
+    event: "click",
+    handler: handleBackClick,
+  });
+}
 
   updateCalStep("date");
   window.__calendarCleanup = () => {

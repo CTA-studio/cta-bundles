@@ -1,7 +1,13 @@
 window.propositoAnimation = window.propositoAnimation || {
   initializeSwiper: function () {
+    if (!window.gsap) {
+      console.warn("initializeSwiper: gsap non disponibile");
+      return;
+    }
+
+    const { gsap } = window;
     const swiperContainers = document.querySelectorAll(
-      ".related-articles-wrapper"
+      ".related-articles-wrapper",
     );
 
     if (!swiperContainers.length) {
@@ -33,7 +39,7 @@ window.propositoAnimation = window.propositoAnimation || {
 
       if (!nextButton || !prevButton) {
         console.warn(
-          "initializeSwiper: Pulsanti prev/next non trovati per uno slider."
+          "initializeSwiper: Pulsanti prev/next non trovati per uno slider.",
         );
         return;
       }
@@ -102,7 +108,7 @@ window.propositoAnimation = window.propositoAnimation || {
                 duration: 0.2,
                 ease: "power2.in",
               },
-              "<"
+              "<",
             );
 
           const handleEnter = () => hoverTl.play();
@@ -113,7 +119,7 @@ window.propositoAnimation = window.propositoAnimation || {
 
           window.pageSpecificListeners.push(
             { element: button, event: "mouseenter", handler: handleEnter },
-            { element: button, event: "mouseleave", handler: handleLeave }
+            { element: button, event: "mouseleave", handler: handleLeave },
           );
         }
 
@@ -138,7 +144,7 @@ window.propositoAnimation = window.propositoAnimation || {
                 duration: 0.2,
                 ease: "power2.in",
               },
-              "<"
+              "<",
             );
 
           const handleTouchStart = () => touchTl.play();
@@ -153,16 +159,16 @@ window.propositoAnimation = window.propositoAnimation || {
           window.pageSpecificListeners.push(
             { element: button, event: "touchstart", handler: handleTouchStart },
             { element: button, event: "touchend", handler: handleTouchEnd },
-            { element: button, event: "touchcancel", handler: handleTouchEnd }
+            { element: button, event: "touchcancel", handler: handleTouchEnd },
           );
         }
       });
 
       window.pageSpecificListeners.push({
-        element: swiperContainer,
-        event: "__swiper_destroy__",
-        handler: () => {
-          swiper.destroy(true, true);
+        cleanup: () => {
+          try {
+            swiper.destroy(true, true);
+          } catch (_) {}
           delete swiperContainer.dataset.relatedSwiperBound;
         },
       });
@@ -221,7 +227,7 @@ window.propositoAnimation = window.propositoAnimation || {
 
         window.pageSpecificListeners.push(
           { element: tag, event: "mouseenter", handler: animateIn },
-          { element: tag, event: "mouseleave", handler: animateOut }
+          { element: tag, event: "mouseleave", handler: animateOut },
         );
       }
 
@@ -236,7 +242,7 @@ window.propositoAnimation = window.propositoAnimation || {
         window.pageSpecificListeners.push(
           { element: tag, event: "touchstart", handler: handleTouchStart },
           { element: tag, event: "touchend", handler: handleTouchEnd },
-          { element: tag, event: "touchcancel", handler: handleTouchEnd }
+          { element: tag, event: "touchcancel", handler: handleTouchEnd },
         );
       }
     });
@@ -300,7 +306,7 @@ window.propositoAnimation = window.propositoAnimation || {
 
         window.pageSpecificListeners.push(
           { element: link, event: "mouseenter", handler: animateIn },
-          { element: link, event: "mouseleave", handler: animateOut }
+          { element: link, event: "mouseleave", handler: animateOut },
         );
       }
 
@@ -317,7 +323,7 @@ window.propositoAnimation = window.propositoAnimation || {
         window.pageSpecificListeners.push(
           { element: link, event: "touchstart", handler: handleTouchStart },
           { element: link, event: "touchend", handler: handleTouchEnd },
-          { element: link, event: "touchcancel", handler: handleTouchEnd }
+          { element: link, event: "touchcancel", handler: handleTouchEnd },
         );
       }
     });
@@ -331,10 +337,12 @@ window.propositoAnimation = window.propositoAnimation || {
 };
 
 function setupScrollColorChange() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+
+  const { gsap, ScrollTrigger } = window;
   const elementsWithColor = document.querySelectorAll("[data-color]");
 
   if (!elementsWithColor.length) {
-    // Nessun elemento da animare → cancella eventualmente il trigger
     ScrollTrigger.getAll().forEach((trigger) => {
       if (trigger.vars?.trigger?.hasAttribute?.("data-color")) {
         trigger.kill();
@@ -348,7 +356,7 @@ function setupScrollColorChange() {
 
     if (color) {
       gsap.to(element, {
-        color: color,
+        color,
         duration: 1,
         ease: "power1",
         scrollTrigger: {
@@ -426,7 +434,9 @@ function videoPause() {
       });
     });
 
-    videoContainers.forEach((container) => lazyVideoObserver.observe(container));
+    videoContainers.forEach((container) =>
+      lazyVideoObserver.observe(container),
+    );
 
     window.pageSpecificListeners.push({
       cleanup: () => lazyVideoObserver.disconnect(),
@@ -442,7 +452,210 @@ function videoPause() {
   });
 }
 
+function initPropositoMarquee() {
+  const host = document.querySelector(".propo_marquee");
+  const wrap = host?.querySelector(".gsap-marquee-content");
+  if (!host || !wrap) return;
+
+  if (!Array.isArray(window.pageSpecificListeners)) {
+    window.pageSpecificListeners = [];
+  }
+
+  // evita doppio init
+  if (wrap.dataset.mqBound === "1") return;
+  wrap.dataset.mqBound = "1";
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const opt = {
+    speed: parseFloat(host.dataset.mqSpeed || "") || 40, // px/sec
+    dir: (host.dataset.mqDir || "left") === "right" ? 1 : -1,
+    rootMargin: host.dataset.mqMargin || "250px 0px",
+    bufferPx: parseFloat(host.dataset.mqBuffer || "") || 400,
+    maxClones: parseInt(host.dataset.mqMaxClones || "", 10) || 24,
+  };
+
+  const state = {
+    x: 0,
+    gap: 0,
+    raf: 0,
+    running: false,
+    last: 0,
+    ro: null,
+    io: null,
+    destroyed: false,
+    debounce: 0,
+  };
+
+  const px = (v) => {
+    const n = parseFloat(v);
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  const readGap = () => {
+    const cs = getComputedStyle(wrap);
+    return px(cs.columnGap || cs.gap || "0px");
+  };
+
+  const getW = (el) => {
+    const r = el.getBoundingClientRect();
+    return Math.max(0, r.width || 0);
+  };
+
+  const getTracks = () =>
+    Array.from(wrap.children).filter((n) =>
+      n.classList?.contains("prop_marquee_track"),
+    );
+
+  const clearClones = () => {
+    wrap.querySelectorAll('[data-mq-clone="1"]').forEach((n) => n.remove());
+  };
+
+  const sumWidth = (tracks) => {
+    const w = tracks.reduce((acc, el) => acc + getW(el), 0);
+    return w + Math.max(0, tracks.length - 1) * state.gap;
+  };
+
+  const apply = () => {
+    wrap.style.transform = `translate3d(${state.x}px,0,0)`;
+  };
+
+  const ensureFill = () => {
+    const base = getTracks().filter((n) => n.dataset.mqClone !== "1");
+    if (!base.length) return;
+
+    let tracks = getTracks();
+    let total = sumWidth(tracks);
+    const need =
+      (host.getBoundingClientRect().width || window.innerWidth || 0) +
+      opt.bufferPx;
+
+    let guard = 0;
+    while (total < need && tracks.length < opt.maxClones && guard++ < 999) {
+      base.forEach((src) => {
+        if (tracks.length >= opt.maxClones) return;
+        const clone = src.cloneNode(true);
+        clone.dataset.mqClone = "1";
+        wrap.appendChild(clone);
+        tracks.push(clone);
+      });
+      total = sumWidth(tracks);
+    }
+  };
+
+  const recycleIfNeeded = () => {
+    const tracks = getTracks();
+    if (tracks.length < 2) return;
+
+    const first = tracks[0];
+    const firstW = getW(first);
+    const threshold = -(firstW + state.gap);
+
+    if (opt.dir < 0) {
+      if (state.x <= threshold) {
+        state.x += firstW + state.gap;
+        wrap.appendChild(first);
+      }
+    } else {
+      if (state.x >= 0) {
+        const last = tracks[tracks.length - 1];
+        const lastW = getW(last);
+        state.x -= lastW + state.gap;
+        wrap.insertBefore(last, tracks[0]);
+      }
+    }
+  };
+
+  const measure = () => {
+    state.gap = readGap();
+    clearClones();
+    state.x = 0;
+    apply();
+    ensureFill();
+    wrap.style.willChange = "transform";
+  };
+
+  const tick = (t) => {
+    if (!state.running || state.destroyed) return;
+    if (!state.last) state.last = t;
+
+    const dt = Math.min(0.05, (t - state.last) / 1000);
+    state.last = t;
+
+    state.x += opt.speed * dt * opt.dir;
+    recycleIfNeeded();
+    apply();
+
+    state.raf = requestAnimationFrame(tick);
+  };
+
+  const start = () => {
+    if (state.running || state.destroyed) return;
+    state.running = true;
+    state.last = 0;
+    state.raf = requestAnimationFrame(tick);
+  };
+
+  const stop = () => {
+    state.running = false;
+    if (state.raf) cancelAnimationFrame(state.raf);
+    state.raf = 0;
+  };
+
+  if ("IntersectionObserver" in window) {
+    state.io = new IntersectionObserver(
+      (entries) => {
+        const on = !!entries[0]?.isIntersecting;
+        if (on) start();
+        else stop();
+      },
+      { rootMargin: opt.rootMargin, threshold: 0.12 },
+    );
+    state.io.observe(host);
+  }
+
+  if ("ResizeObserver" in window) {
+    state.ro = new ResizeObserver(() => {
+      clearTimeout(state.debounce);
+      state.debounce = setTimeout(() => {
+        if (state.destroyed) return;
+        const wasRunning = state.running;
+        stop();
+        measure();
+        if (wasRunning) start();
+      }, 80);
+    });
+    state.ro.observe(host);
+    state.ro.observe(wrap);
+  }
+
+  measure();
+  start();
+
+  const destroy = () => {
+    state.destroyed = true;
+    stop();
+    clearTimeout(state.debounce);
+
+    try {
+      state.ro?.disconnect();
+    } catch (_) {}
+
+    try {
+      state.io?.disconnect();
+    } catch (_) {}
+
+    wrap.style.willChange = "";
+    wrap.style.transform = "";
+    clearClones();
+    delete wrap.dataset.mqBound;
+  };
+
+  window.pageSpecificListeners.push({ cleanup: destroy });
+}
+
 Object.assign(window, {
   setupScrollColorChange,
   videoPause,
+  initPropositoMarquee,
 });

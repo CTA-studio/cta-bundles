@@ -189,15 +189,17 @@ function initBarbaWithGSAP() {
     });
   }
 
-  function commonAfter(data) {
-    updatePageMetaAndInteractions(data.next.html);
-    initializeMainFunctions();
-    window.customCursor?.refresh?.();
-    if (!cookieManager.getCookie("cta")) {
-      uiManager.showBanner();
-    }
-    finalizeAfterBarba();
+function commonAfter(data) {
+  window.updatePageMetaAndInteractions?.(data.next.html);
+  initializeMainFunctions();
+  window.customCursor?.refresh?.();
+
+  if (!window.cookieManager?.getCookie?.("cta")) {
+    window.uiManager?.showBanner?.();
   }
+
+  finalizeAfterBarba();
+}
 
   // --------------------------------------------------
   // RESET elementi transizione
@@ -1983,7 +1985,7 @@ function initBarbaWithGSAP() {
   }
 
   barba.init({
-    debug: true,
+    debug: false,
     timeout: 5000,
     transitions: [
       {

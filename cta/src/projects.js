@@ -1,4 +1,10 @@
 function initSliderCTA() {
+  if (!window.gsap) {
+    console.warn("initSliderCTA: gsap non disponibile");
+    return;
+  }
+  const { gsap } = window;
+
   const sliderWrapper = document.querySelector(".slider-cta-wrapper");
   if (!sliderWrapper) return;
 
@@ -254,6 +260,7 @@ function initSliderCTA() {
       swiper.off("touchStart", pauseAutoAnimation);
       swiper.off("touchEnd", restartAutoAnimation);
       swiper.destroy(true, true);
+       delete sliderWrapper.dataset.sliderCtaBound;
     },
   });
 }
