@@ -348,12 +348,12 @@ window.customCursor =
           { element: wrapper, event: "pointerenter", handler: onEnter },
           { element: wrapper, event: "pointerleave", handler: onLeave },
           { element: wrapper, event: "pointerdown", handler: onDown },
-          { element: wrapper, event: "pointerup", handler: onUp }
+          { element: wrapper, event: "pointerup", handler: onUp },
         );
       });
 
       const swiperInteractive = document.querySelectorAll(
-        ".swiper-wrapper a, .swiper-wrapper button, .swiper-wrapper [role='button'], .swiper-wrapper input, .swiper-wrapper select, .swiper-wrapper textarea"
+        ".swiper-wrapper a, .swiper-wrapper button, .swiper-wrapper [role='button'], .swiper-wrapper input, .swiper-wrapper select, .swiper-wrapper textarea",
       );
 
       swiperInteractive.forEach((el) => {
@@ -368,7 +368,7 @@ window.customCursor =
 
         window.pageSpecificListeners.push(
           { element: el, event: "pointerenter", handler: onIEnter },
-          { element: el, event: "pointerleave", handler: onILeave }
+          { element: el, event: "pointerleave", handler: onILeave },
         );
       });
     };
@@ -408,12 +408,12 @@ window.customCursor =
           { element: host, event: "pointerenter", handler: onEnter },
           { element: host, event: "pointerleave", handler: onLeave },
           { element: host, event: "pointerdown", handler: onDown },
-          { element: host, event: "pointerup", handler: onUp }
+          { element: host, event: "pointerup", handler: onUp },
         );
       });
 
       const railInteractive = document.querySelectorAll(
-        ".exp_slider a, .exp_slider button, .exp_slider [role='button'], .exp_slider input, .exp_slider select, .exp_slider textarea"
+        ".exp_slider a, .exp_slider button, .exp_slider [role='button'], .exp_slider input, .exp_slider select, .exp_slider textarea",
       );
 
       railInteractive.forEach((el) => {
@@ -428,7 +428,7 @@ window.customCursor =
 
         window.pageSpecificListeners.push(
           { element: el, event: "pointerenter", handler: onIEnter },
-          { element: el, event: "pointerleave", handler: onILeave }
+          { element: el, event: "pointerleave", handler: onILeave },
         );
       });
     };
@@ -503,7 +503,7 @@ window.headerAnimation = window.headerAnimation || {
       !burgerElements.textMenu // .burger-label
     ) {
       console.error(
-        "headerAnimation.burgerHover: elementi mancanti per l'hover del burger"
+        "headerAnimation.burgerHover: elementi mancanti per l'hover del burger",
       );
       return;
     }
@@ -526,7 +526,7 @@ window.headerAnimation = window.headerAnimation || {
           ease: "power2.out",
           transformOrigin: "center center",
         },
-        0
+        0,
       )
       .to(
         label,
@@ -535,7 +535,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.35,
           ease: "power2.out",
         },
-        "<"
+        "<",
       )
       .to(
         lines,
@@ -545,7 +545,7 @@ window.headerAnimation = window.headerAnimation || {
           ease: "power2.out",
           transformOrigin: "center center",
         },
-        0.1
+        0.1,
       );
 
     clickTl
@@ -564,7 +564,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.15,
           ease: "power2.out",
         },
-        0
+        0,
       )
       .to(
         burgerElements.burgerLabel,
@@ -573,12 +573,12 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.6,
           ease: "power2.out",
         },
-        0
+        0,
       )
       .to(
         burgerElements.lines.top,
         { scale: 1, y: 3, rotationZ: -45, duration: 0.3, ease: "power1.out" },
-        "<"
+        "<",
       )
       .to(
         burgerElements.lines.bottom,
@@ -589,7 +589,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.3,
           ease: "power1.out",
         },
-        "<"
+        "<",
       );
 
     resetTl
@@ -600,7 +600,7 @@ window.headerAnimation = window.headerAnimation || {
           x: 0,
           rotateY: 0,
         },
-        0
+        0,
       )
       .to(
         burgerElements.burgerLabel,
@@ -609,12 +609,12 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.6,
           ease: "power2.out",
         },
-        0.1
+        0.1,
       )
       .to(
         lines,
         { y: 0, rotationZ: 0, duration: 0.3, ease: "power1.out" },
-        "<"
+        "<",
       );
 
     if (!isMobile) {
@@ -625,7 +625,7 @@ window.headerAnimation = window.headerAnimation || {
           ease: "back.out(2)",
           duration: 0.2,
         },
-        0.1
+        0.1,
       );
     }
     if (isMobile) {
@@ -636,14 +636,14 @@ window.headerAnimation = window.headerAnimation || {
           ease: "back.out(2)",
           duration: 0.45,
         },
-        0.1
+        0.1,
       );
     }
 
     resetTl.to(
       burgerElements.logoNav,
       { y: "0%", duration: 0.4, ease: "power2.out" },
-      "-=0.2"
+      "-=0.2",
     );
 
     // Hover events (solo desktop)
@@ -857,7 +857,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 1,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         dotLink,
@@ -867,7 +867,7 @@ window.headerAnimation = window.headerAnimation || {
           ease: "power2.out",
           stagger: { each: 0.1, from: "end" },
         },
-        "-=0.4"
+        "-=0.4",
       )
       .to(
         navItem,
@@ -878,7 +878,7 @@ window.headerAnimation = window.headerAnimation || {
           ease: "power2.out",
           stagger: { each: 0.1, from: "edge" },
         },
-        "<"
+        "<",
       )
       .to(
         img,
@@ -888,7 +888,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 1,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         contact,
@@ -897,7 +897,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.5,
           ease: "power2.out",
         },
-        0.5
+        0.5,
       )
       .to(
         ass,
@@ -906,7 +906,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.5,
           ease: "power2.out",
         },
-        0.6
+        0.6,
       )
       .to(
         logoMenuRect,
@@ -916,7 +916,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.4,
           ease: "power2.out",
         },
-        0.6
+        0.6,
       );
 
     this.closeTL
@@ -927,7 +927,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.8,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         logoMenuRect,
@@ -937,7 +937,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.35,
           ease: "power2.out",
         },
-        0.5
+        0.5,
       );
 
     this.closeTLB
@@ -954,7 +954,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.55,
           ease: "power2.out",
         },
-        0.5
+        0.5,
       );
 
     this.closeTLBH
@@ -970,7 +970,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.35,
           ease: "power2.out",
         },
-        0.5
+        0.5,
       )
       .to(
         header.burgerBlock,
@@ -979,7 +979,7 @@ window.headerAnimation = window.headerAnimation || {
           duration: 0.4,
           ease: "power2.out",
         },
-        "<"
+        "<",
       )
       .set(logoMenuRect, {
         "--ov-clip-top": "0%",
@@ -991,7 +991,7 @@ window.headerAnimation = window.headerAnimation || {
     // sicurezza: se scrollLock non esiste esci
     if (!window.scrollLock) {
       console.warn(
-        "scrollLock non è definito: impossibile inizializzare i controlli scroll."
+        "scrollLock non è definito: impossibile inizializzare i controlli scroll.",
       );
       return;
     }
@@ -1000,10 +1000,10 @@ window.headerAnimation = window.headerAnimation || {
 
     const blockScrollButtons = document.querySelectorAll("[data-block-scroll]");
     const unblockScrollButtons = document.querySelectorAll(
-      "[data-unblock-scroll]"
+      "[data-unblock-scroll]",
     );
     const toggleScrollButtons = document.querySelectorAll(
-      "[data-toggle-scroll]"
+      "[data-toggle-scroll]",
     );
 
     const handleBlock = (event) => {
@@ -1239,7 +1239,7 @@ window.menuNavigation = window.menuNavigation || {
 
       // elementi interni
       const loginText = dropdownMenu.querySelector(
-        ".dropdown-wrap-text-menu-link"
+        ".dropdown-wrap-text-menu-link",
       );
       const links = dropdownMenu.querySelectorAll(".login-text-drop-down");
       const accessBtn = dropdownMenu.querySelector(".access-btn");
@@ -1259,7 +1259,7 @@ window.menuNavigation = window.menuNavigation || {
           lockOnOpen = false,
           defaultColor = "var(--_theme---text-dark)",
           hoverColor = "var(--_theme---primary)",
-        } = {}
+        } = {},
       ) {
         if (!el) return null;
 
@@ -1576,7 +1576,7 @@ window.menuNavigation = window.menuNavigation || {
         { element: container, event: "mouseenter", handler: onEnter },
         { element: container, event: "mouseleave", handler: onLeave },
         { element: container, event: "touchstart", handler: onTouchStart },
-        { element: container, event: "touchend", handler: onTouchEnd }
+        { element: container, event: "touchend", handler: onTouchEnd },
       );
     });
   },
@@ -1796,7 +1796,7 @@ function setupPrimaryButtons() {
         {
           "--btn-origin-y": "100%",
         },
-        0
+        0,
       )
       .to(
         btn,
@@ -1805,7 +1805,7 @@ function setupPrimaryButtons() {
           duration: D_FILL_HOVER,
           ease: "power2.out",
         },
-        0
+        0,
       )
       .to(
         btn,
@@ -1814,7 +1814,7 @@ function setupPrimaryButtons() {
           duration: D_MIX_HOVER,
           ease: "power2.in",
         },
-        0
+        0,
       );
 
     if (btnDot) {
@@ -1825,7 +1825,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_HOVER,
           ease: "power2.out",
         },
-        OFFSET_DOT_H
+        OFFSET_DOT_H,
       );
     }
 
@@ -1838,7 +1838,7 @@ function setupPrimaryButtons() {
           ease: "power2.out",
           transformOrigin: "bottom left",
         },
-        OFFSET_ARROW_H
+        OFFSET_ARROW_H,
       );
     }
 
@@ -1848,7 +1848,7 @@ function setupPrimaryButtons() {
         {
           "--btn-origin-y": "0%",
         },
-        0
+        0,
       )
       .to(
         btn,
@@ -1857,7 +1857,7 @@ function setupPrimaryButtons() {
           duration: D_MIX_OUT,
           ease: "power2.in",
         },
-        OFFSET_MIX_OUT
+        OFFSET_MIX_OUT,
       )
       .to(
         btn,
@@ -1866,7 +1866,7 @@ function setupPrimaryButtons() {
           duration: D_SCALE_OUT,
           ease: "power2.in",
         },
-        0
+        0,
       );
 
     if (btnDot) {
@@ -1877,7 +1877,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_OUT,
           ease: "power2.in",
         },
-        0
+        0,
       );
     }
 
@@ -1890,7 +1890,7 @@ function setupPrimaryButtons() {
           ease: "power2.in",
           transformOrigin: "top right",
         },
-        0
+        0,
       );
     }
 
@@ -1932,7 +1932,7 @@ function setupPrimaryButtons() {
 
         window.pageSpecificListeners.push(
           { element: target, event: "mouseenter", handler: handleEnter },
-          { element: target, event: "mouseleave", handler: handleLeave }
+          { element: target, event: "mouseleave", handler: handleLeave },
         );
       });
     } else {
@@ -1957,7 +1957,7 @@ function setupPrimaryButtons() {
       start = "top 85%",
       startMobile = "top 88%",
       introOnScroll = true,
-    } = {}
+    } = {},
   ) {
     if (!btn) return;
 
@@ -1969,7 +1969,7 @@ function setupPrimaryButtons() {
     if (!border || !label) {
       console.warn(
         "setupPrimaryButtons: .btn-border o .btn-label mancanti",
-        btn
+        btn,
       );
       return;
     }
@@ -1986,7 +1986,7 @@ function setupPrimaryButtons() {
     if (!chars.length) {
       console.warn(
         "setupPrimaryButtons: nessun .btn-char trovato dopo SplitText",
-        btn
+        btn,
       );
       return;
     }
@@ -2051,7 +2051,7 @@ function setupPrimaryButtons() {
           stagger: { amount: 0.2 },
           ease: "power2.out",
         },
-        OFFSET_CHARS
+        OFFSET_CHARS,
       );
 
     if (btnDot) {
@@ -2062,7 +2062,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_INTRO,
           ease: "back.out(1.6)",
         },
-        "-=" + OFFSET_DOT_IN
+        "-=" + OFFSET_DOT_IN,
       );
     }
 
@@ -2095,7 +2095,7 @@ function setupPrimaryButtons() {
         {
           "--btn-origin-y": "100%",
         },
-        0
+        0,
       )
       .to(
         btn,
@@ -2104,7 +2104,7 @@ function setupPrimaryButtons() {
           duration: D_FILL_HOVER,
           ease: "power2.out",
         },
-        0
+        0,
       )
       .to(
         btn,
@@ -2113,7 +2113,7 @@ function setupPrimaryButtons() {
           duration: D_MIX_HOVER,
           ease: "power2.in",
         },
-        0
+        0,
       );
 
     if (btnDot) {
@@ -2124,7 +2124,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_HOVER,
           ease: "power2.out",
         },
-        OFFSET_DOT_H
+        OFFSET_DOT_H,
       );
     }
 
@@ -2137,7 +2137,7 @@ function setupPrimaryButtons() {
           ease: "power2.out",
           transformOrigin: "bottom left",
         },
-        OFFSET_ARROW_H
+        OFFSET_ARROW_H,
       );
     }
 
@@ -2148,7 +2148,7 @@ function setupPrimaryButtons() {
         {
           "--btn-origin-y": "0%",
         },
-        0
+        0,
       )
       .to(
         btn,
@@ -2157,7 +2157,7 @@ function setupPrimaryButtons() {
           duration: D_MIX_OUT,
           ease: "power2.in",
         },
-        OFFSET_MIX_OUT
+        OFFSET_MIX_OUT,
       )
       .to(
         btn,
@@ -2166,7 +2166,7 @@ function setupPrimaryButtons() {
           duration: D_SCALE_OUT,
           ease: "power2.in",
         },
-        0
+        0,
       );
 
     if (btnDot) {
@@ -2177,7 +2177,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_OUT,
           ease: "power2.in",
         },
-        0
+        0,
       );
     }
 
@@ -2190,7 +2190,7 @@ function setupPrimaryButtons() {
           ease: "power2.in",
           transformOrigin: "top right",
         },
-        0
+        0,
       );
     }
 
@@ -2229,7 +2229,7 @@ function setupPrimaryButtons() {
 
       window.pageSpecificListeners.push(
         { element: btn, event: "mouseenter", handler: handleEnter },
-        { element: btn, event: "mouseleave", handler: handleLeave }
+        { element: btn, event: "mouseleave", handler: handleLeave },
       );
     } else {
       // Mobile: SOLO click → solo animazione di enter
@@ -2250,14 +2250,14 @@ function setupPrimaryButtons() {
 
   // 1) Bottoni generici (escludo il project-hero)
   const genericButtons = document.querySelectorAll(
-    '.btn-primary[data-btn="button"]:not([data-intro="project-hero"])'
+    '.btn-primary[data-btn="button"]:not([data-intro="project-hero"])',
   );
   genericButtons.forEach((btn) => {
     setupButton(btn, { introTrigger: btn });
   });
   // 2) Project button (mobile), escludo comunque il project-hero
   const projectButtons = document.querySelectorAll(
-    '.btn-primary[data-btn="project"]:not([data-intro="project-hero"])'
+    '.btn-primary[data-btn="project"]:not([data-intro="project-hero"])',
   );
 
   projectButtons.forEach((btn) => {
@@ -2275,7 +2275,7 @@ function setupPrimaryButtons() {
 
   // 3) Button hero progetto: NESSUN ScrollTrigger, ma hover/click sì
   const projectHeroBtn = document.querySelector(
-    '.btn-primary[data-intro="project-hero"]'
+    '.btn-primary[data-intro="project-hero"]',
   );
   if (projectHeroBtn) {
     setupButton(projectHeroBtn, {
@@ -2285,7 +2285,7 @@ function setupPrimaryButtons() {
   }
 
   const slideButtons = document.querySelectorAll(
-    '.btn-primary[data-btn="slide"]'
+    '.btn-primary[data-btn="slide"]',
   );
 
   slideButtons.forEach((btn) => {
@@ -2415,7 +2415,7 @@ window.footerManager = window.footerManager || {
             stagger: { amount: 0.25 },
             ease: "power1.out",
           },
-          0
+          0,
         );
     } else if (isMobile && this.imgFooter) {
       gsap.to(this.imgFooter, {
@@ -2509,7 +2509,7 @@ async function setupContactLinkButtons() {
           duration: 0.4,
           ease: "power2.out",
         },
-        0.2
+        0.2,
       )
       .to(
         arrowDefault,
@@ -2518,7 +2518,7 @@ async function setupContactLinkButtons() {
           duration: 0.2,
           ease: "power2.out",
         },
-        0
+        0,
       );
 
     leaveTl
@@ -2537,7 +2537,7 @@ async function setupContactLinkButtons() {
           ease: "power2.out",
           transformOrigin: "bottom left",
         },
-        0.2
+        0.2,
       )
       .set([hoverDiv, arrowHover], { clearProps: "transformOrigin" });
 
@@ -2626,7 +2626,7 @@ async function setupContactLinkButtons() {
 
       window.pageSpecificListeners.push(
         { element: contactLink, event: "mouseenter", handler: handleEnter },
-        { element: contactLink, event: "mouseleave", handler: handleLeave }
+        { element: contactLink, event: "mouseleave", handler: handleLeave },
       );
 
       return;
@@ -2716,7 +2716,7 @@ function setupContactFormModal() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         modalInner,
@@ -2726,7 +2726,7 @@ function setupContactFormModal() {
           duration: 0.6,
           ease: "power2.out",
         },
-        0.55
+        0.55,
       );
   };
 
@@ -2756,7 +2756,7 @@ function setupContactFormModal() {
           duration: 0.8,
           ease: "power3.inOut",
         },
-        0
+        0,
       );
   };
 
@@ -2776,7 +2776,7 @@ function setupContactFormModal() {
       element: closeBtn,
       event: "click",
       handler: closeModal,
-    }
+    },
   );
 
   window.openContactFormModal = openModal;
@@ -2857,7 +2857,7 @@ function expertisePanelsReveal() {
     imgSecond?.querySelector(".show-img-last-work") || null;
 
   const allImages = gsap.utils.toArray(
-    ".expertise_h_section .show-img-last-work"
+    ".expertise_h_section .show-img-last-work",
   );
 
   const items = [
@@ -3032,7 +3032,7 @@ function initSkillWrapperIntro() {
           stagger: { amount: 0.25 },
           ease: "power2.out",
         },
-        0.4
+        0.4,
       ).to(
         numb,
         {
@@ -3041,7 +3041,7 @@ function initSkillWrapperIntro() {
           stagger: { amount: 0.25 },
           ease: "power2.out",
         },
-        0.6
+        0.6,
       );
     }
 
@@ -3167,7 +3167,7 @@ function initSectionEmo() {
             ease: "power3.inOut",
             force3D: true,
           },
-          ">"
+          ">",
         )
         .to(
           outEl,
@@ -3176,7 +3176,7 @@ function initSectionEmo() {
             duration: clipDur,
             ease: "power1.inOut",
           },
-          `<+${clipOffset}`
+          `<+${clipOffset}`,
         )
         .to(
           inEl,
@@ -3185,7 +3185,7 @@ function initSectionEmo() {
             duration: clipDur,
             ease: "power1.inOut",
           },
-          `<+${inDelay}`
+          `<+${inDelay}`,
         )
         .set(outEl, {
           "--emo-clip-left": "0%",
@@ -3251,7 +3251,7 @@ function initSectionEmo() {
       {
         rootMargin: "200px 0px",
         threshold: 0.12,
-      }
+      },
     );
 
     io.observe(section);
@@ -3347,7 +3347,7 @@ window.expertiseMarquee = window.expertiseMarquee || {
         const w = (widths[i] = parseFloat(gsap.getProperty(el, "width", "px")));
         xPercents[i] = snap(
           (parseFloat(gsap.getProperty(el, "x", "px")) / w) * 100 +
-            gsap.getProperty(el, "xPercent")
+            gsap.getProperty(el, "xPercent"),
         );
         return xPercents[i];
       },
@@ -3376,13 +3376,13 @@ window.expertiseMarquee = window.expertiseMarquee || {
           xPercent: snap(((curX - distanceToLoop) / widths[i]) * 100),
           duration: distanceToLoop / pixelsPerSecond,
         },
-        0
+        0,
       )
         .fromTo(
           item,
           {
             xPercent: snap(
-              ((curX - distanceToLoop + totalWidth) / widths[i]) * 100
+              ((curX - distanceToLoop + totalWidth) / widths[i]) * 100,
             ),
           },
           {
@@ -3391,7 +3391,7 @@ window.expertiseMarquee = window.expertiseMarquee || {
               (curX - distanceToLoop + totalWidth - curX) / pixelsPerSecond,
             immediateRender: false,
           },
-          distanceToLoop / pixelsPerSecond
+          distanceToLoop / pixelsPerSecond,
         )
         .add(`label${i}`, distanceToStart / pixelsPerSecond);
 
@@ -3428,14 +3428,14 @@ window.expertiseMarquee = window.expertiseMarquee || {
 
         onDrag() {
           tl.progress(
-            wrapProgress(startProgress + (this.startX - this.x) * ratio)
+            wrapProgress(startProgress + (this.startX - this.x) * ratio),
           );
           config.onDrag?.();
         },
 
         onThrowUpdate() {
           tl.progress(
-            wrapProgress(startProgress + (this.startX - this.x) * ratio)
+            wrapProgress(startProgress + (this.startX - this.x) * ratio),
           );
           config.onThrowUpdate?.();
         },
@@ -3482,7 +3482,7 @@ window.expertiseMarquee = window.expertiseMarquee || {
 
     const gap =
       parseFloat(
-        getComputedStyle(rail).columnGap || getComputedStyle(rail).gap || "0"
+        getComputedStyle(rail).columnGap || getComputedStyle(rail).gap || "0",
       ) || 0;
 
     let io = null;
@@ -3550,7 +3550,7 @@ window.expertiseMarquee = window.expertiseMarquee || {
         {
           rootMargin: "200px 0px",
           threshold: 0.12,
-        }
+        },
       );
 
       io.observe(host);
@@ -3561,7 +3561,7 @@ window.expertiseMarquee = window.expertiseMarquee || {
 
       resizeTimer = setTimeout(() => {
         const currentWidth = Math.round(
-          host.getBoundingClientRect().width || 0
+          host.getBoundingClientRect().width || 0,
         );
         if (!currentWidth) return;
 
@@ -3629,7 +3629,7 @@ window.expertiseMarquee = window.expertiseMarquee || {
       },
       {
         cleanup: destroy,
-      }
+      },
     );
 
     this._instance = {
@@ -3699,7 +3699,7 @@ function initProcessAccordion() {
           overwrite: "auto",
           transformOrigin: "50% 50%",
         },
-        0
+        0,
       )
       .to(
         arrowDefault,
@@ -3710,7 +3710,7 @@ function initProcessAccordion() {
           overwrite: "auto",
           transformOrigin: "50% 50%",
         },
-        0.2
+        0.2,
       );
 
     leaveTl
@@ -3723,7 +3723,7 @@ function initProcessAccordion() {
           overwrite: "auto",
           transformOrigin: "50% 50%",
         },
-        0
+        0,
       )
       .to(
         [hoverDiv, arrowHover],
@@ -3735,7 +3735,7 @@ function initProcessAccordion() {
           overwrite: "auto",
           transformOrigin: "50% 50%",
         },
-        0.2
+        0.2,
       );
 
     return {
@@ -4008,7 +4008,7 @@ function initStudioMsBlocks() {
             stagger: { amount: 0.2 },
             ease: "power2.out",
           },
-          "<+=0.2"
+          "<+=0.2",
         );
 
         if (valueTextHighlight) {
@@ -4020,7 +4020,7 @@ function initStudioMsBlocks() {
               duration: 0.6,
               ease: "power2.out",
             },
-            "<"
+            "<",
           );
         }
 
@@ -4033,7 +4033,7 @@ function initStudioMsBlocks() {
             stagger: 0.2,
             ease: "power2.out",
           },
-          "<"
+          "<",
         );
       },
     });
@@ -4177,7 +4177,7 @@ function initTeamCards() {
             ease: "power1.out",
             overwrite: "auto",
           },
-          0
+          0,
         )
         .to(
           txt,
@@ -4187,7 +4187,7 @@ function initTeamCards() {
             ease: "power2.out",
             overwrite: "auto",
           },
-          0.2
+          0.2,
         );
 
       leaveTl
@@ -4199,7 +4199,7 @@ function initTeamCards() {
             ease: "power2.in",
             overwrite: "auto",
           },
-          0
+          0,
         )
         .to(
           txtWrap,
@@ -4209,7 +4209,7 @@ function initTeamCards() {
             ease: "power1.in",
             overwrite: "auto",
           },
-          0.1
+          0.1,
         );
 
       const playHoverIn = () => {
@@ -4239,7 +4239,7 @@ function initTeamCards() {
 
       window.pageSpecificListeners.push(
         { element: card, event: "mouseenter", handler: handleEnter },
-        { element: card, event: "mouseleave", handler: handleLeave }
+        { element: card, event: "mouseleave", handler: handleLeave },
       );
     }
 
@@ -4271,7 +4271,7 @@ function initTeamCards() {
             duration: bp.lgUp ? 0.5 : 0.4,
             ease: "power1.inOut",
           },
-          "<+=0.1"
+          "<+=0.1",
         );
 
         if (!bp.lgUp && txtWrap && txt) {
@@ -4283,7 +4283,7 @@ function initTeamCards() {
               ease: "power1.out",
               overwrite: "auto",
             },
-            "<+=0.05"
+            "<+=0.05",
           ).to(
             txt,
             {
@@ -4292,7 +4292,7 @@ function initTeamCards() {
               ease: "power2.out",
               overwrite: "auto",
             },
-            "<+=0.15"
+            "<+=0.15",
           );
         }
       },
@@ -4438,7 +4438,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.2
+            0.2,
           );
         }
 
@@ -4452,7 +4452,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.15
+            0.15,
           );
         }
 
@@ -4468,7 +4468,7 @@ function initProjectGridDirectionalHover() {
               ease: "power1.inOut",
               overwrite: "auto",
             },
-            0.1
+            0.1,
           );
         }
 
@@ -4482,7 +4482,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0
+            0,
           );
         }
 
@@ -4496,7 +4496,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.18
+            0.18,
           );
         }
       };
@@ -4522,7 +4522,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0
+            0,
           );
         }
 
@@ -4536,7 +4536,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0
+            0,
           );
         }
 
@@ -4550,7 +4550,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.03
+            0.03,
           );
         }
 
@@ -4566,7 +4566,7 @@ function initProjectGridDirectionalHover() {
               ease: "power2.inOut",
               overwrite: "auto",
             },
-            0.02
+            0.02,
           );
         }
 
@@ -4580,7 +4580,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.02
+            0.02,
           );
         }
 
@@ -4593,7 +4593,7 @@ function initProjectGridDirectionalHover() {
             overwrite: "auto",
             force3D: true,
           },
-          0.06
+          0.06,
         );
       };
 
@@ -4612,7 +4612,7 @@ function initProjectGridDirectionalHover() {
 
       window.pageSpecificListeners.push(
         { element: card, event: "mouseenter", handler: onEnter },
-        { element: card, event: "mouseleave", handler: onLeave }
+        { element: card, event: "mouseleave", handler: onLeave },
       );
     }
 
@@ -4664,7 +4664,7 @@ function initProjectGridDirectionalHover() {
                 ease: "power2.out",
                 overwrite: "auto",
               },
-              0.15
+              0.15,
             )
             .to(
               arrowDefault,
@@ -4674,7 +4674,7 @@ function initProjectGridDirectionalHover() {
                 ease: "power2.out",
                 overwrite: "auto",
               },
-              0
+              0,
             );
         }
       }
@@ -4729,6 +4729,4 @@ Object.assign(window, {
   initTeamCards,
   initParallaxImages,
   initProjectGridDirectionalHover,
-  calendar,
-  initSliderCTA,
 });

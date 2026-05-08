@@ -344,7 +344,7 @@ function initBarbaWithGSAP() {
         duration: 1,
         ease: "power3.inOut",
       },
-      0
+      0,
     )
       .to(
         footer,
@@ -353,7 +353,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         wrapper,
@@ -362,7 +362,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         letters,
@@ -372,7 +372,7 @@ function initBarbaWithGSAP() {
           ease: "power2.out",
           stagger: 0.2,
         },
-        0.5
+        0.5,
       )
       .to(
         dot,
@@ -381,7 +381,7 @@ function initBarbaWithGSAP() {
           duration: 0.5,
           ease: "power1.inOut",
         },
-        "-=0.3"
+        "-=0.3",
       );
     if (leaveDelay > 0) {
       gsap.delayedCall(leaveDelay, () => tl.play(0));
@@ -441,7 +441,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       )
       .to(
         nextPage,
@@ -450,7 +450,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       );
   }
   function runButtonEnterTransitionProject(data) {
@@ -479,7 +479,7 @@ function initBarbaWithGSAP() {
     // === Hero primary button del progetto (link esterno) =================
     // Aggiungi in Webflow: data-intro="project-hero"
     const heroBtn = nextPage.querySelector(
-      '.btn-primary[data-intro="project-hero"]'
+      '.btn-primary[data-intro="project-hero"]',
     );
     let heroIntroTl = null;
 
@@ -545,7 +545,7 @@ function initBarbaWithGSAP() {
                 stagger: { amount: 0.2 },
                 ease: "power2.out",
               },
-              OFFSET_CHARS
+              OFFSET_CHARS,
             );
 
           if (btnDot) {
@@ -556,7 +556,7 @@ function initBarbaWithGSAP() {
                 duration: D_DOT_INTRO,
                 ease: "back.out(1.6)",
               },
-              "-=" + OFFSET_DOT_IN
+              "-=" + OFFSET_DOT_IN,
             );
           }
         }
@@ -596,7 +596,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       )
       .to(
         nextPage,
@@ -605,7 +605,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       )
       .to(
         line,
@@ -614,7 +614,7 @@ function initBarbaWithGSAP() {
           duration: 0.8,
           ease: "power2.inOut",
         },
-        0.8
+        0.8,
       )
       .to(
         h1,
@@ -623,7 +623,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power2.out",
         },
-        1
+        1,
       )
       .to(
         h2,
@@ -632,7 +632,7 @@ function initBarbaWithGSAP() {
           duration: 0.5,
           ease: "power2.out",
         },
-        "-=0.4"
+        "-=0.4",
       )
       .to(
         details,
@@ -641,7 +641,7 @@ function initBarbaWithGSAP() {
           duration: 0.5,
           ease: "power2.out",
         },
-        "<"
+        "<",
       );
     // Alla fine dell'header, facciamo l’intro del button hero
     if (heroIntroTl) {
@@ -709,7 +709,7 @@ function initBarbaWithGSAP() {
         stagger: 0.2,
         ease: "power2.out",
       },
-      0.4
+      0.4,
     );
   }
 
@@ -802,7 +802,7 @@ function initBarbaWithGSAP() {
         duration: 1,
         ease: "power3.inOut",
       },
-      0
+      0,
     )
       .to(
         footer,
@@ -811,7 +811,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         wrapperPropo,
@@ -820,7 +820,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0
+        0,
       )
       .to(
         propoLetters,
@@ -830,7 +830,7 @@ function initBarbaWithGSAP() {
           ease: "power2.out",
           stagger: { each: 0.05, from: "end" },
         },
-        0.5
+        0.5,
       )
       .to(
         propo,
@@ -840,7 +840,7 @@ function initBarbaWithGSAP() {
           duration: 0.5,
           ease: "power1.inOut",
         },
-        "<"
+        "<",
       )
       .to(
         propoLettersTransMain,
@@ -852,7 +852,7 @@ function initBarbaWithGSAP() {
           stagger: { each: 0.1 },
           transformOrigin: "top center",
         },
-        1.2
+        1.2,
       )
       .to(
         propoLettersTrans,
@@ -864,7 +864,7 @@ function initBarbaWithGSAP() {
           stagger: { each: 0.1 },
           transformOrigin: "bottom center",
         },
-        1.4
+        1.4,
       );
     if (leaveDelay > 0) {
       gsap.delayedCall(leaveDelay, () => tl.play(0));
@@ -926,7 +926,7 @@ function initBarbaWithGSAP() {
           duration: 0.5,
           ease: "power1.inOut",
         },
-        "<"
+        "<",
       )
       .to(
         wrapperPropo,
@@ -935,7 +935,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       )
       .to(
         nextPage,
@@ -944,7 +944,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       );
   }
 
@@ -1094,7 +1094,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       )
       .to(
         nextPage,
@@ -1103,7 +1103,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       );
 
     if (h1) {
@@ -1114,7 +1114,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power2.out",
         },
-        1
+        1,
       );
     }
 
@@ -1126,7 +1126,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power1.out",
         },
-        1.1
+        1.1,
       );
     }
     if (line) {
@@ -1137,7 +1137,7 @@ function initBarbaWithGSAP() {
           duration: 0.8,
           ease: "power2.inOut",
         },
-        1.08
+        1.08,
       );
     }
 
@@ -1149,7 +1149,7 @@ function initBarbaWithGSAP() {
           duration: 0.5,
           ease: "power1.out",
         },
-        1.14
+        1.14,
       );
     }
     if (btn) {
@@ -1161,7 +1161,7 @@ function initBarbaWithGSAP() {
           ease: "power2.out",
           stagger: 0.1,
         },
-        1.14
+        1.14,
       );
     }
   }
@@ -1201,7 +1201,7 @@ function initBarbaWithGSAP() {
         duration: 1,
         ease: "power3.inOut",
       },
-      0
+      0,
     );
 
     if (h1) {
@@ -1212,7 +1212,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power2.out",
         },
-        0.6
+        0.6,
       );
     }
 
@@ -1224,7 +1224,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power1.out",
         },
-        0.6
+        0.6,
       );
     }
 
@@ -1236,7 +1236,7 @@ function initBarbaWithGSAP() {
           duration: 0.8,
           ease: "power2.inOut",
         },
-        0.72
+        0.72,
       );
     }
 
@@ -1248,7 +1248,7 @@ function initBarbaWithGSAP() {
           duration: 0.5,
           ease: "power1.out",
         },
-        0.8
+        0.8,
       );
     }
 
@@ -1261,7 +1261,7 @@ function initBarbaWithGSAP() {
           ease: "power2.out",
           stagger: 0.1,
         },
-        0.8
+        0.8,
       );
     }
 
@@ -1330,7 +1330,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       )
       .to(
         nextPage,
@@ -1339,7 +1339,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       );
 
     if (h1) {
@@ -1350,7 +1350,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power2.out",
         },
-        1
+        1,
       );
     }
 
@@ -1362,7 +1362,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power1.out",
         },
-        1.1
+        1.1,
       );
     }
   }
@@ -1399,7 +1399,7 @@ function initBarbaWithGSAP() {
         duration: 1,
         ease: "power3.inOut",
       },
-      0
+      0,
     );
 
     if (h1) {
@@ -1410,7 +1410,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power2.out",
         },
-        0.6
+        0.6,
       );
     }
 
@@ -1422,7 +1422,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power1.out",
         },
-        0.6
+        0.6,
       );
     }
 
@@ -1525,7 +1525,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       )
       .to(
         nextPage,
@@ -1534,7 +1534,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       );
 
     if (lines.length) {
@@ -1546,7 +1546,7 @@ function initBarbaWithGSAP() {
           ease: "power2.inOut",
           stagger: 0.08,
         },
-        0.8
+        0.8,
       );
     }
 
@@ -1559,7 +1559,7 @@ function initBarbaWithGSAP() {
           ease: "power2.out",
           stagger: 0.08,
         },
-        1
+        1,
       );
     }
 
@@ -1572,7 +1572,7 @@ function initBarbaWithGSAP() {
           ease: "power2.out",
           stagger: 0.06,
         },
-        "-=0.4"
+        "-=0.4",
       );
     }
 
@@ -1586,7 +1586,7 @@ function initBarbaWithGSAP() {
           ease: "power1.out",
           stagger: 0.04,
         },
-        "<"
+        "<",
       );
     }
 
@@ -1599,7 +1599,7 @@ function initBarbaWithGSAP() {
           duration: 0.8,
           ease: "power1.out",
         },
-        0.9
+        0.9,
       );
     }
 
@@ -1612,7 +1612,7 @@ function initBarbaWithGSAP() {
           duration: 0.8,
           ease: "power1.out",
         },
-        1.1
+        1.1,
       );
     }
   }
@@ -1689,7 +1689,7 @@ function initBarbaWithGSAP() {
         duration: 1,
         ease: "power3.inOut",
       },
-      0
+      0,
     );
 
     if (lines.length) {
@@ -1701,7 +1701,7 @@ function initBarbaWithGSAP() {
           ease: "power2.inOut",
           stagger: 0.08,
         },
-        0.58
+        0.58,
       );
     }
 
@@ -1714,7 +1714,7 @@ function initBarbaWithGSAP() {
           ease: "power2.out",
           stagger: 0.08,
         },
-        0.72
+        0.72,
       );
     }
 
@@ -1727,7 +1727,7 @@ function initBarbaWithGSAP() {
           ease: "power2.out",
           stagger: 0.06,
         },
-        0.82
+        0.82,
       );
     }
 
@@ -1740,7 +1740,7 @@ function initBarbaWithGSAP() {
           ease: "power1.out",
           stagger: 0.04,
         },
-        0.82
+        0.82,
       );
     }
 
@@ -1753,7 +1753,7 @@ function initBarbaWithGSAP() {
           duration: 0.8,
           ease: "power1.out",
         },
-        0.72
+        0.72,
       );
     }
 
@@ -1766,7 +1766,7 @@ function initBarbaWithGSAP() {
           duration: 0.8,
           ease: "power1.out",
         },
-        0.9
+        0.9,
       );
     }
 
@@ -1859,7 +1859,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       )
       .to(
         nextPage,
@@ -1868,7 +1868,7 @@ function initBarbaWithGSAP() {
           duration: 1,
           ease: "power3.inOut",
         },
-        0.35
+        0.35,
       );
 
     if (h1) {
@@ -1879,7 +1879,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power2.out",
         },
-        1
+        1,
       );
     }
 
@@ -1891,7 +1891,7 @@ function initBarbaWithGSAP() {
           duration: 0.6,
           ease: "power1.out",
         },
-        1.1
+        1.1,
       );
     }
 
@@ -1904,7 +1904,7 @@ function initBarbaWithGSAP() {
           ease: "power1.out",
           stagger: 0.04,
         },
-        1.2
+        1.2,
       );
     }
   }
@@ -2435,7 +2435,7 @@ function OnLoadHeroDefault() {
           ease: "power2.in",
           stagger: 0.1,
         },
-        0
+        0,
       )
       .to(
         els.svgLightLetters,
@@ -2445,7 +2445,7 @@ function OnLoadHeroDefault() {
           ease: "power2.in",
           stagger: 0.09,
         },
-        0.4
+        0.4,
       );
 
     // hero-trans SOLO desktop (stesso timing 0.35)
@@ -2457,7 +2457,7 @@ function OnLoadHeroDefault() {
           duration: 0.3,
           ease: "power2.inOut",
         },
-        0.35
+        0.35,
       );
     }
 
@@ -2471,7 +2471,7 @@ function OnLoadHeroDefault() {
           ease: "power2.out",
           stagger: 0.08,
         },
-        0.6
+        0.6,
       )
       .to(
         els.svgDarkLetters,
@@ -2481,7 +2481,7 @@ function OnLoadHeroDefault() {
           ease: "power2.out",
           stagger: 0.08,
         },
-        0.6
+        0.6,
       );
 
     // cover: desktop scaleX (origin center left), mobile scaleY (origin top center)
@@ -2494,7 +2494,7 @@ function OnLoadHeroDefault() {
           ease: "power3.inOut",
           transformOrigin: "center left",
         },
-        0
+        0,
       );
     } else {
       tlTitle
@@ -2506,7 +2506,7 @@ function OnLoadHeroDefault() {
             ease: "power3.inOut",
             transformOrigin: "top center",
           },
-          0
+          0,
         )
         .to(
           header.logoHome,
@@ -2515,7 +2515,7 @@ function OnLoadHeroDefault() {
             duration: 0.28,
             ease: "power2.inOut",
           },
-          0.75
+          0.75,
         );
     }
 
@@ -2530,7 +2530,7 @@ function OnLoadHeroDefault() {
           stagger: { amount: 0.06, from: "end" },
           clearProps: "transform",
         },
-        0.6
+        0.6,
       );
     }
 
@@ -2555,7 +2555,7 @@ function OnLoadHeroDefault() {
             ease: "power2.out",
             modifiers: { x: snapPx },
           },
-          "<+0.1"
+          "<+0.1",
         )
         .to(
           els.gruppoTerzo,
@@ -2567,7 +2567,7 @@ function OnLoadHeroDefault() {
             ease: "power2.out",
             modifiers: { x: snapPx },
           },
-          "<+0.1"
+          "<+0.1",
         );
     } else {
       // mobile: SOLO gruppoPrimo (come ora)
@@ -2590,7 +2590,7 @@ function OnLoadHeroDefault() {
           ease: "power2.out",
           stagger: { amount: 0.2 },
         },
-        0.2
+        0.2,
       );
     }
 
@@ -2604,7 +2604,7 @@ function OnLoadHeroDefault() {
           ease: "power2.out",
           stagger: { amount: 0.2 },
         },
-        0
+        0,
       )
       .to(
         ".l-h",
@@ -2613,7 +2613,7 @@ function OnLoadHeroDefault() {
           duration: 0.4,
           ease: "power2.out",
         },
-        0
+        0,
       );
 
     if (mode === "mobile") {
@@ -2624,7 +2624,7 @@ function OnLoadHeroDefault() {
           duration: 0.4,
           ease: "power2.inOut",
         },
-        0
+        0,
       );
     }
 
@@ -2802,7 +2802,7 @@ window.pageEnterFx =
             duration: 1,
             ease: "power3.inOut",
           },
-          0.35
+          0.35,
         )
         .to(
           page,
@@ -2811,7 +2811,7 @@ window.pageEnterFx =
             duration: 1,
             ease: "power3.inOut",
           },
-          0.35
+          0.35,
         );
 
       return tl;
@@ -2881,7 +2881,7 @@ window.pageEnterFx =
             ease: "power2.inOut",
             stagger: 0.08,
           },
-          0.8
+          0.8,
         );
       }
 
@@ -2894,7 +2894,7 @@ window.pageEnterFx =
             ease: "power2.out",
             stagger: 0.08,
           },
-          1
+          1,
         );
       }
 
@@ -2907,7 +2907,7 @@ window.pageEnterFx =
             ease: "power2.out",
             stagger: 0.06,
           },
-          "-=0.4"
+          "-=0.4",
         );
       }
 
@@ -2920,7 +2920,7 @@ window.pageEnterFx =
             ease: "power1.out",
             stagger: 0.04,
           },
-          "<"
+          "<",
         );
       }
 
@@ -2933,7 +2933,7 @@ window.pageEnterFx =
             duration: 0.8,
             ease: "power1.out",
           },
-          0.9
+          0.9,
         );
       }
 
@@ -2946,7 +2946,7 @@ window.pageEnterFx =
             duration: 0.8,
             ease: "power1.out",
           },
-          1.1
+          1.1,
         );
       }
 
@@ -3008,7 +3008,7 @@ window.pageEnterFx =
             duration: 0.6,
             ease: "power2.out",
           },
-          1
+          1,
         );
       }
 
@@ -3020,7 +3020,7 @@ window.pageEnterFx =
             duration: 0.6,
             ease: "power1.out",
           },
-          1.1
+          1.1,
         );
       }
 
@@ -3033,7 +3033,7 @@ window.pageEnterFx =
             ease: "power1.out",
             stagger: 0.04,
           },
-          1.2
+          1.2,
         );
       }
 
@@ -3045,7 +3045,7 @@ window.pageEnterFx =
             duration: 0.8,
             ease: "power1.out",
           },
-          1.2
+          1.2,
         );
       }
 
@@ -3083,7 +3083,7 @@ window.pageEnterFx =
             duration: 0.6,
             ease: "power2.out",
           },
-          1
+          1,
         );
       }
 
@@ -3095,7 +3095,7 @@ window.pageEnterFx =
             duration: 0.6,
             ease: "power1.out",
           },
-          1.1
+          1.1,
         );
       }
 
@@ -3107,7 +3107,7 @@ window.pageEnterFx =
             duration: 0.8,
             ease: "power2.inOut",
           },
-          1.08
+          1.08,
         );
       }
 
@@ -3119,7 +3119,7 @@ window.pageEnterFx =
             duration: 0.5,
             ease: "power1.out",
           },
-          1.14
+          1.14,
         );
       }
 
@@ -3132,7 +3132,7 @@ window.pageEnterFx =
             ease: "power2.out",
             stagger: 0.1,
           },
-          1.14
+          1.14,
         );
       }
 
@@ -3167,7 +3167,7 @@ window.pageEnterFx =
             duration: 0.6,
             ease: "power2.out",
           },
-          1
+          1,
         );
       }
 
@@ -3179,7 +3179,7 @@ window.pageEnterFx =
             duration: 0.6,
             ease: "power1.out",
           },
-          1.1
+          1.1,
         );
       }
 
@@ -3206,7 +3206,7 @@ window.pageEnterFx =
       const details = page.querySelector(".proj-head-bot-specific");
 
       const heroBtn = page.querySelector(
-        '.btn-primary[data-intro="project-hero"]'
+        '.btn-primary[data-intro="project-hero"]',
       );
 
       let heroIntroTl = null;
@@ -3270,7 +3270,7 @@ window.pageEnterFx =
                   stagger: { amount: 0.2 },
                   ease: "power2.out",
                 },
-                OFFSET_CHARS
+                OFFSET_CHARS,
               );
 
             if (btnDot) {
@@ -3281,7 +3281,7 @@ window.pageEnterFx =
                   duration: D_DOT_INTRO,
                   ease: "back.out(1.6)",
                 },
-                "-=" + OFFSET_DOT_IN
+                "-=" + OFFSET_DOT_IN,
               );
             }
           }
@@ -3299,7 +3299,7 @@ window.pageEnterFx =
             duration: 0.8,
             ease: "power2.inOut",
           },
-          0.8
+          0.8,
         );
       }
 
@@ -3311,7 +3311,7 @@ window.pageEnterFx =
             duration: 0.6,
             ease: "power2.out",
           },
-          1
+          1,
         );
       }
 
@@ -3323,7 +3323,7 @@ window.pageEnterFx =
             duration: 0.5,
             ease: "power2.out",
           },
-          "-=0.4"
+          "-=0.4",
         );
       }
 
@@ -3335,7 +3335,7 @@ window.pageEnterFx =
             duration: 0.5,
             ease: "power2.out",
           },
-          "<"
+          "<",
         );
       }
 
@@ -3403,7 +3403,7 @@ window.pageEnterFx =
           stagger: { each: 0.1 },
           transformOrigin: "top center",
         },
-        0
+        0,
       )
         .to(
           propoLettersTrans,
@@ -3415,7 +3415,7 @@ window.pageEnterFx =
             stagger: { each: 0.1 },
             transformOrigin: "bottom center",
           },
-          0.2
+          0.2,
         )
         .to(
           propoLetters,
@@ -3425,7 +3425,7 @@ window.pageEnterFx =
             ease: "power2.in",
             stagger: { each: 0.065, from: "end" },
           },
-          0.7
+          0.7,
         )
         .to(
           propo,
@@ -3435,7 +3435,7 @@ window.pageEnterFx =
             duration: 0.5,
             ease: "power1.inOut",
           },
-          "<"
+          "<",
         )
         .to(
           wrapperPropo,
@@ -3444,7 +3444,7 @@ window.pageEnterFx =
             duration: 1,
             ease: "power3.inOut",
           },
-          1
+          1,
         )
         .to(
           page,
@@ -3453,7 +3453,7 @@ window.pageEnterFx =
             duration: 1,
             ease: "power3.inOut",
           },
-          1
+          1,
         );
 
       return tl;
@@ -3472,12 +3472,14 @@ window.pageEnterFx =
     };
   })();
 
-
 Object.assign(window, {
   backHomeLink,
   burger,
+  transitionElementsObj,
   header,
   headerElements,
   footerBody,
   burgerElements,
+  initBarbaWithGSAP,
+  OnLoadHeroDefault,
 });
