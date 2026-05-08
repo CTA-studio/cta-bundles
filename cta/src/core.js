@@ -1303,3 +1303,21 @@ window.AssessmentManager = window.AssessmentManager || {
     }
   },
 };
+
+
+Object.assign(window, {
+  cleanUpTriggers,
+  cleanUpPageListeners,
+  handlePageSpecificActions,
+  loadResources,
+  loadScript,
+  loadCSS,
+  updatePageMetaAndInteractions,
+  updateOrCreateMetaFromDoc,
+  updateOrCreateLinkFromDoc,
+  updateCmsMetaTags,
+  restartWebflowInteractions,
+  trackPageView,
+  blockScroll,
+  unblockScroll,
+});
