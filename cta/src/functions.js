@@ -1,3 +1,11 @@
+const backHomeLink = window.backHomeLink || null;
+const burger = window.burger || null;
+const header = window.header || {};
+const headerElements = window.headerElements || [];
+const footerBody = window.footerBody || null;
+const burgerElements = window.burgerElements || {};
+const transitionElementsObj = window.transitionElementsObj || {};
+
 // ============================================================
 // Custom Cursor — GLOBAL OBJECT (Barba-safe)
 // ============================================================

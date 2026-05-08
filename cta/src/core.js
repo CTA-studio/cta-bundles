@@ -1306,18 +1306,13 @@ window.AssessmentManager = window.AssessmentManager || {
 
 
 Object.assign(window, {
-  cleanUpTriggers,
-  cleanUpPageListeners,
-  handlePageSpecificActions,
-  loadResources,
-  loadScript,
-  loadCSS,
-  updatePageMetaAndInteractions,
-  updateOrCreateMetaFromDoc,
-  updateOrCreateLinkFromDoc,
-  updateCmsMetaTags,
-  restartWebflowInteractions,
-  trackPageView,
-  blockScroll,
-  unblockScroll,
+  backHomeLink,
+  burger,
+  transitionElementsObj,
+  header,
+  headerElements,
+  footerBody,
+  burgerElements,
+  initBarbaWithGSAP,
+  OnLoadHeroDefault,
 });

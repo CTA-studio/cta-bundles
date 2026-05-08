@@ -3473,7 +3473,11 @@ window.pageEnterFx =
   })();
 
 
-  Object.assign(window, {
-  initBarbaWithGSAP,
-  OnLoadHeroDefault,
+Object.assign(window, {
+  backHomeLink,
+  burger,
+  header,
+  headerElements,
+  footerBody,
+  burgerElements,
 });
