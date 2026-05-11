@@ -1720,13 +1720,6 @@ function setupPrimaryButtons() {
   if (!window.gsap) return;
 
   const { gsap } = window;
-  const SplitText =
-    (gsap.plugins && gsap.plugins.SplitText) || window.SplitText;
-
-  if (!SplitText) {
-    console.warn("setupPrimaryButtons: SplitText non disponibile");
-    return;
-  }
 
   if (!Array.isArray(window.pageSpecificListeners)) {
     window.pageSpecificListeners = [];
@@ -1796,7 +1789,7 @@ function setupPrimaryButtons() {
         {
           "--btn-origin-y": "100%",
         },
-        0,
+        0
       )
       .to(
         btn,
@@ -1805,7 +1798,7 @@ function setupPrimaryButtons() {
           duration: D_FILL_HOVER,
           ease: "power2.out",
         },
-        0,
+        0
       )
       .to(
         btn,
@@ -1814,7 +1807,7 @@ function setupPrimaryButtons() {
           duration: D_MIX_HOVER,
           ease: "power2.in",
         },
-        0,
+        0
       );
 
     if (btnDot) {
@@ -1825,7 +1818,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_HOVER,
           ease: "power2.out",
         },
-        OFFSET_DOT_H,
+        OFFSET_DOT_H
       );
     }
 
@@ -1838,7 +1831,7 @@ function setupPrimaryButtons() {
           ease: "power2.out",
           transformOrigin: "bottom left",
         },
-        OFFSET_ARROW_H,
+        OFFSET_ARROW_H
       );
     }
 
@@ -1848,7 +1841,7 @@ function setupPrimaryButtons() {
         {
           "--btn-origin-y": "0%",
         },
-        0,
+        0
       )
       .to(
         btn,
@@ -1857,7 +1850,7 @@ function setupPrimaryButtons() {
           duration: D_MIX_OUT,
           ease: "power2.in",
         },
-        OFFSET_MIX_OUT,
+        OFFSET_MIX_OUT
       )
       .to(
         btn,
@@ -1866,7 +1859,7 @@ function setupPrimaryButtons() {
           duration: D_SCALE_OUT,
           ease: "power2.in",
         },
-        0,
+        0
       );
 
     if (btnDot) {
@@ -1877,7 +1870,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_OUT,
           ease: "power2.in",
         },
-        0,
+        0
       );
     }
 
@@ -1890,7 +1883,7 @@ function setupPrimaryButtons() {
           ease: "power2.in",
           transformOrigin: "top right",
         },
-        0,
+        0
       );
     }
 
@@ -1932,7 +1925,7 @@ function setupPrimaryButtons() {
 
         window.pageSpecificListeners.push(
           { element: target, event: "mouseenter", handler: handleEnter },
-          { element: target, event: "mouseleave", handler: handleLeave },
+          { element: target, event: "mouseleave", handler: handleLeave }
         );
       });
     } else {
@@ -1957,7 +1950,7 @@ function setupPrimaryButtons() {
       start = "top 85%",
       startMobile = "top 88%",
       introOnScroll = true,
-    } = {},
+    } = {}
   ) {
     if (!btn) return;
 
@@ -1969,24 +1962,7 @@ function setupPrimaryButtons() {
     if (!border || !label) {
       console.warn(
         "setupPrimaryButtons: .btn-border o .btn-label mancanti",
-        btn,
-      );
-      return;
-    }
-
-    // SplitText: splitta solo se non già splittato
-    if (!label.querySelector(".btn-char")) {
-      new SplitText(label, {
-        type: "chars",
-        charsClass: "btn-char",
-      });
-    }
-
-    const chars = label.querySelectorAll(".btn-char");
-    if (!chars.length) {
-      console.warn(
-        "setupPrimaryButtons: nessun .btn-char trovato dopo SplitText",
-        btn,
+        btn
       );
       return;
     }
@@ -1996,7 +1972,7 @@ function setupPrimaryButtons() {
 
     // === Durate allineate a showcaseProjectButton ======================
     const D_BORDER = 0.35 * speedFactor;
-    const D_CHARS = 0.35 * speedFactor;
+    const D_LABEL = 0.45 * speedFactor;
     const D_DOT_INTRO = 0.4 * speedFactor;
 
     const D_FILL_HOVER = 0.35 * speedFactor;
@@ -2009,7 +1985,7 @@ function setupPrimaryButtons() {
     const D_DOT_OUT = 0.3 * speedFactor;
     const D_ARROW_OUT = 0.3 * speedFactor;
 
-    const OFFSET_CHARS = 0.25 * speedFactor;
+    const OFFSET_LABEL = 0.22 * speedFactor;
     const OFFSET_DOT_IN = 0.3 * speedFactor;
     const OFFSET_DOT_H = 0.15 * speedFactor;
     const OFFSET_ARROW_H = 0.25 * speedFactor;
@@ -2017,7 +1993,15 @@ function setupPrimaryButtons() {
 
     // ==== Stati iniziali ================================================
     gsap.set(border, { "--clip-x": "50%" });
-    gsap.set(chars, { yPercent: 100, opacity: 0 });
+    gsap.set(label, {
+      rotationX: 90,
+      yPercent: 35,
+      opacity: 0,
+      transformOrigin: "50% 50%",
+      transformPerspective: 600,
+      force3D: true,
+    });
+
     gsap.set(btn, {
       "--btn-scale": 0,
       "--btn-mix": "0%",
@@ -2032,7 +2016,6 @@ function setupPrimaryButtons() {
         transformOrigin: "bottom left",
       });
     }
-
     // ==== TL ingresso su scroll ========================================
     const introTl = gsap.timeline({ paused: true });
 
@@ -2040,18 +2023,19 @@ function setupPrimaryButtons() {
       .to(border, {
         duration: D_BORDER,
         ease: "power2.out",
-        "--clip-x": "0%", // da 50% a 0%
+        "--clip-x": "0%",
       })
       .to(
-        chars,
+        label,
         {
+          rotationX: 0,
           yPercent: 0,
           opacity: 1,
-          duration: D_CHARS,
-          stagger: { amount: 0.2 },
+          duration: D_LABEL,
           ease: "power2.out",
+          force3D: true,
         },
-        OFFSET_CHARS,
+        OFFSET_LABEL
       );
 
     if (btnDot) {
@@ -2062,7 +2046,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_INTRO,
           ease: "back.out(1.6)",
         },
-        "-=" + OFFSET_DOT_IN,
+        "-=" + OFFSET_DOT_IN
       );
     }
 
@@ -2095,7 +2079,7 @@ function setupPrimaryButtons() {
         {
           "--btn-origin-y": "100%",
         },
-        0,
+        0
       )
       .to(
         btn,
@@ -2104,7 +2088,7 @@ function setupPrimaryButtons() {
           duration: D_FILL_HOVER,
           ease: "power2.out",
         },
-        0,
+        0
       )
       .to(
         btn,
@@ -2113,7 +2097,7 @@ function setupPrimaryButtons() {
           duration: D_MIX_HOVER,
           ease: "power2.in",
         },
-        0,
+        0
       );
 
     if (btnDot) {
@@ -2124,7 +2108,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_HOVER,
           ease: "power2.out",
         },
-        OFFSET_DOT_H,
+        OFFSET_DOT_H
       );
     }
 
@@ -2137,7 +2121,7 @@ function setupPrimaryButtons() {
           ease: "power2.out",
           transformOrigin: "bottom left",
         },
-        OFFSET_ARROW_H,
+        OFFSET_ARROW_H
       );
     }
 
@@ -2148,7 +2132,7 @@ function setupPrimaryButtons() {
         {
           "--btn-origin-y": "0%",
         },
-        0,
+        0
       )
       .to(
         btn,
@@ -2157,7 +2141,7 @@ function setupPrimaryButtons() {
           duration: D_MIX_OUT,
           ease: "power2.in",
         },
-        OFFSET_MIX_OUT,
+        OFFSET_MIX_OUT
       )
       .to(
         btn,
@@ -2166,7 +2150,7 @@ function setupPrimaryButtons() {
           duration: D_SCALE_OUT,
           ease: "power2.in",
         },
-        0,
+        0
       );
 
     if (btnDot) {
@@ -2177,7 +2161,7 @@ function setupPrimaryButtons() {
           duration: D_DOT_OUT,
           ease: "power2.in",
         },
-        0,
+        0
       );
     }
 
@@ -2190,7 +2174,7 @@ function setupPrimaryButtons() {
           ease: "power2.in",
           transformOrigin: "top right",
         },
-        0,
+        0
       );
     }
 
@@ -2229,7 +2213,7 @@ function setupPrimaryButtons() {
 
       window.pageSpecificListeners.push(
         { element: btn, event: "mouseenter", handler: handleEnter },
-        { element: btn, event: "mouseleave", handler: handleLeave },
+        { element: btn, event: "mouseleave", handler: handleLeave }
       );
     } else {
       // Mobile: SOLO click → solo animazione di enter
@@ -2250,14 +2234,14 @@ function setupPrimaryButtons() {
 
   // 1) Bottoni generici (escludo il project-hero)
   const genericButtons = document.querySelectorAll(
-    '.btn-primary[data-btn="button"]:not([data-intro="project-hero"])',
+    '.btn-primary[data-btn="button"]:not([data-intro="project-hero"])'
   );
   genericButtons.forEach((btn) => {
     setupButton(btn, { introTrigger: btn });
   });
   // 2) Project button (mobile), escludo comunque il project-hero
   const projectButtons = document.querySelectorAll(
-    '.btn-primary[data-btn="project"]:not([data-intro="project-hero"])',
+    '.btn-primary[data-btn="project"]:not([data-intro="project-hero"])'
   );
 
   projectButtons.forEach((btn) => {
@@ -2275,7 +2259,7 @@ function setupPrimaryButtons() {
 
   // 3) Button hero progetto: NESSUN ScrollTrigger, ma hover/click sì
   const projectHeroBtn = document.querySelector(
-    '.btn-primary[data-intro="project-hero"]',
+    '.btn-primary[data-intro="project-hero"]'
   );
   if (projectHeroBtn) {
     setupButton(projectHeroBtn, {
@@ -2285,7 +2269,7 @@ function setupPrimaryButtons() {
   }
 
   const slideButtons = document.querySelectorAll(
-    '.btn-primary[data-btn="slide"]',
+    '.btn-primary[data-btn="slide"]'
   );
 
   slideButtons.forEach((btn) => {

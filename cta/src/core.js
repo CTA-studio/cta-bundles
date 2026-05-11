@@ -39,7 +39,7 @@ function handlePageSpecificActions() {
 
   if (!pageData) {
     console.warn(
-      `Nessuna mappatura trovata per data-wf-page: ${currentPageID}`
+      `Nessuna mappatura trovata per data-wf-page: ${currentPageID}`,
     );
     return;
   }
@@ -60,7 +60,9 @@ function handlePageSpecificActions() {
   const jsonData = window.jsonPageMap[pageData.jsonKey];
   if (jsonData?.active && jsonData.json) {
     document
-      .querySelectorAll('script[type="application/ld+json"]')
+      .querySelectorAll(
+        'script[type="application/ld+json"]:not([data-schema-global])',
+      )
       .forEach((el) => el.remove());
 
     const script = document.createElement("script");
@@ -81,7 +83,7 @@ function handlePageSpecificActions() {
       .catch((error) => {
         console.error(
           `Errore durante il caricamento delle risorse per: ${pageData.name}`,
-          error
+          error,
         );
       });
   } else {
@@ -187,7 +189,7 @@ function updatePageMetaAndInteractions(newPageHTML) {
 
   // 8. <meta property="og:locale:alternate"> (tutti, se presenti)
   const alternateLocales = doc.querySelectorAll(
-    'meta[property="og:locale:alternate"]'
+    'meta[property="og:locale:alternate"]',
   );
 
   document
@@ -207,7 +209,7 @@ function updateOrCreateMetaFromDoc(doc, attrType, attrValue) {
   const newMeta = doc.querySelector(`meta[${attrType}="${attrValue}"]`);
   if (newMeta) {
     let existing = document.head.querySelector(
-      `meta[${attrType}="${attrValue}"]`
+      `meta[${attrType}="${attrValue}"]`,
     );
     if (!existing) {
       existing = document.createElement("meta");
@@ -244,7 +246,7 @@ function updateCmsMetaTags(doc) {
     const newMeta = doc.querySelector(`meta[property="${prop}"]`);
     if (newMeta && newMeta.getAttribute("content")) {
       let existingMeta = document.head.querySelector(
-        `meta[property="${prop}"]`
+        `meta[property="${prop}"]`,
       );
       if (!existingMeta) {
         existingMeta = document.createElement("meta");
@@ -450,7 +452,7 @@ window.lenisInstance = window.lenisInstance || {
           event.stopPropagation();
         }
       },
-      { passive: false }
+      { passive: false },
     );
 
     document.addEventListener(
@@ -460,7 +462,7 @@ window.lenisInstance = window.lenisInstance || {
           event.stopPropagation();
         }
       },
-      { passive: false }
+      { passive: false },
     );
 
     setTimeout(() => {
@@ -575,7 +577,7 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
                 Authorization: `Bearer ${token}`,
               },
               body: JSON.stringify({ uid: user.uid, token }),
-            }
+            },
           );
 
           const data = await response.json();
@@ -601,13 +603,13 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
   loadFirebaseScripts: async function () {
     try {
       await loadScript(
-        "https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"
+        "https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js",
       );
       await loadScript(
-        "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"
+        "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js",
       );
       await loadScript(
-        "https://www.gstatic.com/firebasejs/10.0.0/firebase-database-compat.js"
+        "https://www.gstatic.com/firebasejs/10.0.0/firebase-database-compat.js",
       );
 
       await new Promise((resolve) => {
@@ -672,12 +674,12 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ uid: user.uid, token }),
-        }
+        },
       );
 
       if (!response.ok) {
         throw new Error(
-          `Errore HTTP: ${response.status} - ${await response.text()}`
+          `Errore HTTP: ${response.status} - ${await response.text()}`,
         );
       }
 
@@ -805,7 +807,7 @@ window.DashboardManager = window.DashboardManager || {
     } catch (error) {
       console.error(
         "❌ Errore durante l'inizializzazione della Dashboard:",
-        error
+        error,
       );
     }
   },
@@ -870,7 +872,7 @@ window.DashboardManager = window.DashboardManager || {
             ease: "power2.out",
             onComplete: () => gsap.set(overlay, { display: "none" }),
           },
-          "+=0.4"
+          "+=0.4",
         );
     }
   },
@@ -946,7 +948,7 @@ window.DashboardManager = window.DashboardManager || {
     } catch (error) {
       console.error(
         " Errore nell'aggiornamento della UI degli assessment:",
-        error
+        error,
       );
     }
   },
@@ -1027,7 +1029,7 @@ window.DashboardManager = window.DashboardManager || {
             clientpageId: userId,
             assessment: assessmentId,
           }),
-        }
+        },
       );
 
       const result = await response.json();
@@ -1037,7 +1039,7 @@ window.DashboardManager = window.DashboardManager || {
         // Aggiorna la UI per riflettere il reset
         this.updateSingleAssessmentUI(assessmentId, false);
         const panel = document.querySelector(
-          `#assessment-${assessmentId.split("-")[0]} .reset-assessment-panel`
+          `#assessment-${assessmentId.split("-")[0]} .reset-assessment-panel`,
         );
         if (panel) {
           this.closeResetPanel(panel);
@@ -1074,7 +1076,7 @@ window.DashboardManager = window.DashboardManager || {
   },
   initAssessmentPanelHandlers: function () {
     const assessmentContainers = document.querySelectorAll(
-      ".link-assessment-dashboard-cover"
+      ".link-assessment-dashboard-cover",
     );
 
     if (!assessmentContainers.length) {
@@ -1155,7 +1157,7 @@ window.AssessmentManager = window.AssessmentManager || {
     } catch (error) {
       console.error(
         "❌ Errore durante l'inizializzazione di AssessmentManager:",
-        error
+        error,
       );
     }
   },
@@ -1220,7 +1222,7 @@ window.AssessmentManager = window.AssessmentManager || {
             ease: "power2.out",
             onComplete: () => gsap.set(overlay, { display: "none" }),
           },
-          "+=0.4"
+          "+=0.4",
         );
     }
   },
@@ -1276,12 +1278,12 @@ window.AssessmentManager = window.AssessmentManager || {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ uid: user.uid, token }),
-        }
+        },
       );
 
       if (!response.ok) {
         throw new Error(
-          `❌ Errore HTTP: ${response.status} - ${await response.text()}`
+          `❌ Errore HTTP: ${response.status} - ${await response.text()}`,
         );
       }
 
@@ -1303,7 +1305,6 @@ window.AssessmentManager = window.AssessmentManager || {
     }
   },
 };
-
 
 Object.assign(window, {
   cleanUpTriggers,

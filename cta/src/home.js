@@ -785,279 +785,258 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
       );
     });
   },
-  showcaseProjectButton() {
-    const trigger = document.querySelector("#v-trigger-f");
-    if (!trigger) {
-      console.warn("showcaseProjectButton: trigger #v-trigger-f non trovato");
-      return;
-    }
+showcaseProjectButton() {
+  const trigger = document.querySelector("#v-trigger-f");
+  if (!trigger) {
+    console.warn("showcaseProjectButton: trigger #v-trigger-f non trovato");
+    return;
+  }
 
-    if (!this.lastPanel) {
-      console.warn("showcaseProjectButton: this.lastPanel non trovato");
-      return;
-    }
+  if (!this.lastPanel) {
+    console.warn("showcaseProjectButton: this.lastPanel non trovato");
+    return;
+  }
 
-    const btn = this.lastPanel.querySelector(
-      '.btn-primary[data-btn="project"]'
+  const btn = this.lastPanel.querySelector(
+    '.btn-primary[data-btn="project"]'
+  );
+  if (!btn) {
+    console.warn(
+      "showcaseProjectButton: .btn-primary[data-btn='project'] non trovato in lastPanel"
     );
-    if (!btn) {
-      console.warn(
-        "showcaseProjectButton: .btn-primary[data-btn='project'] non trovato in lastPanel"
-      );
-      return;
-    }
+    return;
+  }
 
-    const border = btn.querySelector(".btn-border");
-    const label = btn.querySelector(".btn-label");
-    const btnDot = btn.querySelector(".btn");
-    const arrow = btn.querySelector(".btnn-ar") || btn.querySelector(".btn-ar");
+  const border = btn.querySelector(".btn-border");
+  const label = btn.querySelector(".btn-label");
+  const btnDot = btn.querySelector(".btn");
+  const arrow = btn.querySelector(".btnn-ar") || btn.querySelector(".btn-ar");
 
-    if (!border || !label) {
-      console.warn(
-        "showcaseProjectButton: .btn-border o .btn-label mancanti dentro al bottone"
-      );
-      return;
-    }
+  if (!border || !label) {
+    console.warn(
+      "showcaseProjectButton: .btn-border o .btn-label mancanti dentro al bottone"
+    );
+    return;
+  }
 
-    const SplitText =
-      (window.gsap && window.gsap.plugins && window.gsap.plugins.SplitText) ||
-      window.SplitText;
+  if (!Array.isArray(window.pageSpecificListeners)) {
+    window.pageSpecificListeners = [];
+  }
 
-    if (!SplitText) {
-      console.warn(
-        "showcaseProjectButton: SplitText non disponibile (plugin non caricato)"
-      );
-      return;
-    }
+  // ==== Stati iniziali ================================================
+  gsap.set(border, { "--clip-x": "50%" });
+  gsap.set(label, {
+    rotationX: 90,
+    yPercent: 35,
+    opacity: 0,
+    transformOrigin: "50% 50%",
+    transformPerspective: 600,
+    force3D: true,
+  });
 
-    // Evita di splittare due volte lo stesso label in caso di reset()
-    if (!label.dataset.splitProjectDone) {
-      new SplitText(label, {
-        type: "chars",
-        charsClass: "btn-char",
-      });
-      label.dataset.splitProjectDone = "1";
-    }
+  gsap.set(btn, {
+    "--btn-scale": 0,
+    "--btn-mix": "0%",
+    "--btn-origin-y": "100%",
+  });
 
-    const chars = label.querySelectorAll(".btn-char");
-    if (!chars.length) {
-      console.warn(
-        "showcaseProjectButton: nessun .btn-char trovato dopo SplitText"
-      );
-      return;
-    }
-
-    // ==== Stati iniziali =================================================
-    gsap.set(border, { "--clip-x": "50%" });
-    gsap.set(chars, { yPercent: 100, opacity: 0 });
-
-    // var per riempimento + mix colore (hover)
-    gsap.set(btn, {
-      "--btn-scale": 0,
-      "--btn-mix": "0%",
+  if (arrow) {
+    gsap.set(arrow, {
+      x: 0,
+      y: 0,
+      scale: 0,
+      transformOrigin: "bottom left",
     });
+  }
 
-    if (arrow) {
-      gsap.set(arrow, { scale: 0, transformOrigin: "bottom left" });
-    }
-    if (btnDot) {
-      // la TL di ingresso porta a 0.3, qui non forziamo il valore
-      // gsap.set(btnDot, { scale: 0.3 });
-    }
+  // ==== TL ingresso ====================================================
+  const tl = gsap.timeline({ paused: true });
 
-    // ==== TL ingresso su scroll (come prima) =============================
-    const tl = gsap.timeline({ paused: true });
+  tl.to(border, {
+    duration: 0.35,
+    ease: "power2.out",
+    "--clip-x": "0%",
+  })
+    .to(
+      label,
+      {
+        rotationX: 0,
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.45,
+        ease: "power2.out",
+        force3D: true,
+      },
+      0.22
+    )
+    .to(
+      btnDot,
+      {
+        scale: 0.3,
+        duration: 0.4,
+        ease: "back.out(1.6)",
+      },
+      "-=0.3"
+    );
 
-    tl.to(border, {
-      duration: 0.35,
-      ease: "power2.out",
-      "--clip-x": "0%", // da 50% a 0% → pillola intera
-    })
-      .to(
-        chars,
-        {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.35,
-          stagger: { amount: 0.2 },
-          ease: "power2.out",
-        },
-        0.25
-      )
-      .to(
-        btnDot,
-        {
-          scale: 0.3,
-          duration: 0.4,
-          ease: "back.out(1.6)",
-        },
-        "-=0.3"
-      );
-
+  if (window.ScrollTrigger) {
     ScrollTrigger.create({
-      trigger: trigger,
+      trigger,
       start: "top 125%",
       end: "bottom bottom",
-      scrub: true,
-      // markers: true,
       onEnter: () => tl.play(),
       onLeaveBack: () => tl.reverse(),
     });
+  }
 
-    // ==== Hover IN / OUT =================================================
-    if (!Array.isArray(window.pageSpecificListeners)) {
-      window.pageSpecificListeners = [];
-    }
+  // ==== Hover IN / OUT ================================================
+  const hoverTl = gsap.timeline({ paused: true });
+  const leaveTl = gsap.timeline({ paused: true });
 
-    const hoverTl = gsap.timeline({ paused: true });
-    const leaveTl = gsap.timeline({ paused: true });
+  let hoverTimeout;
+  let isHovered = false;
+  let isInside = false;
 
-    let hoverTimeout;
-    let isHovered = false;
-    let isInside = false;
-
-    // --- TL IN: riempimento + mix colore + dot + arrow -------------------
-    hoverTl
-      .set(
-        btn,
-        {
-          "--btn-origin-y": "100%",
-        },
-        0
-      )
-      .to(
-        btn,
-        {
-          "--btn-scale": 1,
-          duration: 0.35,
-          ease: "power2.out",
-        },
-        0
-      )
-      .to(
-        btn,
-        {
-          "--btn-mix": "100%",
-          duration: 0.15,
-          ease: "power2.in",
-        },
-        0
-      );
-
-    if (btnDot) {
-      hoverTl.to(
-        btnDot,
-        {
-          scale: 0.9,
-          duration: 0.35,
-          ease: "power2.out",
-        },
-        0.15
-      );
-    }
-
-    if (arrow) {
-      hoverTl.to(
-        arrow,
-        {
-          scale: 1,
-          duration: 0.3,
-          ease: "power2.out",
-          transformOrigin: "bottom left",
-        },
-        0.25
-      );
-    }
-
-    // --- TL OUT: reset variabili + dot + arrow ---------------------------
-    leaveTl
-      .set(
-        btn,
-        {
-          "--btn-origin-y": "0%",
-        },
-        0
-      )
-      .to(
-        btn,
-        {
-          "--btn-mix": "0%",
-          duration: 0.15,
-          ease: "power2.in",
-        },
-        0.15
-      )
-      .to(
-        btn,
-        {
-          "--btn-scale": 0,
-          duration: 0.3,
-          ease: "power2.in",
-        },
-        0
-      );
-
-    if (btnDot) {
-      leaveTl.to(
-        btnDot,
-        {
-          scale: 0.3,
-          duration: 0.3,
-          ease: "power2.in",
-        },
-        0
-      );
-    }
-
-    if (arrow) {
-      leaveTl.to(
-        arrow,
-        {
-          scale: 0,
-          duration: 0.3,
-          ease: "power2.in",
-        },
-        0
-      );
-    }
-
-    // --- Handler hover robusti (come sugli showcase) ---------------------
-    const handleMouseEnter = () => {
-      clearTimeout(hoverTimeout);
-      isInside = true;
-
-      if (leaveTl.isActive()) {
-        leaveTl.progress(1, false); // forza fine OUT
-      }
-
-      if (!isHovered) {
-        hoverTl.restart();
-        isHovered = true;
-      }
-    };
-
-    const handleMouseLeave = () => {
-      isInside = false;
-
-      hoverTimeout = setTimeout(() => {
-        if (!isInside) {
-          if (hoverTl.isActive()) {
-            hoverTl.progress(1, false); // chiude l'IN prima di fare OUT
-          }
-          leaveTl.restart();
-          isHovered = false;
-        }
-      }, 50);
-    };
-
-    btn.addEventListener("mouseenter", handleMouseEnter);
-    btn.addEventListener("mouseleave", handleMouseLeave);
-
-    window.pageSpecificListeners.push(
-      { element: btn, event: "mouseenter", handler: handleMouseEnter },
-      { element: btn, event: "mouseleave", handler: handleMouseLeave }
+  hoverTl
+    .set(
+      btn,
+      {
+        "--btn-origin-y": "100%",
+      },
+      0
+    )
+    .to(
+      btn,
+      {
+        "--btn-scale": 1,
+        duration: 0.35,
+        ease: "power2.out",
+      },
+      0
+    )
+    .to(
+      btn,
+      {
+        "--btn-mix": "100%",
+        duration: 0.15,
+        ease: "power2.in",
+      },
+      0
     );
-  },
+
+  if (btnDot) {
+    hoverTl.to(
+      btnDot,
+      {
+        scale: 0.9,
+        duration: 0.35,
+        ease: "power2.out",
+      },
+      0.15
+    );
+  }
+
+  if (arrow) {
+    hoverTl.to(
+      arrow,
+      {
+        scale: 1,
+        duration: 0.3,
+        ease: "power2.out",
+        transformOrigin: "bottom left",
+      },
+      0.25
+    );
+  }
+
+  leaveTl
+    .set(
+      btn,
+      {
+        "--btn-origin-y": "0%",
+      },
+      0
+    )
+    .to(
+      btn,
+      {
+        "--btn-mix": "0%",
+        duration: 0.15,
+        ease: "power2.in",
+      },
+      0.15
+    )
+    .to(
+      btn,
+      {
+        "--btn-scale": 0,
+        duration: 0.3,
+        ease: "power2.in",
+      },
+      0
+    );
+
+  if (btnDot) {
+    leaveTl.to(
+      btnDot,
+      {
+        scale: 0.3,
+        duration: 0.3,
+        ease: "power2.in",
+      },
+      0
+    );
+  }
+
+  if (arrow) {
+    leaveTl.to(
+      arrow,
+      {
+        scale: 0,
+        duration: 0.3,
+        ease: "power2.in",
+        transformOrigin: "top right",
+      },
+      0
+    );
+  }
+
+  const handleMouseEnter = () => {
+    clearTimeout(hoverTimeout);
+    isInside = true;
+
+    if (leaveTl.isActive()) {
+      leaveTl.progress(1, false);
+    }
+
+    if (!isHovered) {
+      hoverTl.restart();
+      isHovered = true;
+    }
+  };
+
+  const handleMouseLeave = () => {
+    isInside = false;
+
+    hoverTimeout = setTimeout(() => {
+      if (!isInside) {
+        if (hoverTl.isActive()) {
+          hoverTl.progress(1, false);
+        }
+        leaveTl.restart();
+        isHovered = false;
+      }
+    }, 50);
+  };
+
+  btn.addEventListener("mouseenter", handleMouseEnter);
+  btn.addEventListener("mouseleave", handleMouseLeave);
+
+  window.pageSpecificListeners.push(
+    { element: btn, event: "mouseenter", handler: handleMouseEnter },
+    { element: btn, event: "mouseleave", handler: handleMouseLeave }
+  );
+},
   createScrollTriggerHero() {
     const mm = gsap.matchMedia();
     const trigger = this.panelPrimo;

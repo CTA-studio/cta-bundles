@@ -177,7 +177,7 @@ window.pageSpecificFunctionsMap = {
     scripts: [],
     styles: [],
   },
-  "67af7c07d4dd5a54a5116da1": {
+  "68b2e6c65a7f2a0ef027f562": {
     name: "userPendingApproval",
     jsonKey: "",
     scripts: [],
@@ -280,14 +280,14 @@ window.jsonPageMap = {
     json: `{
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.ctastudio.it/#webpage",
-      "url": "https://www.ctastudio.it/",
+      "@id": "https://www.ctastudio.it#webpage",
+      "url": "https://www.ctastudio.it",
       "name": "Home",
       "isPartOf": {
-        "@id": "https://www.ctastudio.it/#website"
+        "@id": "https://www.ctastudio.it#website"
       },
       "about": {
-        "@id": "https://www.ctastudio.it/#organization"
+        "@id": "https://www.ctastudio.it#organization"
       },
       "description": "Progettiamo siti web professionali ed esperienze digitali su misura, con forte competenza in brand identity e direzione artistica.",
       "image": {
@@ -305,7 +305,7 @@ window.jsonPageMap = {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://www.ctastudio.it/"
+            "item": "https://www.ctastudio.it"
           }
         ]
       }
@@ -317,14 +317,14 @@ window.jsonPageMap = {
     json: `{
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.ctastudio.it/competenze/#webpage",
-      "url": "https://www.ctastudio.it/competenze/",
+      "@id": "https://www.ctastudio.it/competenze#webpage",
+      "url": "https://www.ctastudio.it/competenze",
       "name": "Competenze",
       "isPartOf": {
-        "@id": "https://www.ctastudio.it/#website"
+        "@id": "https://www.ctastudio.it#website"
       },
       "about": {
-        "@id": "https://www.ctastudio.it/#organization"
+        "@id": "https://www.ctastudio.it#organization"
       },
       "description": "Scopri le tre aree creative di CTA Studio: progettiamo brand identity, siti web e direzione visiva per brand capaci di emozionare e durare nel tempo.",
       "image": {
@@ -342,13 +342,13 @@ window.jsonPageMap = {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://www.ctastudio.it/"
+            "item": "https://www.ctastudio.it"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "Competenze",
-            "item": "https://www.ctastudio.it/competenze/"
+            "item": "https://www.ctastudio.it/competenze"
           }
         ]
       }
@@ -362,14 +362,14 @@ window.jsonPageMap = {
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://www.ctastudio.it/siti-web/#webpage",
-          "url": "https://www.ctastudio.it/siti-web/",
+          "@id": "https://www.ctastudio.it/siti-web#webpage",
+          "url": "https://www.ctastudio.it/siti-web",
           "name": "Realizzazione siti web professionali ed e-commerce",
           "isPartOf": {
-            "@id": "https://www.ctastudio.it/#website"
+            "@id": "https://www.ctastudio.it#website"
           },
           "about": {
-            "@id": "https://www.ctastudio.it/siti-web/#service"
+            "@id": "https://www.ctastudio.it/siti-web#service"
           },
           "description": "CTA Studio realizza siti web professionali, siti vetrina ed e-commerce su misura, pensati per dare struttura, carattere e direzione al tuo progetto online.",
           "image": {
@@ -381,23 +381,23 @@ window.jsonPageMap = {
             "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69ef13908ac71f04f999b5ce_siti-web.jpg"
           },
           "breadcrumb": {
-            "@id": "https://www.ctastudio.it/siti-web/#breadcrumb"
+            "@id": "https://www.ctastudio.it/siti-web#breadcrumb"
           }
         },
         {
           "@type": "Service",
-          "@id": "https://www.ctastudio.it/siti-web/#service",
+          "@id": "https://www.ctastudio.it/siti-web#service",
           "name": "Realizzazione siti web professionali ed e-commerce",
           "serviceType": "Realizzazione siti web, siti vetrina, e-commerce e web app",
           "description": "CTA Studio progetta e realizza siti web professionali, siti vetrina, e-commerce ed esperienze digitali su misura, unendo design, identità di marca, esperienza utente e funzionalità.",
           "provider": {
-            "@id": "https://www.ctastudio.it/#organization"
+            "@id": "https://www.ctastudio.it#organization"
           },
           "areaServed": {
             "@type": "Country",
             "name": "Italia"
           },
-          "url": "https://www.ctastudio.it/siti-web/",
+          "url": "https://www.ctastudio.it/siti-web",
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
             "name": "Soluzioni per siti web e progetti digitali",
@@ -431,19 +431,19 @@ window.jsonPageMap = {
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://www.ctastudio.it/siti-web/#breadcrumb",
+          "@id": "https://www.ctastudio.it/siti-web#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://www.ctastudio.it/"
+              "item": "https://www.ctastudio.it"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Siti Web",
-              "item": "https://www.ctastudio.it/siti-web/"
+              "item": "https://www.ctastudio.it/siti-web"
             }
           ]
         }
@@ -458,14 +458,14 @@ window.jsonPageMap = {
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina/#webpage",
-          "url": "https://www.ctastudio.it/siti-web/siti-web-vetrina/",
+          "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina#webpage",
+          "url": "https://www.ctastudio.it/siti-web/siti-web-vetrina",
           "name": "Siti Web Vetrina | Siti professionali su misura",
           "isPartOf": {
-            "@id": "https://www.ctastudio.it/#website"
+            "@id": "https://www.ctastudio.it#website"
           },
           "about": {
-            "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina/#service"
+            "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina#service"
           },
           "description": "In CTA Studio lavoriamo su struttura, design e interazioni per realizzare siti web vetrina capaci di guidare, coinvolgere e convertire.",
           "image": {
@@ -477,45 +477,45 @@ window.jsonPageMap = {
             "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f4b980ea12f00417cd25b9_cta-studio.jpg"
           },
           "breadcrumb": {
-            "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina/#breadcrumb"
+            "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina#breadcrumb"
           }
         },
         {
           "@type": "Service",
-          "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina/#service",
+          "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina#service",
           "name": "Realizzazione siti web vetrina professionali",
           "serviceType": "Siti web vetrina, siti professionali su misura, siti responsive",
           "description": "CTA Studio progetta e realizza siti web vetrina professionali e su misura, curando struttura, design, contenuti, interazioni, esperienza utente e attenzione al posizionamento.",
           "provider": {
-            "@id": "https://www.ctastudio.it/#organization"
+            "@id": "https://www.ctastudio.it#organization"
           },
           "areaServed": {
             "@type": "Country",
             "name": "Italia"
           },
-          "url": "https://www.ctastudio.it/siti-web/siti-web-vetrina/"
+          "url": "https://www.ctastudio.it/siti-web/siti-web-vetrina"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina/#breadcrumb",
+          "@id": "https://www.ctastudio.it/siti-web/siti-web-vetrina#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://www.ctastudio.it/"
+              "item": "https://www.ctastudio.it"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Siti Web",
-              "item": "https://www.ctastudio.it/siti-web/"
+              "item": "https://www.ctastudio.it/siti-web"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "Siti Web Vetrina",
-              "item": "https://www.ctastudio.it/siti-web/siti-web-vetrina/"
+              "item": "https://www.ctastudio.it/siti-web/siti-web-vetrina"
             }
           ]
         }
@@ -530,14 +530,14 @@ window.jsonPageMap = {
         "@graph": [
           {
             "@type": "WebPage",
-            "@id": "https://www.ctastudio.it/siti-web/e-commerce/#webpage",
-            "url": "https://www.ctastudio.it/siti-web/e-commerce/",
+            "@id": "https://www.ctastudio.it/siti-web/e-commerce#webpage",
+            "url": "https://www.ctastudio.it/siti-web/e-commerce",
             "name": "Siti Web E-Commerce | Shop online su misura",
             "isPartOf": {
-              "@id": "https://www.ctastudio.it/#website"
+              "@id": "https://www.ctastudio.it#website"
             },
             "about": {
-              "@id": "https://www.ctastudio.it/siti-web/e-commerce/#service"
+              "@id": "https://www.ctastudio.it/siti-web/e-commerce#service"
             },
             "description": "Progettiamo e-commerce custom in Webflow e Shopify, curando struttura, design e percorsi d’acquisto per valorizzare i prodotti e favorire la conversione.",
             "image": {
@@ -549,45 +549,45 @@ window.jsonPageMap = {
               "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f4b980ea12f00417cd25b9_cta-studio.jpg"
             },
             "breadcrumb": {
-              "@id": "https://www.ctastudio.it/siti-web/e-commerce/#breadcrumb"
+              "@id": "https://www.ctastudio.it/siti-web/e-commerce#breadcrumb"
             }
           },
           {
             "@type": "Service",
-            "@id": "https://www.ctastudio.it/siti-web/e-commerce/#service",
+            "@id": "https://www.ctastudio.it/siti-web/e-commerce#service",
             "name": "Realizzazione siti e-commerce su misura",
             "serviceType": "Siti e-commerce, shop online su misura, Webflow e Shopify",
             "description": "CTA Studio progetta e realizza siti e-commerce su misura in Webflow e Shopify, curando struttura, design, catalogo prodotti, esperienza utente, percorsi d’acquisto e conversione.",
             "provider": {
-              "@id": "https://www.ctastudio.it/#organization"
+              "@id": "https://www.ctastudio.it#organization"
             },
             "areaServed": {
               "@type": "Country",
               "name": "Italia"
             },
-            "url": "https://www.ctastudio.it/siti-web/e-commerce/"
+            "url": "https://www.ctastudio.it/siti-web/e-commerce"
           },
           {
             "@type": "BreadcrumbList",
-            "@id": "https://www.ctastudio.it/siti-web/e-commerce/#breadcrumb",
+            "@id": "https://www.ctastudio.it/siti-web/e-commerce#breadcrumb",
             "itemListElement": [
               {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.ctastudio.it/"
+                "item": "https://www.ctastudio.it"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Siti Web",
-                "item": "https://www.ctastudio.it/siti-web/"
+                "item": "https://www.ctastudio.it/siti-web"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "E-commerce",
-                "item": "https://www.ctastudio.it/siti-web/e-commerce/"
+                "item": "https://www.ctastudio.it/siti-web/e-commerce"
               }
             ]
           }
@@ -602,14 +602,14 @@ window.jsonPageMap = {
             "@graph": [
               {
                 "@type": "WebPage",
-                "@id": "https://www.ctastudio.it/siti-web/web-app-spa/#webpage",
-                "url": "https://www.ctastudio.it/siti-web/web-app-spa/",
+                "@id": "https://www.ctastudio.it/siti-web/web-app-spa#webpage",
+                "url": "https://www.ctastudio.it/siti-web/web-app-spa",
                 "name": "Web App e SPA | Interfacce digitali su misura",
                 "isPartOf": {
-                  "@id": "https://www.ctastudio.it/#website"
+                  "@id": "https://www.ctastudio.it#website"
                 },
                 "about": {
-                  "@id": "https://www.ctastudio.it/siti-web/web-app-spa/#service"
+                  "@id": "https://www.ctastudio.it/siti-web/web-app-spa#service"
                 },
                 "description": "Realizziamo interfacce digitali, dashboard e piattaforme web, pensate per offrire navigazioni fluide, logiche custom e un’esperienza più continua.",
                 "image": {
@@ -621,45 +621,45 @@ window.jsonPageMap = {
                   "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f4b980ea12f00417cd25b9_cta-studio.jpg"
                 },
                 "breadcrumb": {
-                  "@id": "https://www.ctastudio.it/siti-web/web-app-spa/#breadcrumb"
+                  "@id": "https://www.ctastudio.it/siti-web/web-app-spa#breadcrumb"
                 }
               },
               {
                 "@type": "Service",
-                "@id": "https://www.ctastudio.it/siti-web/web-app-spa/#service",
+                "@id": "https://www.ctastudio.it/siti-web/web-app-spa#service",
                 "name": "Realizzazione web app e SPA su misura",
                 "serviceType": "Web app, SPA, interfacce digitali, dashboard e piattaforme web",
                 "description": "CTA Studio progetta e realizza web app, SPA, dashboard, aree riservate e interfacce digitali su misura, integrando design, UI/UX, custom code, animazioni, logiche dinamiche e tecnologie adatte al livello di complessità richiesto.",
                 "provider": {
-                  "@id": "https://www.ctastudio.it/#organization"
+                  "@id": "https://www.ctastudio.it#organization"
                 },
                 "areaServed": {
                   "@type": "Country",
                   "name": "Italia"
                 },
-                "url": "https://www.ctastudio.it/siti-web/web-app-spa/"
+                "url": "https://www.ctastudio.it/siti-web/web-app-spa"
               },
               {
                 "@type": "BreadcrumbList",
-                "@id": "https://www.ctastudio.it/siti-web/web-app-spa/#breadcrumb",
+                "@id": "https://www.ctastudio.it/siti-web/web-app-spa#breadcrumb",
                 "itemListElement": [
                   {
                     "@type": "ListItem",
                     "position": 1,
                     "name": "Home",
-                    "item": "https://www.ctastudio.it/"
+                    "item": "https://www.ctastudio.it"
                   },
                   {
                     "@type": "ListItem",
                     "position": 2,
                     "name": "Siti Web",
-                    "item": "https://www.ctastudio.it/siti-web/"
+                    "item": "https://www.ctastudio.it/siti-web"
                   },
                   {
                     "@type": "ListItem",
                     "position": 3,
                     "name": "Web App e SPA",
-                    "item": "https://www.ctastudio.it/siti-web/web-app-spa/"
+                    "item": "https://www.ctastudio.it/siti-web/web-app-spa"
                   }
                 ]
               }
@@ -674,14 +674,14 @@ window.jsonPageMap = {
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://www.ctastudio.it/design/#webpage",
-          "url": "https://www.ctastudio.it/design/",
+          "@id": "https://www.ctastudio.it/design#webpage",
+          "url": "https://www.ctastudio.it/design",
           "name": "Design | Brand identity, visual identity e logo design",
           "isPartOf": {
-            "@id": "https://www.ctastudio.it/#website"
+            "@id": "https://www.ctastudio.it#website"
           },
           "about": {
-            "@id": "https://www.ctastudio.it/design/#service"
+            "@id": "https://www.ctastudio.it/design#service"
           },
           "description": "Con un approccio psicologico e creativo, progettiamo brand identity, visual identity e logo design per dare forma alla personalità del tuo marchio.",
           "image": {
@@ -693,23 +693,23 @@ window.jsonPageMap = {
             "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69eb73731d1319d61fc41f4b_cta-search-image-standard.jpg"
           },
           "breadcrumb": {
-            "@id": "https://www.ctastudio.it/design/#breadcrumb"
+            "@id": "https://www.ctastudio.it/design#breadcrumb"
           }
         },
         {
           "@type": "Service",
-          "@id": "https://www.ctastudio.it/design/#service",
+          "@id": "https://www.ctastudio.it/design#service",
           "name": "Brand identity, visual identity e logo design",
           "serviceType": "Brand identity, visual identity e logo design",
           "description": "CTA Studio progetta brand identity, visual identity e logo design per costruire sistemi visivi digitali solidi, riconoscibili e pensati per durare.",
           "provider": {
-            "@id": "https://www.ctastudio.it/#organization"
+            "@id": "https://www.ctastudio.it#organization"
           },
           "areaServed": {
             "@type": "Country",
             "name": "Italia"
           },
-          "url": "https://www.ctastudio.it/design/",
+          "url": "https://www.ctastudio.it/design",
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
             "name": "Soluzioni per identità visiva e design del brand",
@@ -743,19 +743,19 @@ window.jsonPageMap = {
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://www.ctastudio.it/design/#breadcrumb",
+          "@id": "https://www.ctastudio.it/design#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://www.ctastudio.it/"
+              "item": "https://www.ctastudio.it"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Design",
-              "item": "https://www.ctastudio.it/design/"
+              "item": "https://www.ctastudio.it/design"
             }
           ]
         }
@@ -770,14 +770,14 @@ window.jsonPageMap = {
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://www.ctastudio.it/design/brand-identity/#webpage",
-          "url": "https://www.ctastudio.it/design/brand-identity/",
+          "@id": "https://www.ctastudio.it/design/brand-identity#webpage",
+          "url": "https://www.ctastudio.it/design/brand-identity",
           "name": "Brand Identity | Branding e identità di marca",
           "isPartOf": {
-            "@id": "https://www.ctastudio.it/#website"
+            "@id": "https://www.ctastudio.it#website"
           },
           "about": {
-            "@id": "https://www.ctastudio.it/design/brand-identity/#service"
+            "@id": "https://www.ctastudio.it/design/brand-identity#service"
           },
           "description": "Con un approccio psicologico e creativo, trasformiamo personalità, valori e visione in un’identità di marca chiara, riconoscibile e capace di durare.",
           "image": {
@@ -789,45 +789,45 @@ window.jsonPageMap = {
             "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f4b980ea12f00417cd25b9_cta-studio.jpg"
           },
           "breadcrumb": {
-            "@id": "https://www.ctastudio.it/design/brand-identity/#breadcrumb"
+            "@id": "https://www.ctastudio.it/design/brand-identity#breadcrumb"
           }
         },
         {
           "@type": "Service",
-          "@id": "https://www.ctastudio.it/design/brand-identity/#service",
+          "@id": "https://www.ctastudio.it/design/brand-identity#service",
           "name": "Brand identity, branding e identità di marca",
           "serviceType": "Brand identity, branding, identità di marca e personal branding",
           "description": "CTA Studio progetta brand identity e percorsi di branding, lavorando su valori, personalità, tono, immaginario, codici visivi e identità di marca.",
           "provider": {
-            "@id": "https://www.ctastudio.it/#organization"
+            "@id": "https://www.ctastudio.it#organization"
           },
           "areaServed": {
             "@type": "Country",
             "name": "Italia"
           },
-          "url": "https://www.ctastudio.it/design/brand-identity/"
+          "url": "https://www.ctastudio.it/design/brand-identity"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://www.ctastudio.it/design/brand-identity/#breadcrumb",
+          "@id": "https://www.ctastudio.it/design/brand-identity#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://www.ctastudio.it/"
+              "item": "https://www.ctastudio.it"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Design",
-              "item": "https://www.ctastudio.it/design/"
+              "item": "https://www.ctastudio.it/design"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "Brand Identity",
-              "item": "https://www.ctastudio.it/design/brand-identity/"
+              "item": "https://www.ctastudio.it/design/brand-identity"
             }
           ]
         }
@@ -842,14 +842,14 @@ window.jsonPageMap = {
         "@graph": [
           {
             "@type": "WebPage",
-            "@id": "https://www.ctastudio.it/design/visual-identity/#webpage",
-            "url": "https://www.ctastudio.it/design/visual-identity/",
+            "@id": "https://www.ctastudio.it/design/visual-identity#webpage",
+            "url": "https://www.ctastudio.it/design/visual-identity",
             "name": "Visual Identity | Identità visiva per brand riconoscibili",
             "isPartOf": {
-              "@id": "https://www.ctastudio.it/#website"
+              "@id": "https://www.ctastudio.it#website"
             },
             "about": {
-              "@id": "https://www.ctastudio.it/design/visual-identity/#service"
+              "@id": "https://www.ctastudio.it/design/visual-identity#service"
             },
             "description": "Progettiamo la visual identity del tuo brand: logo, colori, tipografia e immagini per tradurre valori e personalità in un linguaggio visivo coerente.",
             "image": {
@@ -861,45 +861,45 @@ window.jsonPageMap = {
               "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f4b980ea12f00417cd25b9_cta-studio.jpg"
             },
             "breadcrumb": {
-              "@id": "https://www.ctastudio.it/design/visual-identity/#breadcrumb"
+              "@id": "https://www.ctastudio.it/design/visual-identity#breadcrumb"
             }
           },
           {
             "@type": "Service",
-            "@id": "https://www.ctastudio.it/design/visual-identity/#service",
+            "@id": "https://www.ctastudio.it/design/visual-identity#service",
             "name": "Visual identity e identità visiva per brand riconoscibili",
             "serviceType": "Visual identity, identità visiva, sistemi visivi e immagine coordinata",
             "description": "CTA Studio progetta visual identity e identità visive per brand riconoscibili, lavorando su logo, colori, tipografia, immagini, segni grafici, layout, applicazioni digitali e materiali coordinati.",
             "provider": {
-              "@id": "https://www.ctastudio.it/#organization"
+              "@id": "https://www.ctastudio.it#organization"
             },
             "areaServed": {
               "@type": "Country",
               "name": "Italia"
             },
-            "url": "https://www.ctastudio.it/design/visual-identity/"
+            "url": "https://www.ctastudio.it/design/visual-identity"
           },
           {
             "@type": "BreadcrumbList",
-            "@id": "https://www.ctastudio.it/design/visual-identity/#breadcrumb",
+            "@id": "https://www.ctastudio.it/design/visual-identity#breadcrumb",
             "itemListElement": [
               {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.ctastudio.it/"
+                "item": "https://www.ctastudio.it"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Design",
-                "item": "https://www.ctastudio.it/design/"
+                "item": "https://www.ctastudio.it/design"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Visual Identity",
-                "item": "https://www.ctastudio.it/design/visual-identity/"
+                "item": "https://www.ctastudio.it/design/visual-identity"
               }
             ]
           }
@@ -914,14 +914,14 @@ window.jsonPageMap = {
             "@graph": [
               {
                 "@type": "WebPage",
-                "@id": "https://www.ctastudio.it/design/logo-design/#webpage",
-                "url": "https://www.ctastudio.it/design/logo-design/",
+                "@id": "https://www.ctastudio.it/design/logo-design#webpage",
+                "url": "https://www.ctastudio.it/design/logo-design",
                 "name": "Logo Design | Logo professionali per brand",
                 "isPartOf": {
-                  "@id": "https://www.ctastudio.it/#website"
+                  "@id": "https://www.ctastudio.it#website"
                 },
                 "about": {
-                  "@id": "https://www.ctastudio.it/design/logo-design/#service"
+                  "@id": "https://www.ctastudio.it/design/logo-design#service"
                 },
                 "description": "Progettiamo logo professionali per brand e progetti che cercano un segno creativo, distintivo e riconoscibile, costruito con cura e visione.",
                 "image": {
@@ -933,45 +933,45 @@ window.jsonPageMap = {
                   "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f4b980ea12f00417cd25b9_cta-studio.jpg"
                 },
                 "breadcrumb": {
-                  "@id": "https://www.ctastudio.it/design/logo-design/#breadcrumb"
+                  "@id": "https://www.ctastudio.it/design/logo-design#breadcrumb"
                 }
               },
               {
                 "@type": "Service",
-                "@id": "https://www.ctastudio.it/design/logo-design/#service",
+                "@id": "https://www.ctastudio.it/design/logo-design#service",
                 "name": "Logo design e progettazione logo professionali",
                 "serviceType": "Logo design, progettazione logo, marchio e identità visiva",
                 "description": "CTA Studio progetta logo professionali, marchi e segni visivi per brand e progetti, curando creatività, forme, spazi, proporzioni, applicazioni digitali e materiali coordinati.",
                 "provider": {
-                  "@id": "https://www.ctastudio.it/#organization"
+                  "@id": "https://www.ctastudio.it#organization"
                 },
                 "areaServed": {
                   "@type": "Country",
                   "name": "Italia"
                 },
-                "url": "https://www.ctastudio.it/design/logo-design/"
+                "url": "https://www.ctastudio.it/design/logo-design"
               },
               {
                 "@type": "BreadcrumbList",
-                "@id": "https://www.ctastudio.it/design/logo-design/#breadcrumb",
+                "@id": "https://www.ctastudio.it/design/logo-design#breadcrumb",
                 "itemListElement": [
                   {
                     "@type": "ListItem",
                     "position": 1,
                     "name": "Home",
-                    "item": "https://www.ctastudio.it/"
+                    "item": "https://www.ctastudio.it"
                   },
                   {
                     "@type": "ListItem",
                     "position": 2,
                     "name": "Design",
-                    "item": "https://www.ctastudio.it/design/"
+                    "item": "https://www.ctastudio.it/design"
                   },
                   {
                     "@type": "ListItem",
                     "position": 3,
                     "name": "Logo Design",
-                    "item": "https://www.ctastudio.it/design/logo-design/"
+                    "item": "https://www.ctastudio.it/design/logo-design"
                   }
                 ]
               }
@@ -986,14 +986,14 @@ window.jsonPageMap = {
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://www.ctastudio.it/direzione-artistica/#webpage",
-          "url": "https://www.ctastudio.it/direzione-artistica/",
+          "@id": "https://www.ctastudio.it/direzione-artistica#webpage",
+          "url": "https://www.ctastudio.it/direzione-artistica",
           "name": "Direzione Artistica | Art direction per brand e siti web",
           "isPartOf": {
-            "@id": "https://www.ctastudio.it/#website"
+            "@id": "https://www.ctastudio.it#website"
           },
           "about": {
-            "@id": "https://www.ctastudio.it/direzione-artistica/#service"
+            "@id": "https://www.ctastudio.it/direzione-artistica#service"
           },
           "description": "CTA Studio cura la direzione artistica di brand, siti web e progetti digitali, trasformando identità, tono e visione in un linguaggio visivo coerente.",
           "image": {
@@ -1005,23 +1005,23 @@ window.jsonPageMap = {
             "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f2226289bf4d196315b4a2_art-director.jpg"
           },
           "breadcrumb": {
-            "@id": "https://www.ctastudio.it/direzione-artistica/#breadcrumb"
+            "@id": "https://www.ctastudio.it/direzione-artistica#breadcrumb"
           }
         },
         {
           "@type": "Service",
-          "@id": "https://www.ctastudio.it/direzione-artistica/#service",
+          "@id": "https://www.ctastudio.it/direzione-artistica#service",
           "name": "Direzione artistica e art direction per brand e siti web",
           "serviceType": "Direzione artistica, art direction, direzione visiva, UI/UX design e design system",
           "description": "CTA Studio cura la direzione artistica di brand, siti web e progetti digitali, guidando visione creativa, identità visiva, interfacce, wireframe, prototipi e sistemi visivi coerenti.",
           "provider": {
-            "@id": "https://www.ctastudio.it/#organization"
+            "@id": "https://www.ctastudio.it#organization"
           },
           "areaServed": {
             "@type": "Country",
             "name": "Italia"
           },
-          "url": "https://www.ctastudio.it/direzione-artistica/",
+          "url": "https://www.ctastudio.it/direzione-artistica",
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
             "name": "Ambiti della direzione artistica",
@@ -1055,19 +1055,19 @@ window.jsonPageMap = {
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://www.ctastudio.it/direzione-artistica/#breadcrumb",
+          "@id": "https://www.ctastudio.it/direzione-artistica#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://www.ctastudio.it/"
+              "item": "https://www.ctastudio.it"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Direzione Artistica",
-              "item": "https://www.ctastudio.it/direzione-artistica/"
+              "item": "https://www.ctastudio.it/direzione-artistica"
             }
           ]
         }
@@ -1080,14 +1080,14 @@ window.jsonPageMap = {
     json: `{
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.ctastudio.it/contatti/#webpage",
-      "url": "https://www.ctastudio.it/contatti/",
+      "@id": "https://www.ctastudio.it/contatti#webpage",
+      "url": "https://www.ctastudio.it/contatti",
       "name": "Contatti",
       "isPartOf": {
-        "@id": "https://www.ctastudio.it/#website"
+        "@id": "https://www.ctastudio.it#website"
       },
       "about": {
-        "@id": "https://www.ctastudio.it/#organization"
+        "@id": "https://www.ctastudio.it#organization"
       },
       "description": "Raccontaci cosa vuoi costruire. CTA Studio progetta siti web professionali, brand identity e direzione artistica per progetti autentici. Inizia da qui.",
       "image": {
@@ -1105,13 +1105,13 @@ window.jsonPageMap = {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://www.ctastudio.it/"
+            "item": "https://www.ctastudio.it"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "Contatti",
-            "item": "https://www.ctastudio.it/contatti/"
+            "item": "https://www.ctastudio.it/contatti"
           }
         ]
       }
@@ -1123,17 +1123,17 @@ window.jsonPageMap = {
     json: `{
       "@context": "https://schema.org",
       "@type": "AboutPage",
-      "@id": "https://www.ctastudio.it/studio/#webpage",
-      "url": "https://www.ctastudio.it/studio/",
+      "@id": "https://www.ctastudio.it/studio#webpage",
+      "url": "https://www.ctastudio.it/studio",
       "name": "CTA Studio | Studio creativo digitale",
       "isPartOf": {
-        "@id": "https://www.ctastudio.it/#website"
+        "@id": "https://www.ctastudio.it#website"
       },
       "about": {
-        "@id": "https://www.ctastudio.it/#organization"
+        "@id": "https://www.ctastudio.it#organization"
       },
       "mainEntity": {
-        "@id": "https://www.ctastudio.it/#organization"
+        "@id": "https://www.ctastudio.it#organization"
       },
       "description": "CTA Studio è uno studio creativo indipendente che unisce strategia, design e sviluppo web per dare forma a progetti digitali umani, curati e riconoscibili.",
       "image": {
@@ -1151,43 +1151,98 @@ window.jsonPageMap = {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://www.ctastudio.it/"
+            "item": "https://www.ctastudio.it"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "Studio",
-            "item": "https://www.ctastudio.it/studio/"
+            "item": "https://www.ctastudio.it/studio"
           }
         ]
       }
     }`,
   },
+    // progetti
+  "69fb4ddff499fbbabf81ec26": {
+    active: true,
+    json: `  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.ctastudio.it/progetti#webpage",
+    "url": "https://www.ctastudio.it/progetti",
+    "name": "Progetti | Siti web, branding e design",
+    "isPartOf": {
+      "@id": "https://www.ctastudio.it#website"
+    },
+    "about": {
+      "@id": "https://www.ctastudio.it#organization"
+    },
+    "description": "La nostra selezione di progetti di design, branding, siti web ed e-commerce, costruiti con strategia, cura visiva e attenzione all’esperienza utente.",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f4b980ea12f00417cd25b9_cta-studio.jpg"
+    },
+    "primaryImageOfPage": {
+      "@type": "ImageObject",
+      "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69f4b980ea12f00417cd25b9_cta-studio.jpg"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.ctastudio.it"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Progetti",
+          "item": "https://www.ctastudio.it/progetti"
+        }
+      ]
+    }
+  }`,
+  },
   // proposito
   "68b2e6c65a7f2a0ef027f553": {
     active: true,
     json: `{
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-         "url": "https://www.ctastudio.it/proposito/home",
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "CTA Studio | Branding e Web Design per Umane Emozioni",
-              "item": "https://www.ctastudio.it"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "PROPOSITO - Il Web Magazine per ispirare, crescere e realizzare",
-              "item": "https://www.ctastudio.it/proposito/home"
-            }
-          ]
-        }
-      }`,
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": "https://www.ctastudio.it/proposito/home#webpage",
+  "url": "https://www.ctastudio.it/proposito/home",
+  "name": "PROPOSITO - Il Web Magazine per ispirare, crescere e realizzare",
+  "isPartOf": {
+    "@id": "https://www.ctastudio.it#website"
+  },
+  "about": {
+    "@id": "https://www.ctastudio.it#organization"
+  },
+  "publisher": {
+    "@id": "https://www.ctastudio.it#organization"
+  },
+  "description": "Libero da pubblicità, promuove la libertà di pensiero e offre contenuti di qualità su marketing, design, innovazione e benessere.",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.ctastudio.it"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Proposito",
+        "item": "https://www.ctastudio.it/proposito/home"
+      }
+    ]
+  }
+}`,
   },
 };
 
@@ -1225,7 +1280,7 @@ window.pageFunctions = {
       // PRIORITÀ BASSA - differita dopo load + verifica swiper
       setTimeout(async () => {
         await loadScript(
-          "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"
+          "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
         ).catch((err) => console.error("Errore caricamento Swiper:", err));
 
         try {
@@ -1709,8 +1764,8 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introContact?.();
       }
-      MultiStepForm.init();
-      window.AppGeneralForms.init();
+      window.MultiStepForm?.init?.();
+      window.AppGeneralForms?.init?.();
       calendar();
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -1972,12 +2027,7 @@ window.pageFunctions = {
   verify: {
     execute: function () {
       if (!window.isBarbaTransition) {
-        defaultSimpleTransition();
-      }
-      if (shouldEnableCustomCursor()) {
-        initCustomCursor();
-      } else {
-        document.body.classList.add("no-cursor");
+        window.pageEnterFx?.introGenericPage?.();
       }
     },
     cleanup: function () {
@@ -1988,12 +2038,7 @@ window.pageFunctions = {
   userPendingApproval: {
     execute: function () {
       if (!window.isBarbaTransition) {
-        defaultSimpleTransition();
-      }
-      if (shouldEnableCustomCursor()) {
-        initCustomCursor();
-      } else {
-        document.body.classList.add("no-cursor");
+        window.pageEnterFx?.introGenericPage?.();
       }
     },
     cleanup: function () {
@@ -2004,15 +2049,10 @@ window.pageFunctions = {
   dashboard: {
     execute: function () {
       if (!window.isBarbaTransition) {
-        defaultSimpleTransition();
+        window.pageEnterFx?.introGenericPage?.();
       }
-      if (shouldEnableCustomCursor()) {
-        initCustomCursor();
-      } else {
-        document.body.classList.add("no-cursor");
-      }
-      DashboardManager.init();
-      toggleFaq();
+      window.DashboardManager.init();
+      //toggleFaq();
     },
     cleanup: function () {
       cleanUpTriggers();
@@ -2022,17 +2062,12 @@ window.pageFunctions = {
   assessment: {
     execute: function () {
       if (!window.isBarbaTransition) {
-        defaultSimpleTransition();
+        window.pageEnterFx?.introGenericPage?.();
       }
-      if (shouldEnableCustomCursor()) {
-        initCustomCursor();
-      } else {
-        document.body.classList.add("no-cursor");
-      }
-      AssessmentManager.init();
-      MultiStepForm.init();
+      window.AssessmentManager.init();
+      window.MultiStepForm.init();
       window.AppAssessmentForms.init();
-      toggleFaq();
+      //toggleFaq();
     },
     cleanup: function () {
       cleanUpTriggers();
@@ -2145,7 +2180,7 @@ window.safeRequestIdleCallback =
     if (initialized) return;
     if (!window.gsap) {
       console.warn(
-        "[bp] GSAP non trovato; inizializza GSAP prima di bp.init()"
+        "[bp] GSAP non trovato; inizializza GSAP prima di bp.init()",
       );
       return;
     }
@@ -2156,7 +2191,7 @@ window.safeRequestIdleCallback =
     mm.add(queries, (ctx) => {
       for (const k in queries) flags[k] = !!ctx.conditions[k];
       document.dispatchEvent(
-        new CustomEvent("breakpoints:change", { detail: { ...flags } })
+        new CustomEvent("breakpoints:change", { detail: { ...flags } }),
       );
     });
 
