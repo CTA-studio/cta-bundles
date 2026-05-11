@@ -41,7 +41,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f544": {
     name: "home", // Nome descrittivo della pagina
     jsonKey: "68b2e6c65a7f2a0ef027f544", // Riferimento al JSON
-    scripts: [],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-home.js"],
     styles: [],
   },
   //competenze
@@ -126,7 +126,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f54b": {
     name: "contatti",
     jsonKey: "68b2e6c65a7f2a0ef027f54b",
-    scripts: ["https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js","https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"],
     styles: ["https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css"],
   },
   //studio
@@ -140,28 +140,44 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f553": {
     name: "Proposito",
     jsonKey: "68b2e6c65a7f2a0ef027f553",
-    scripts: ["https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"],
+   scripts: [
+  "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-proposito.js",
+  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
+  "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"
+],
     styles: [],
   },
   //blog
   "68b2e6c65a7f2a0ef027f556": {
     name: "blogPost",
     jsonKey: "",
-    scripts: ["https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"],
+     scripts: [
+  "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-proposito.js",
+  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
+  "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"
+],
     styles: [],
   },
   //blog Category
   "68b2e6c65a7f2a0ef027f555": {
     name: "blogCategory",
     jsonKey: "",
-    scripts: ["https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"],
+     scripts: [
+  "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-proposito.js",
+  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
+  "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"
+],
     styles: [],
   },
   //blog Tag
   "68b2e6c65a7f2a0ef027f557": {
     name: "blogTag",
     jsonKey: "",
-    scripts: ["https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"],
+     scripts: [
+  "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-proposito.js",
+  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
+  "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"
+],
     styles: [],
   },
   //PRIVACY
@@ -186,13 +202,13 @@ window.pageSpecificFunctionsMap = {
   "66f3c6fe1fbe616545b964bd": {
     name: "dashboard",
     jsonKey: "",
-    scripts: [],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"],
     styles: [],
   },
   "66f3c74d69405c8d610cb8ed": {
     name: "assessment",
     jsonKey: "",
-    scripts: [],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"],
     styles: [],
   },
   //LANDING
@@ -207,7 +223,8 @@ window.pageSpecificFunctionsMap = {
     name: "projectsArtDirector",
     jsonKey: "",
     scripts: [
-      "https://cdn.jsdelivr.net/npm/swiper@11.0.0/swiper-bundle.min.js",
+      "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-projects.js",
+  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
     ],
     styles: [],
   },
@@ -216,7 +233,8 @@ window.pageSpecificFunctionsMap = {
     name: "projectsEcommerce",
     jsonKey: "",
     scripts: [
-      "https://cdn.jsdelivr.net/npm/swiper@11.0.0/swiper-bundle.min.js",
+       "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-projects.js",
+  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
     ],
     styles: [],
   },
@@ -225,7 +243,8 @@ window.pageSpecificFunctionsMap = {
     name: "projectsDesign",
     jsonKey: "",
     scripts: [
-      "https://cdn.jsdelivr.net/npm/swiper@11.0.0/swiper-bundle.min.js",
+       "https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-projects.js",
+  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
     ],
     styles: [],
   },
@@ -233,35 +252,35 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f55a": {
     name: "loginPage",
     jsonKey: "",
-    scripts: [],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"],
     styles: [],
   },
   //Regiistrazione
   "68b2e6c65a7f2a0ef027f55b": {
     name: "registrazione",
     jsonKey: "",
-    scripts: [],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"],
     styles: [],
   },
   //Reset Password
   "68b2e6c65a7f2a0ef027f55c": {
     name: "resetPassword",
     jsonKey: "",
-    scripts: [],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"],
     styles: [],
   },
   //Update Password
   "68b2e6c65a7f2a0ef027f55d": {
     name: "updatePassword",
     jsonKey: "",
-    scripts: [],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"],
     styles: [],
   },
   //valutazione
   "68b2e6c65a7f2a0ef027f599": {
     name: "valutazione",
     jsonKey: "",
-    scripts: [],
+    scripts: ["https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@TAG/cta/dist/cta-form.js"],
     styles: [],
   },
   // 404

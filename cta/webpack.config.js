@@ -1,9 +1,15 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    "cta-base": "./src/index.js",
+    "cta-home": "./src/index-home.js",
+    "cta-proposito": "./src/index-proposito.js",
+    "cta-projects": "./src/index-projects.js",
+    "cta-form": "./src/index-form.js",
+  },
   output: {
-    filename: "cta-app.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },
