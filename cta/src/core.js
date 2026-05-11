@@ -260,20 +260,15 @@ function updateCmsMetaTags(doc) {
 
 function restartWebflowInteractions() {
   try {
-    if (typeof Webflow !== "undefined") {
-      Webflow.destroy();
-      // Forza il riavvio asincrono
-      setTimeout(() => {
-        requestAnimationFrame(() => {
-          Webflow.ready();
-          if (Webflow.require) {
-            Webflow.require("ix2").init();
-          }
-        });
-      }, 100);
-    } else {
-      console.warn("Webflow non è definito.");
-    }
+    if (typeof window.Webflow === "undefined") return;
+
+    window.Webflow.destroy?.();
+
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        window.Webflow.ready?.();
+      });
+    }, 100);
   } catch (error) {
     console.error("Errore nel riavvio delle interazioni Webflow:", error);
   }
