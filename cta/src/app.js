@@ -189,17 +189,17 @@ function initBarbaWithGSAP() {
     });
   }
 
-function commonAfter(data) {
-  window.updatePageMetaAndInteractions?.(data.next.html);
-  initializeMainFunctions();
-  window.customCursor?.refresh?.();
+  function commonAfter(data) {
+    window.updatePageMetaAndInteractions?.(data.next.html);
+    initializeMainFunctions();
+    window.customCursor?.refresh?.();
 
-  if (!window.cookieManager?.getCookie?.("cta")) {
-    window.uiManager?.showBanner?.();
+    if (!window.cookieManager?.getCookie?.("cta")) {
+      window.uiManager?.showBanner?.();
+    }
+
+    finalizeAfterBarba();
   }
-
-  finalizeAfterBarba();
-}
 
   // --------------------------------------------------
   // RESET elementi transizione
@@ -491,84 +491,8 @@ function commonAfter(data) {
     );
     let heroIntroTl = null;
 
-    if (heroBtn && window.gsap) {
-      const border = heroBtn.querySelector(".btn-border");
-      const label = heroBtn.querySelector(".btn-label");
-      const btnDot = heroBtn.querySelector(".btn");
-      const arrow =
-        heroBtn.querySelector(".btnn-ar") || heroBtn.querySelector(".btn-ar");
-
-      if (border && label) {
-        const SplitText =
-          (gsap.plugins && gsap.plugins.SplitText) || window.SplitText;
-
-        // Se non sono ancora stati creati i .btn-char (prima di setupPrimaryButtons)
-        if (SplitText && !label.querySelector(".btn-char")) {
-          new SplitText(label, {
-            type: "chars",
-            charsClass: "btn-char",
-          });
-        }
-
-        const chars = label.querySelectorAll(".btn-char");
-
-        if (chars.length) {
-          const isMobile = !window.bp?.is?.("lgUp");
-          const speedFactor = isMobile ? 0.85 : 1;
-
-          const D_BORDER = 0.35 * speedFactor;
-          const D_CHARS = 0.35 * speedFactor;
-          const D_DOT_INTRO = 0.4 * speedFactor;
-
-          const OFFSET_CHARS = 0.25 * speedFactor;
-          const OFFSET_DOT_IN = 0.3 * speedFactor;
-
-          // Stati iniziali come in setupPrimaryButtons
-          gsap.set(border, { "--clip-x": "50%" });
-          gsap.set(chars, { yPercent: 100, opacity: 0 });
-          gsap.set(heroBtn, {
-            "--btn-scale": 0,
-            "--btn-mix": "0%",
-            "--btn-origin-y": "100%",
-          });
-
-          if (arrow) {
-            gsap.set(arrow, { scale: 0, transformOrigin: "bottom left" });
-          }
-
-          // Timeline di intro del button (senza ScrollTrigger)
-          heroIntroTl = gsap.timeline();
-          heroIntroTl
-            .to(border, {
-              duration: D_BORDER,
-              ease: "power2.out",
-              "--clip-x": "0%",
-            })
-            .to(
-              chars,
-              {
-                yPercent: 0,
-                opacity: 1,
-                duration: D_CHARS,
-                stagger: { amount: 0.2 },
-                ease: "power2.out",
-              },
-              OFFSET_CHARS,
-            );
-
-          if (btnDot) {
-            heroIntroTl.to(
-              btnDot,
-              {
-                scale: 0.3,
-                duration: D_DOT_INTRO,
-                ease: "back.out(1.6)",
-              },
-              "-=" + OFFSET_DOT_IN,
-            );
-          }
-        }
-      }
+    if (heroBtn) {
+      heroIntroTl = buildProjectHeroButtonIntro(heroBtn);
     }
     // ====== TIMELINE PRINCIPALE DELLA TRANSITION =========================
     const tl = gsap.timeline({
@@ -2650,6 +2574,87 @@ function OnLoadHeroDefault() {
 }
 
 //ALTRE PAGINE
+function buildProjectHeroButtonIntro(heroBtn) {
+  if (!heroBtn || !window.gsap) return null;
+
+  const { gsap } = window;
+
+  const border = heroBtn.querySelector(".btn-border");
+  const label = heroBtn.querySelector(".btn-label");
+  const btnDot = heroBtn.querySelector(".btn");
+  const arrow =
+    heroBtn.querySelector(".btnn-ar") || heroBtn.querySelector(".btn-ar");
+
+  if (!border || !label) return null;
+
+  const isMobile = !window.bp?.is?.("lgUp");
+  const speedFactor = isMobile ? 0.85 : 1;
+
+  const D_BORDER = 0.35 * speedFactor;
+  const D_LABEL = 0.45 * speedFactor;
+  const D_DOT_INTRO = 0.4 * speedFactor;
+
+  const OFFSET_LABEL = 0.22 * speedFactor;
+  const OFFSET_DOT_IN = 0.3 * speedFactor;
+
+  gsap.set(border, { "--clip-x": "50%" });
+  gsap.set(label, {
+    rotationX: 90,
+    yPercent: 35,
+    opacity: 0,
+    transformOrigin: "50% 50%",
+    transformPerspective: 600,
+    force3D: true,
+  });
+
+  gsap.set(heroBtn, {
+    "--btn-scale": 0,
+    "--btn-mix": "0%",
+    "--btn-origin-y": "100%",
+  });
+
+  if (arrow) {
+    gsap.set(arrow, {
+      x: 0,
+      y: 0,
+      scale: 0,
+      transformOrigin: "bottom left",
+    });
+  }
+
+  const tl = gsap.timeline();
+
+  tl.to(border, {
+    duration: D_BORDER,
+    ease: "power2.out",
+    "--clip-x": "0%",
+  }).to(
+    label,
+    {
+      rotationX: 0,
+      yPercent: 0,
+      opacity: 1,
+      duration: D_LABEL,
+      ease: "power2.out",
+      force3D: true,
+    },
+    OFFSET_LABEL,
+  );
+
+  if (btnDot) {
+    tl.to(
+      btnDot,
+      {
+        scale: 0.3,
+        duration: D_DOT_INTRO,
+        ease: "back.out(1.6)",
+      },
+      "-=" + OFFSET_DOT_IN,
+    );
+  }
+
+  return tl;
+}
 
 window.pageEnterFx =
   window.pageEnterFx ||
@@ -3219,81 +3224,8 @@ window.pageEnterFx =
 
       let heroIntroTl = null;
 
-      if (heroBtn && window.gsap) {
-        const border = heroBtn.querySelector(".btn-border");
-        const label = heroBtn.querySelector(".btn-label");
-        const btnDot = heroBtn.querySelector(".btn");
-        const arrow =
-          heroBtn.querySelector(".btnn-ar") || heroBtn.querySelector(".btn-ar");
-
-        if (border && label) {
-          const SplitText =
-            (gsap.plugins && gsap.plugins.SplitText) || window.SplitText;
-
-          if (SplitText && !label.querySelector(".btn-char")) {
-            new SplitText(label, {
-              type: "chars",
-              charsClass: "btn-char",
-            });
-          }
-
-          const chars = label.querySelectorAll(".btn-char");
-
-          if (chars.length) {
-            const isMobile = !window.bp?.is?.("lgUp");
-            const speedFactor = isMobile ? 0.85 : 1;
-
-            const D_BORDER = 0.35 * speedFactor;
-            const D_CHARS = 0.35 * speedFactor;
-            const D_DOT_INTRO = 0.4 * speedFactor;
-
-            const OFFSET_CHARS = 0.25 * speedFactor;
-            const OFFSET_DOT_IN = 0.3 * speedFactor;
-
-            gsap.set(border, { "--clip-x": "50%" });
-            gsap.set(chars, { yPercent: 100, opacity: 0 });
-            gsap.set(heroBtn, {
-              "--btn-scale": 0,
-              "--btn-mix": "0%",
-              "--btn-origin-y": "100%",
-            });
-
-            if (arrow) {
-              gsap.set(arrow, { scale: 0, transformOrigin: "bottom left" });
-            }
-
-            heroIntroTl = gsap.timeline();
-            heroIntroTl
-              .to(border, {
-                duration: D_BORDER,
-                ease: "power2.out",
-                "--clip-x": "0%",
-              })
-              .to(
-                chars,
-                {
-                  yPercent: 0,
-                  opacity: 1,
-                  duration: D_CHARS,
-                  stagger: { amount: 0.2 },
-                  ease: "power2.out",
-                },
-                OFFSET_CHARS,
-              );
-
-            if (btnDot) {
-              heroIntroTl.to(
-                btnDot,
-                {
-                  scale: 0.3,
-                  duration: D_DOT_INTRO,
-                  ease: "back.out(1.6)",
-                },
-                "-=" + OFFSET_DOT_IN,
-              );
-            }
-          }
-        }
+      if (heroBtn) {
+        heroIntroTl = buildProjectHeroButtonIntro(heroBtn);
       }
 
       const tl = introGenericPage(root, { delay: 0.18 });

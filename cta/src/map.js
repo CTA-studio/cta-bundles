@@ -34,7 +34,7 @@ window.CTAMap = CTAMap;
 
 // Esportiamo per poterlo importare nel bundle
 
-const CTA_BUNDLE_VER = "v1.0.1-beta";
+const CTA_BUNDLE_VER = "v1.0.2-beta";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 // Unico oggetto per fare riferimento a JSON e Funzioni
@@ -43,7 +43,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f544": {
     name: "home", // Nome descrittivo della pagina
     jsonKey: "68b2e6c65a7f2a0ef027f544", // Riferimento al JSON
-    scripts: [`${CTA_CDN}/cta-home.js`],
+    scripts: [],
     styles: [],
   },
   //competenze
@@ -145,8 +145,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f553": {
     name: "Proposito",
     jsonKey: "68b2e6c65a7f2a0ef027f553",
-    scripts: [
-      `${CTA_CDN}/cta-proposito.js`,
+    scripts: [      
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -156,8 +155,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f556": {
     name: "blogPost",
     jsonKey: "",
-    scripts: [
-      `${CTA_CDN}/cta-proposito.js`,
+    scripts: [      
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -167,8 +165,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f555": {
     name: "blogCategory",
     jsonKey: "",
-    scripts: [
-      `${CTA_CDN}/cta-proposito.js`,
+    scripts: [      
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -178,8 +175,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f557": {
     name: "blogTag",
     jsonKey: "",
-    scripts: [
-      `${CTA_CDN}/cta-proposito.js`,
+    scripts: [      
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],

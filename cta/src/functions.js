@@ -1942,56 +1942,57 @@ function setupPrimaryButtons() {
       });
     }
   }
-  function setupButton(
-    btn,
-    {
-      introTrigger = btn,
-      reverseOnLeaveBack = false,
-      start = "top 85%",
-      startMobile = "top 88%",
-      introOnScroll = true,
-    } = {}
-  ) {
-    if (!btn) return;
+function setupButton(
+  btn,
+  {
+    introTrigger = btn,
+    reverseOnLeaveBack = false,
+    start = "top 85%",
+    startMobile = "top 88%",
+    introOnScroll = true,
+    bindHoverOnly = false,
+  } = {}
+) {
+  if (!btn) return;
 
-    const border = btn.querySelector(".btn-border");
-    const label = btn.querySelector(".btn-label");
-    const btnDot = btn.querySelector(".btn");
-    const arrow = btn.querySelector(".btnn-ar") || btn.querySelector(".btn-ar");
+  const border = btn.querySelector(".btn-border");
+  const label = btn.querySelector(".btn-label");
+  const btnDot = btn.querySelector(".btn");
+  const arrow = btn.querySelector(".btnn-ar") || btn.querySelector(".btn-ar");
 
-    if (!border || !label) {
-      console.warn(
-        "setupPrimaryButtons: .btn-border o .btn-label mancanti",
-        btn
-      );
-      return;
-    }
+  if (!border || !label) {
+    console.warn(
+      "setupPrimaryButtons: .btn-border o .btn-label mancanti",
+      btn
+    );
+    return;
+  }
 
-    const isMobile = isMobileBP();
-    const speedFactor = isMobile ? 0.85 : 1;
+  const isMobile = isMobileBP();
+  const speedFactor = isMobile ? 0.85 : 1;
 
-    // === Durate allineate a showcaseProjectButton ======================
-    const D_BORDER = 0.35 * speedFactor;
-    const D_LABEL = 0.45 * speedFactor;
-    const D_DOT_INTRO = 0.4 * speedFactor;
+  const D_BORDER = 0.35 * speedFactor;
+  const D_LABEL = 0.45 * speedFactor;
+  const D_DOT_INTRO = 0.4 * speedFactor;
 
-    const D_FILL_HOVER = 0.35 * speedFactor;
-    const D_MIX_HOVER = 0.15 * speedFactor;
-    const D_DOT_HOVER = 0.35 * speedFactor;
-    const D_ARROW_HOVER = 0.3 * speedFactor;
+  const D_FILL_HOVER = 0.35 * speedFactor;
+  const D_MIX_HOVER = 0.15 * speedFactor;
+  const D_DOT_HOVER = 0.35 * speedFactor;
+  const D_ARROW_HOVER = 0.3 * speedFactor;
 
-    const D_MIX_OUT = 0.15 * speedFactor;
-    const D_SCALE_OUT = 0.3 * speedFactor;
-    const D_DOT_OUT = 0.3 * speedFactor;
-    const D_ARROW_OUT = 0.3 * speedFactor;
+  const D_MIX_OUT = 0.15 * speedFactor;
+  const D_SCALE_OUT = 0.3 * speedFactor;
+  const D_DOT_OUT = 0.3 * speedFactor;
+  const D_ARROW_OUT = 0.3 * speedFactor;
 
-    const OFFSET_LABEL = 0.22 * speedFactor;
-    const OFFSET_DOT_IN = 0.3 * speedFactor;
-    const OFFSET_DOT_H = 0.15 * speedFactor;
-    const OFFSET_ARROW_H = 0.25 * speedFactor;
-    const OFFSET_MIX_OUT = 0.15 * speedFactor;
+  const OFFSET_LABEL = 0.22 * speedFactor;
+  const OFFSET_DOT_IN = 0.3 * speedFactor;
+  const OFFSET_DOT_H = 0.15 * speedFactor;
+  const OFFSET_ARROW_H = 0.25 * speedFactor;
+  const OFFSET_MIX_OUT = 0.15 * speedFactor;
 
-    // ==== Stati iniziali ================================================
+  // ==== Stati iniziali intro SOLO se non è bindHoverOnly ================
+  if (!bindHoverOnly) {
     gsap.set(border, { "--clip-x": "50%" });
     gsap.set(label, {
       rotationX: 90,
@@ -2016,9 +2017,12 @@ function setupPrimaryButtons() {
         transformOrigin: "bottom left",
       });
     }
-    // ==== TL ingresso su scroll ========================================
-    const introTl = gsap.timeline({ paused: true });
+  }
 
+  // ==== TL ingresso su scroll =========================================
+  const introTl = gsap.timeline({ paused: true });
+
+  if (!bindHoverOnly) {
     introTl
       .to(border, {
         duration: D_BORDER,
@@ -2063,174 +2067,170 @@ function setupPrimaryButtons() {
 
       ScrollTrigger.create(stConfig);
     }
-
-    // ==== Hover / Click IN / OUT =======================================
-    const hoverTl = gsap.timeline({ paused: true });
-    const leaveTl = gsap.timeline({ paused: true });
-
-    let hoverTimeout;
-    let isHovered = false;
-    let isInside = false;
-
-    // --- IN -------------------------------------------------------------
-    hoverTl
-      .set(
-        btn,
-        {
-          "--btn-origin-y": "100%",
-        },
-        0
-      )
-      .to(
-        btn,
-        {
-          "--btn-scale": 1,
-          duration: D_FILL_HOVER,
-          ease: "power2.out",
-        },
-        0
-      )
-      .to(
-        btn,
-        {
-          "--btn-mix": "100%",
-          duration: D_MIX_HOVER,
-          ease: "power2.in",
-        },
-        0
-      );
-
-    if (btnDot) {
-      hoverTl.to(
-        btnDot,
-        {
-          scale: 0.9,
-          duration: D_DOT_HOVER,
-          ease: "power2.out",
-        },
-        OFFSET_DOT_H
-      );
-    }
-
-    if (arrow) {
-      hoverTl.to(
-        arrow,
-        {
-          scale: 1,
-          duration: D_ARROW_HOVER,
-          ease: "power2.out",
-          transformOrigin: "bottom left",
-        },
-        OFFSET_ARROW_H
-      );
-    }
-
-    // --- OUT ------------------------------------------------------------
-    leaveTl
-      .set(
-        btn,
-        {
-          "--btn-origin-y": "0%",
-        },
-        0
-      )
-      .to(
-        btn,
-        {
-          "--btn-mix": "0%",
-          duration: D_MIX_OUT,
-          ease: "power2.in",
-        },
-        OFFSET_MIX_OUT
-      )
-      .to(
-        btn,
-        {
-          "--btn-scale": 0,
-          duration: D_SCALE_OUT,
-          ease: "power2.in",
-        },
-        0
-      );
-
-    if (btnDot) {
-      leaveTl.to(
-        btnDot,
-        {
-          scale: 0.3,
-          duration: D_DOT_OUT,
-          ease: "power2.in",
-        },
-        0
-      );
-    }
-
-    if (arrow) {
-      leaveTl.to(
-        arrow,
-        {
-          scale: 0,
-          duration: D_ARROW_OUT,
-          ease: "power2.in",
-          transformOrigin: "top right",
-        },
-        0
-      );
-    }
-
-    const handleEnter = () => {
-      clearTimeout(hoverTimeout);
-      isInside = true;
-
-      if (leaveTl.isActive()) {
-        leaveTl.progress(1, false);
-      }
-
-      if (!isHovered) {
-        hoverTl.restart();
-        isHovered = true;
-      }
-    };
-
-    const handleLeave = () => {
-      isInside = false;
-
-      hoverTimeout = setTimeout(() => {
-        if (!isInside) {
-          if (hoverTl.isActive()) {
-            hoverTl.progress(1, false);
-          }
-          leaveTl.restart();
-          isHovered = false;
-        }
-      }, 50);
-    };
-
-    if (!isMobile) {
-      // Desktop: hover
-      btn.addEventListener("mouseenter", handleEnter);
-      btn.addEventListener("mouseleave", handleLeave);
-
-      window.pageSpecificListeners.push(
-        { element: btn, event: "mouseenter", handler: handleEnter },
-        { element: btn, event: "mouseleave", handler: handleLeave }
-      );
-    } else {
-      // Mobile: SOLO click → solo animazione di enter
-      const handleClick = () => {
-        // niente preventDefault: Barba gestisce il routing
-        handleEnter();
-      };
-
-      btn.addEventListener("click", handleClick);
-
-      window.pageSpecificListeners.push({
-        element: btn,
-        event: "click",
-        handler: handleClick,
-      });
-    }
   }
+
+  // ==== Hover / Click IN / OUT =======================================
+  const hoverTl = gsap.timeline({ paused: true });
+  const leaveTl = gsap.timeline({ paused: true });
+
+  let hoverTimeout;
+  let isHovered = false;
+  let isInside = false;
+
+  hoverTl
+    .set(
+      btn,
+      {
+        "--btn-origin-y": "100%",
+      },
+      0
+    )
+    .to(
+      btn,
+      {
+        "--btn-scale": 1,
+        duration: D_FILL_HOVER,
+        ease: "power2.out",
+      },
+      0
+    )
+    .to(
+      btn,
+      {
+        "--btn-mix": "100%",
+        duration: D_MIX_HOVER,
+        ease: "power2.in",
+      },
+      0
+    );
+
+  if (btnDot) {
+    hoverTl.to(
+      btnDot,
+      {
+        scale: 0.9,
+        duration: D_DOT_HOVER,
+        ease: "power2.out",
+      },
+      OFFSET_DOT_H
+    );
+  }
+
+  if (arrow) {
+    hoverTl.to(
+      arrow,
+      {
+        scale: 1,
+        duration: D_ARROW_HOVER,
+        ease: "power2.out",
+        transformOrigin: "bottom left",
+      },
+      OFFSET_ARROW_H
+    );
+  }
+
+  leaveTl
+    .set(
+      btn,
+      {
+        "--btn-origin-y": "0%",
+      },
+      0
+    )
+    .to(
+      btn,
+      {
+        "--btn-mix": "0%",
+        duration: D_MIX_OUT,
+        ease: "power2.in",
+      },
+      OFFSET_MIX_OUT
+    )
+    .to(
+      btn,
+      {
+        "--btn-scale": 0,
+        duration: D_SCALE_OUT,
+        ease: "power2.in",
+      },
+      0
+    );
+
+  if (btnDot) {
+    leaveTl.to(
+      btnDot,
+      {
+        scale: 0.3,
+        duration: D_DOT_OUT,
+        ease: "power2.in",
+      },
+      0
+    );
+  }
+
+  if (arrow) {
+    leaveTl.to(
+      arrow,
+      {
+        scale: 0,
+        duration: D_ARROW_OUT,
+        ease: "power2.in",
+        transformOrigin: "top right",
+      },
+      0
+    );
+  }
+
+  const handleEnter = () => {
+    clearTimeout(hoverTimeout);
+    isInside = true;
+
+    if (leaveTl.isActive()) {
+      leaveTl.progress(1, false);
+    }
+
+    if (!isHovered) {
+      hoverTl.restart();
+      isHovered = true;
+    }
+  };
+
+  const handleLeave = () => {
+    isInside = false;
+
+    hoverTimeout = setTimeout(() => {
+      if (!isInside) {
+        if (hoverTl.isActive()) {
+          hoverTl.progress(1, false);
+        }
+        leaveTl.restart();
+        isHovered = false;
+      }
+    }, 50);
+  };
+
+  if (!isMobile) {
+    btn.addEventListener("mouseenter", handleEnter);
+    btn.addEventListener("mouseleave", handleLeave);
+
+    window.pageSpecificListeners.push(
+      { element: btn, event: "mouseenter", handler: handleEnter },
+      { element: btn, event: "mouseleave", handler: handleLeave }
+    );
+  } else {
+    const handleClick = () => {
+      handleEnter();
+    };
+
+    btn.addEventListener("click", handleClick);
+
+    window.pageSpecificListeners.push({
+      element: btn,
+      event: "click",
+      handler: handleClick,
+    });
+  }
+}
 
   // 1) Bottoni generici (escludo il project-hero)
   const genericButtons = document.querySelectorAll(
@@ -2258,15 +2258,16 @@ function setupPrimaryButtons() {
   });
 
   // 3) Button hero progetto: NESSUN ScrollTrigger, ma hover/click sì
-  const projectHeroBtn = document.querySelector(
-    '.btn-primary[data-intro="project-hero"]'
-  );
-  if (projectHeroBtn) {
-    setupButton(projectHeroBtn, {
-      introTrigger: null, // nessun trigger di scroll
-      introOnScroll: false, //  blocchiamo la creazione del ScrollTrigger
-    });
-  }
+const projectHeroBtn = document.querySelector(
+  '.btn-primary[data-intro="project-hero"]'
+);
+if (projectHeroBtn) {
+  setupButton(projectHeroBtn, {
+    introTrigger: null,
+    introOnScroll: false,
+    bindHoverOnly: true,
+  });
+}
 
   const slideButtons = document.querySelectorAll(
     '.btn-primary[data-btn="slide"]'
