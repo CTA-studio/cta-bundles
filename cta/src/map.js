@@ -34,7 +34,7 @@ window.CTAMap = CTAMap;
 
 // Esportiamo per poterlo importare nel bundle
 
-const CTA_BUNDLE_VER = "v1.0.2";
+const CTA_BUNDLE_VER = "v1.0.3";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 // Unico oggetto per fare riferimento a JSON e Funzioni
@@ -145,7 +145,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f553": {
     name: "Proposito",
     jsonKey: "68b2e6c65a7f2a0ef027f553",
-    scripts: [      
+    scripts: [
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -155,7 +155,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f556": {
     name: "blogPost",
     jsonKey: "",
-    scripts: [      
+    scripts: [
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -165,7 +165,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f555": {
     name: "blogCategory",
     jsonKey: "",
-    scripts: [      
+    scripts: [
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -175,7 +175,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f557": {
     name: "blogTag",
     jsonKey: "",
-    scripts: [      
+    scripts: [
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -1231,7 +1231,7 @@ window.jsonPageMap = {
     active: true,
     json: `{
   "@context": "https://schema.org",
-  "@type": "Blog",
+  "@type": "CollectionPage",
   "@id": "https://www.ctastudio.it/proposito/home#webpage",
   "url": "https://www.ctastudio.it/proposito/home",
   "name": "PROPOSITO - Il Web Magazine per ispirare, crescere e realizzare",
