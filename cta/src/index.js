@@ -4,4 +4,3 @@ import "./core";
 import "./app";
 import "./functions";
 import "./home";
-import "./proposito";

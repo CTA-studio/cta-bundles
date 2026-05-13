@@ -34,7 +34,7 @@ window.CTAMap = CTAMap;
 
 // Esportiamo per poterlo importare nel bundle
 
-const CTA_BUNDLE_VER = "v1.0.3";
+const CTA_BUNDLE_VER = "v1.0.4beta";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 // Unico oggetto per fare riferimento a JSON e Funzioni
@@ -1276,6 +1276,65 @@ window.pageFunctions = {
       const isDesktop = !!bp?.is?.("lgUp");
       const isTouchDown = !!bp?.is?.("touchDown");
 
+      function setupHomeSwiperLazyLoad() {
+        const trigger = document.querySelector("#studio-wrapper");
+        if (!trigger) return;
+
+        let hasLoaded = false;
+        let loadPromise = null;
+
+        const loadSwiper = async () => {
+          if (hasLoaded) return;
+          hasLoaded = true;
+
+          try {
+            if (!loadPromise) {
+              loadPromise = (async () => {
+                if (!window.propositoAnimation) {
+                  await loadScript(`${CTA_CDN}/cta-proposito.js`);
+                }
+
+                if (!window.Swiper) {
+                  await loadScript(
+                    "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
+                  );
+                }
+              })();
+            }
+
+            await loadPromise;
+
+            window.propositoAnimation?.initializeSwiper?.();
+          } catch (err) {
+            console.error("Errore caricamento Proposito/Swiper Home:", err);
+          }
+        };
+
+        if (!("IntersectionObserver" in window)) {
+          setTimeout(loadSwiper, 8000);
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+
+            observer.disconnect();
+            loadSwiper();
+          },
+          {
+            rootMargin: "900px 0px",
+            threshold: 0,
+          },
+        );
+
+        observer.observe(trigger);
+
+        window.pageSpecificListeners?.push(() => {
+          observer.disconnect();
+        });
+      }
+
       if (isDesktop) {
         window.safeRequestIdleCallback(() => {
           ctaStickyTransition.reset();
@@ -1290,34 +1349,28 @@ window.pageFunctions = {
         });
       }
 
-      // PRIORITÀ MEDIA - idle
       window.safeRequestIdleCallback(() => {
         setupPrimaryButtons();
         setupShowcaseButtons();
-        window.serviceIntroAnimation?.init();
       });
 
-      // PRIORITÀ BASSA - differita dopo load + verifica swiper
-      setTimeout(async () => {
-        await loadScript(
-          "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
-        ).catch((err) => console.error("Errore caricamento Swiper:", err));
+      setTimeout(() => {
+        window.safeRequestIdleCallback(() => {
+          try {
+            window.serviceIntroAnimation?.init();
+            initStudioWrapperIntro();
+            initCtaContactsIntro();
+            initPropositoHeaderIntro();
 
-        try {
-          initStudioWrapperIntro();
-          initCtaContactsIntro();
-          initPropositoHeaderIntro();
-          propositoAnimation.initializeSwiper?.();
+            setupHomeSwiperLazyLoad();
 
-          if (
-            window.footerManager &&
-            typeof window.footerManager.refresh === "function"
-          ) {
             window.footerManager?.refresh?.();
+          } catch (err) {
+            console.error("Errore esecuzione funzioni differite:", err);
+          } finally {
+            window.runFinalBoot?.();
           }
-        } catch (err) {
-          console.error("Errore esecuzione funzioni differite:", err);
-        }
+        });
       }, 2500);
     },
 
@@ -2153,6 +2206,19 @@ window.pageFunctions = {
       cleanUpPageListeners();
     },
   },
+};
+
+window.__finalBootStarted = window.__finalBootStarted || false;
+
+window.runFinalBoot = function () {
+  if (window.__finalBootStarted) return;
+  window.__finalBootStarted = true;
+
+  window.safeRequestIdleCallback?.(() => {
+    setTimeout(() => {
+      window.FirebaseAppManager?.init?.();
+    }, 1000);
+  });
 };
 
 window.safeRequestIdleCallback =
