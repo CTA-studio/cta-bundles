@@ -34,7 +34,7 @@ window.CTAMap = CTAMap;
 
 // Esportiamo per poterlo importare nel bundle
 
-const CTA_BUNDLE_VER = "v1.0.4beta";
+const CTA_BUNDLE_VER = "v1.0.5beta";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 // Unico oggetto per fare riferimento a JSON e Funzioni
@@ -2209,14 +2209,27 @@ window.pageFunctions = {
 };
 
 window.__finalBootStarted = window.__finalBootStarted || false;
+window.__authLoadPromise = window.__authLoadPromise || null;
 
 window.runFinalBoot = function () {
   if (window.__finalBootStarted) return;
   window.__finalBootStarted = true;
 
   window.safeRequestIdleCallback?.(() => {
-    setTimeout(() => {
-      window.FirebaseAppManager?.init?.();
+    setTimeout(async () => {
+      try {
+        if (!window.FirebaseAppManager) {
+          window.__authLoadPromise =
+            window.__authLoadPromise ||
+            loadScript(`${CTA_CDN}/cta-auth.js`);
+
+          await window.__authLoadPromise;
+        }
+
+        window.FirebaseAppManager?.init?.();
+      } catch (err) {
+        console.error("Errore caricamento/init cta-auth:", err);
+      }
     }, 1000);
   });
 };
