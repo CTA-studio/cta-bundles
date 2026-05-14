@@ -34,7 +34,7 @@ window.CTAMap = CTAMap;
 
 // Esportiamo per poterlo importare nel bundle
 
-const CTA_BUNDLE_VER = "v1.0.7-beta";
+const CTA_BUNDLE_VER = "v1.0.7-log";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 // Unico oggetto per fare riferimento a JSON e Funzioni
@@ -1268,117 +1268,144 @@ window.jsonPageMap = {
 
 // Funzioni specifiche per ciascuna pagina
 window.pageFunctions = {
-  home: {
-    execute: function () {
-      if (!window.isBarbaTransition) OnLoadHeroDefault();
+home: {
+  execute: function () {
+    const perfLog = (name, fn) => {
+      const start = performance.now();
 
-      const bp = window.bp;
-      const isDesktop = !!bp?.is?.("lgUp");
-      const isTouchDown = !!bp?.is?.("touchDown");
+      try {
+        return fn?.();
+      } finally {
+        const duration = Math.round(performance.now() - start);
 
-      function setupHomeSwiperLazyLoad() {
-        const trigger = document.querySelector("#studio-wrapper");
-        if (!trigger) return;
-
-        let hasLoaded = false;
-        let loadPromise = null;
-
-        const loadSwiper = async () => {
-          if (hasLoaded) return;
-          hasLoaded = true;
-
-          try {
-            if (!loadPromise) {
-              loadPromise = (async () => {
-                if (!window.propositoAnimation) {
-                  await loadScript(`${CTA_CDN}/cta-proposito.js`);
-                }
-
-                if (!window.Swiper) {
-                  await loadScript(
-                    "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
-                  );
-                }
-              })();
-            }
-
-            await loadPromise;
-
-            window.propositoAnimation?.initializeSwiper?.();
-          } catch (err) {
-            console.error("Errore caricamento Proposito/Swiper Home:", err);
-          }
-        };
-
-        if (!("IntersectionObserver" in window)) {
-          setTimeout(loadSwiper, 8000);
-          return;
+        if (duration > 25) {
+          console.log(`[HOME PERF] ${name}: ${duration}ms`);
         }
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            if (!entries.some((entry) => entry.isIntersecting)) return;
-
-            observer.disconnect();
-            loadSwiper();
-          },
-          {
-            rootMargin: "900px 0px",
-            threshold: 0,
-          },
-        );
-
-        observer.observe(trigger);
-
-        window.pageSpecificListeners?.push(() => {
-          observer.disconnect();
-        });
       }
+    };
 
-      if (isDesktop) {
-        window.safeRequestIdleCallback(() => {
-          ctaStickyTransition.reset();
-          window.menuNavigation.heroMenuHover();
-          scrollProgressLine();
-        });
-      } else if (isTouchDown) {
-        window.safeRequestIdleCallback(() => {
-          showcasePanelsScrollMobile();
-          showcaseTextContentMobile();
-          setupVerticalShowcaseButtons();
-        });
-      }
+    if (!window.isBarbaTransition) {
+      perfLog("OnLoadHeroDefault", () => OnLoadHeroDefault());
+    }
 
-      window.safeRequestIdleCallback(() => {
-        setupPrimaryButtons();
-        setupShowcaseButtons();
-      });
+    const bp = window.bp;
+    const isDesktop = !!bp?.is?.("lgUp");
+    const isTouchDown = !!bp?.is?.("touchDown");
 
-      setTimeout(() => {
-        window.safeRequestIdleCallback(() => {
-          try {
-            window.serviceIntroAnimation?.init();
-            initStudioWrapperIntro();
-            initCtaContactsIntro();
-            initPropositoHeaderIntro();
+    function setupHomeSwiperLazyLoad() {
+      const trigger = document.querySelector("#studio-wrapper");
+      if (!trigger) return;
 
-            setupHomeSwiperLazyLoad();
+      let hasLoaded = false;
+      let loadPromise = null;
 
-            window.footerManager?.refresh?.();
-          } catch (err) {
-            console.error("Errore esecuzione funzioni differite:", err);
-          } finally {
-            window.runFinalBoot?.();
+      const loadSwiper = async () => {
+        if (hasLoaded) return;
+        hasLoaded = true;
+
+        try {
+          if (!loadPromise) {
+            loadPromise = (async () => {
+              if (!window.propositoAnimation) {
+                await loadScript(`${CTA_CDN}/cta-proposito.js`);
+              }
+
+              if (!window.Swiper) {
+                await loadScript(
+                  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
+                );
+              }
+            })();
           }
-        });
-      }, 2500);
-    },
 
-    cleanup: function () {
-      cleanUpTriggers();
-      cleanUpPageListeners();
-    },
+          await loadPromise;
+
+          perfLog("propositoAnimation.initializeSwiper", () => {
+            window.propositoAnimation?.initializeSwiper?.();
+          });
+        } catch (err) {
+          console.error("Errore caricamento Proposito/Swiper Home:", err);
+        }
+      };
+
+      if (!("IntersectionObserver" in window)) {
+        setTimeout(loadSwiper, 8000);
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+
+          observer.disconnect();
+          loadSwiper();
+        },
+        {
+          rootMargin: "900px 0px",
+          threshold: 0,
+        },
+      );
+
+      observer.observe(trigger);
+
+      window.pageSpecificListeners?.push(() => {
+        observer.disconnect();
+      });
+    }
+
+    if (isDesktop) {
+      window.safeRequestIdleCallback(() => {
+        perfLog("ctaStickyTransition.reset", () => ctaStickyTransition.reset());
+        perfLog("menuNavigation.heroMenuHover", () =>
+          window.menuNavigation.heroMenuHover(),
+        );
+        perfLog("scrollProgressLine", () => scrollProgressLine());
+      });
+    } else if (isTouchDown) {
+      window.safeRequestIdleCallback(() => {
+        perfLog("showcasePanelsScrollMobile", () => showcasePanelsScrollMobile());
+        perfLog("showcaseTextContentMobile", () => showcaseTextContentMobile());
+        perfLog("setupVerticalShowcaseButtons", () =>
+          setupVerticalShowcaseButtons(),
+        );
+      });
+    }
+
+    window.safeRequestIdleCallback(() => {
+      perfLog("setupPrimaryButtons", () => setupPrimaryButtons());
+      perfLog("setupShowcaseButtons", () => setupShowcaseButtons());
+    });
+
+    setTimeout(() => {
+      window.safeRequestIdleCallback(() => {
+        try {
+          perfLog("serviceIntroAnimation.init", () =>
+            window.serviceIntroAnimation?.init(),
+          );
+
+          perfLog("initStudioWrapperIntro", () => initStudioWrapperIntro());
+          perfLog("initCtaContactsIntro", () => initCtaContactsIntro());
+          perfLog("initPropositoHeaderIntro", () => initPropositoHeaderIntro());
+
+          perfLog("setupHomeSwiperLazyLoad", () => setupHomeSwiperLazyLoad());
+
+          perfLog("footerManager.refresh", () =>
+            window.footerManager?.refresh?.(),
+          );
+        } catch (err) {
+          console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
+        }
+      });
+    }, 2500);
   },
+
+  cleanup: function () {
+    cleanUpTriggers();
+    cleanUpPageListeners();
+  },
+},
   competenze: {
     execute: function () {
       if (!window.isBarbaTransition) {
