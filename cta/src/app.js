@@ -193,11 +193,6 @@ function initBarbaWithGSAP() {
     window.updatePageMetaAndInteractions?.(data.next.html);
     initializeMainFunctions();
     window.customCursor?.refresh?.();
-
-    if (!window.cookieManager?.getCookie?.("cta")) {
-      window.uiManager?.showBanner?.();
-    }
-
     finalizeAfterBarba();
   }
 

@@ -74,15 +74,34 @@ window.cookieManager = window.cookieManager || {
   },
 };
 
+function getSavedConsent() {
+  try {
+    return JSON.parse(window.cookieManager.getCookie("cta")) || {};
+  } catch {
+    return {};
+  }
+}
+
+function applyConsentMode(consents = {}) {
+  if (!cookieConfig.consentMode || !window.gtag) return;
+
+  gtag("consent", "update", {
+    ad_storage: consents.marketing ? "granted" : "denied",
+    analytics_storage: consents.analytics ? "granted" : "denied",
+    functionality_storage: consents.personalization ? "granted" : "denied",
+    ad_personalization: consents.marketing ? "granted" : "denied",
+    ad_user_data: consents.marketing ? "granted" : "denied",
+    security_storage: consents.essential !== false ? "granted" : "denied",
+    personalization_storage: consents.personalization ? "granted" : "denied",
+  });
+}
+
 window.resetCookies = () => {
   window.cookieManager.clearAllCookies();
   window.cookieManager.clearTrackingCookies();
   closeCookiePreferences();
   setTimeout(() => location.reload(), 100);
 };
-
-const resetButton = document.querySelector("[cta='reset']");
-if (resetButton) resetButton.addEventListener("click", window.resetCookies);
 
 // UI Manager
 window.uiManager = window.uiManager || {
@@ -91,7 +110,7 @@ window.uiManager = window.uiManager || {
   closeBannerWithoutConsent: () => animateBannerClose(),
   handlePreferences: () => {
     cookiePreferences();
-    const saved = JSON.parse(window.cookieManager.getCookie("cta")) || {};
+    const saved = getSavedConsent();
     window.toggleCheckboxAnimation?.(
       "#cookie-marketing",
       "marketing",
@@ -120,35 +139,6 @@ window.uiManager = window.uiManager || {
 };
 
 // Init post-load
-window.addEventListener("load", () => {
-  const raw = window.cookieManager.getCookie("cta");
-
-  if (!raw) {
-    // Nessun consenso ancora dato → mostra banner subito dopo load (idle)
-    window.safeRequestIdleCallback(() => {
-      window.uiManager.showBanner();
-    });
-  } else {
-    // Consenso già dato → aspetta un po' prima di attivare GTM e script
-    setTimeout(() => {
-      window.safeRequestIdleCallback(() => {
-        const saved = JSON.parse(raw) || {};
-
-        gtag("consent", "update", {
-          ad_storage: saved.marketing ? "granted" : "denied",
-          analytics_storage: saved.analytics ? "granted" : "denied",
-          functionality_storage: saved.personalization ? "granted" : "denied",
-          ad_personalization: saved.marketing ? "granted" : "denied",
-          ad_user_data: saved.marketing ? "granted" : "denied",
-          security_storage: saved.essential ? "granted" : "denied",
-          personalization_storage: saved.personalization ? "granted" : "denied",
-        });
-
-        if (saved.analytics || saved.marketing) activateScripts();
-      });
-    }, 4000); // aumentare/diminuire leggermente, ma 4s è un buon equilibrio
-  }
-});
 
 // Consent Manager
 const consentManager = {
@@ -159,13 +149,7 @@ const consentManager = {
       marketing: true,
       personalization: true,
     };
-    gtag(
-      "consent",
-      "update",
-      Object.fromEntries(
-        Object.keys(allTrue).map((k) => [k + "_storage", "granted"]),
-      ),
-    );
+    applyConsentMode(allTrue);
     window.cookieManager.setCookie(
       "cta",
       JSON.stringify(allTrue),
@@ -183,16 +167,7 @@ const consentManager = {
       marketing: false,
       personalization: false,
     };
-    gtag(
-      "consent",
-      "update",
-      Object.fromEntries(
-        Object.keys(defaults).map((k) => [
-          k + "_storage",
-          defaults[k] ? "granted" : "denied",
-        ]),
-      ),
-    );
+    applyConsentMode(defaults);
     window.cookieManager.setCookie(
       "cta",
       JSON.stringify(defaults),
@@ -217,54 +192,15 @@ const consentManager = {
       JSON.stringify(consents),
       cookieConfig.cookieMaxAge,
     );
-    gtag(
-      "consent",
-      "update",
-      Object.fromEntries(
-        Object.keys(consents).map((k) => [
-          k + "_storage",
-          consents[k] ? "granted" : "denied",
-        ]),
-      ),
-    );
-    if (consents.analytics || consents.marketing) activateScripts();
-    gtmManager.updateConsentMode(consents);
+    applyConsentMode(consents);
+
+    if (consents.analytics || consents.marketing) {
+      activateScripts();
+    }
+
     closeCookiePreferences();
   },
 };
-
-["[cta='allow']", "[cta='deny']"].forEach((sel) => {
-  document.querySelectorAll(sel).forEach((b) => {
-    b.addEventListener(
-      "click",
-      sel.includes("allow") ? consentManager.allowAll : consentManager.denyAll,
-    );
-  });
-});
-
-document.querySelectorAll("[cta='open-preferences']").forEach((b) => {
-  b.addEventListener("click", () => {
-    window.uiManager.closeBannerWithoutConsent();
-    window.uiManager.handlePreferences();
-  });
-});
-
-const preferencesForm = document.querySelector(
-  "#wf-form-Cookie-Preferences-form",
-);
-if (preferencesForm)
-  preferencesForm.addEventListener("submit", consentManager.handleFormSubmit);
-
-document
-  .querySelector("#preferences-close")
-  ?.addEventListener("click", closeCookiePreferences);
-document.querySelector("[cta='submit']")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  consentManager.handleFormSubmit(e);
-});
-document
-  .querySelector("#banner-close")
-  ?.addEventListener("click", window.uiManager.closeBannerWithoutConsent);
 
 const gtmManager = {
   fireGTMEvent: (event) => {
@@ -272,23 +208,119 @@ const gtmManager = {
     if (cookieConfig.debugMode) console.log(`Evento GTM ${event} inviato.`);
   },
   updateConsentMode: (c) => {
-    if (!cookieConfig.consentMode || !window.gtag) return;
-    gtag(
-      "consent",
-      "update",
-      Object.fromEntries(
-        Object.keys(c).map((k) => [
-          k + "_storage",
-          c[k] ? "granted" : "denied",
-        ]),
-      ),
-    );
+    applyConsentMode(c);
   },
+};
+
+window.__cookieManagerStarted = false;
+
+window.startCookieManager = function () {
+  if (window.__cookieManagerStarted) return;
+  window.__cookieManagerStarted = true;
+
+  const safeIdle =
+    window.safeRequestIdleCallback ||
+    function (cb) {
+      setTimeout(cb, 50);
+    };
+
+  const resetButton = document.querySelector("[cta='reset']");
+  if (resetButton && resetButton.dataset.cookieResetBound !== "1") {
+    resetButton.dataset.cookieResetBound = "1";
+    resetButton.addEventListener("click", window.resetCookies);
+  }
+
+  ["[cta='allow']", "[cta='deny']"].forEach((sel) => {
+    document.querySelectorAll(sel).forEach((button) => {
+      if (button.dataset.cookieActionBound === "1") return;
+      button.dataset.cookieActionBound = "1";
+
+      button.addEventListener(
+        "click",
+        sel.includes("allow")
+          ? consentManager.allowAll
+          : consentManager.denyAll,
+      );
+    });
+  });
+
+  document.querySelectorAll("[cta='open-preferences']").forEach((button) => {
+    if (button.dataset.cookiePrefsBound === "1") return;
+    button.dataset.cookiePrefsBound = "1";
+
+    button.addEventListener("click", () => {
+      window.uiManager.closeBannerWithoutConsent();
+      window.uiManager.handlePreferences();
+    });
+  });
+
+  const preferencesForm = document.querySelector(
+    "#wf-form-Cookie-Preferences-form",
+  );
+
+  if (preferencesForm && preferencesForm.dataset.cookieFormBound !== "1") {
+    preferencesForm.dataset.cookieFormBound = "1";
+    preferencesForm.addEventListener("submit", consentManager.handleFormSubmit);
+  }
+
+  const preferencesClose = document.querySelector("#preferences-close");
+
+  if (preferencesClose && preferencesClose.dataset.cookieCloseBound !== "1") {
+    preferencesClose.dataset.cookieCloseBound = "1";
+    preferencesClose.addEventListener("click", closeCookiePreferences);
+  }
+
+  const submitBtn = document.querySelector("[cta='submit']");
+
+  if (submitBtn && submitBtn.dataset.cookieSubmitBound !== "1") {
+    submitBtn.dataset.cookieSubmitBound = "1";
+    submitBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      consentManager.handleFormSubmit(e);
+    });
+  }
+
+  const bannerClose = document.querySelector("#banner-close");
+
+  if (bannerClose && bannerClose.dataset.cookieBannerCloseBound !== "1") {
+    bannerClose.dataset.cookieBannerCloseBound = "1";
+    bannerClose.addEventListener(
+      "click",
+      window.uiManager.closeBannerWithoutConsent,
+    );
+  }
+
+  const raw = window.cookieManager.getCookie("cta");
+
+  if (!raw) {
+    safeIdle(() => {
+      window.uiManager.showBanner();
+    });
+    return;
+  }
+
+  safeIdle(() => {
+    try {
+      const saved = getSavedConsent();
+
+      applyConsentMode(saved);
+
+      if (saved.analytics || saved.marketing) {
+        activateScripts();
+      }
+    } catch (err) {
+      console.warn("Errore lettura consenso cookie:", err);
+    }
+  });
 };
 
 function activateScripts() {
   document.querySelectorAll('script[cta="activate"]').forEach((script) => {
+    if (script.dataset.activated === "1") return;
+    script.dataset.activated = "1";
+
     script.removeAttribute("type");
+
     if (script.src) {
       const s = document.createElement("script");
       s.async = true;
@@ -300,84 +332,82 @@ function activateScripts() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+window.toggleCheckboxAnimation = function (
+  id,
+  attr,
+  toggleAttr,
+  category,
+  checked,
+  skipAnim = false,
+) {
   if (!window.gsap) return;
+
   const { gsap } = window;
-  const toggleCheckboxAnimation = (
-    id,
-    attr,
-    toggleAttr,
-    category,
-    checked,
-    skipAnim = false,
-  ) => {
-    const box = document.querySelector(id);
-    const container = document.querySelector(`[cta-checkbox='${attr}']`);
-    const toggle = container?.querySelector(`[cta-toggle='${toggleAttr}']`);
-    if (!box || !container || !toggle) return;
 
-    box.checked = checked;
-    if (skipAnim) {
-      gsap.set(toggle, {
-        x: checked ? 20 : 0,
-        backgroundColor: checked ? "#f9f9f7" : "",
-      });
-      gsap.set(container, {
-        backgroundColor: checked ? "#ff006e" : "",
-      });
-    } else {
-      gsap.to(toggle, {
-        x: checked ? 20 : 0,
-        backgroundColor: checked ? "#f9f9f7" : "",
-        duration: 0.3,
-        ease: "power2.inOut",
-      });
-      gsap.to(container, {
-        backgroundColor: checked ? "#ff006e" : "",
-        duration: 0.3,
-        ease: "power2.inOut",
-      });
-    }
+  const box = document.querySelector(id);
+  const container = document.querySelector(`[cta-checkbox='${attr}']`);
+  const toggle = container?.querySelector(`[cta-toggle='${toggleAttr}']`);
 
-    if (!box.dataset.listenerAttached) {
-      box.addEventListener("click", () => {
-        const state = box.checked;
-        gsap.to(toggle, {
-          x: state ? 20 : 0,
-          backgroundColor: state ? "#f9f9f7" : "",
-          duration: 0.3,
-          ease: "power2.inOut",
-        });
-        gsap.to(container, {
-          backgroundColor: state ? "#ff006e" : "",
-          duration: 0.3,
-          ease: "power2.inOut",
-        });
+  if (!box || !container || !toggle) return;
 
-        const current = JSON.parse(window.cookieManager.getCookie("cta")) || {};
-        current[category] = state;
-        window.cookieManager.setCookie(
-          "cta",
-          JSON.stringify(current),
-          cookieConfig.cookieMaxAge,
-        );
-        gtag(
-          "consent",
-          "update",
-          Object.fromEntries(
-            Object.keys(current).map((k) => [
-              k + "_storage",
-              current[k] ? "granted" : "denied",
-            ]),
-          ),
-        );
-      });
-      box.dataset.listenerAttached = "true";
-    }
-  };
+  box.checked = checked;
 
-  window.toggleCheckboxAnimation = toggleCheckboxAnimation;
-});
+  if (skipAnim) {
+    gsap.set(toggle, {
+      x: checked ? 20 : 0,
+      backgroundColor: checked ? "#f9f9f7" : "",
+    });
+
+    gsap.set(container, {
+      backgroundColor: checked ? "#ff006e" : "",
+    });
+  } else {
+    gsap.to(toggle, {
+      x: checked ? 20 : 0,
+      backgroundColor: checked ? "#f9f9f7" : "",
+      duration: 0.3,
+      ease: "power2.inOut",
+    });
+
+    gsap.to(container, {
+      backgroundColor: checked ? "#ff006e" : "",
+      duration: 0.3,
+      ease: "power2.inOut",
+    });
+  }
+
+  if (box.dataset.listenerAttached === "1") return;
+
+  box.addEventListener("click", () => {
+    const state = box.checked;
+
+    gsap.to(toggle, {
+      x: state ? 20 : 0,
+      backgroundColor: state ? "#f9f9f7" : "",
+      duration: 0.3,
+      ease: "power2.inOut",
+    });
+
+    gsap.to(container, {
+      backgroundColor: state ? "#ff006e" : "",
+      duration: 0.3,
+      ease: "power2.inOut",
+    });
+
+    const current = getSavedConsent();
+    current[category] = state;
+
+    window.cookieManager.setCookie(
+      "cta",
+      JSON.stringify(current),
+      cookieConfig.cookieMaxAge,
+    );
+
+    applyConsentMode(current);
+  });
+
+  box.dataset.listenerAttached = "1";
+};
 
 function animateBanner() {
   if (!window.gsap) return;
@@ -386,7 +416,7 @@ function animateBanner() {
   const banner = document.getElementById("banner-cookie");
   if (!banner || !container) return;
   container.classList.add("is-active");
-  gsap.to(banner, { y: 0, duration: 0.6, delay: 1.2, ease: "power2.inOut" });
+  gsap.to(banner, { y: 0, duration: 0.6, ease: "power2.inOut" });
 }
 
 function animateBannerClose() {
@@ -434,4 +464,5 @@ Object.assign(window, {
   cookiePreferences,
   closeCookiePreferences,
   activateScripts,
+  startCookieManager,
 });

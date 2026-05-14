@@ -1,4 +1,4 @@
-const CTA_BUNDLE_VER = "v-1.2.1-beta";
+const CTA_BUNDLE_VER = "v-1.2.4-beta";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 window.safeRequestIdleCallback =
@@ -134,7 +134,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f54b": {
     name: "contatti",
     jsonKey: "68b2e6c65a7f2a0ef027f54b",
-    scripts: [     
+    scripts: [
       `${CTA_CDN}/cta-form.js`,
       "https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js",
     ],
@@ -1278,119 +1278,119 @@ window.jsonPageMap = {
 
 // Funzioni specifiche per ciascuna pagina
 window.pageFunctions = {
-home: {
-  execute: function () {
-    if (!window.isBarbaTransition) {
-      OnLoadHeroDefault();
-    }
-
-    const bp = window.bp;
-    const isDesktop = !!bp?.is?.("lgUp");
-    const isTouchDown = !!bp?.is?.("touchDown");
-
-    function setupHomeSwiperLazyLoad() {
-      const trigger = document.querySelector("#studio-wrapper");
-      if (!trigger) return;
-
-      let hasLoaded = false;
-      let loadPromise = null;
-
-      const loadSwiper = async () => {
-        if (hasLoaded) return;
-        hasLoaded = true;
-
-        try {
-          if (!loadPromise) {
-            loadPromise = (async () => {
-              if (!window.propositoAnimation) {
-                await loadScript(`${CTA_CDN}/cta-proposito.js`);
-              }
-
-              if (!window.Swiper) {
-                await loadScript(
-                  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
-                );
-              }
-            })();
-          }
-
-          await loadPromise;
-
-          window.propositoAnimation?.initializeSwiper?.();
-        } catch (err) {
-          console.error("Errore caricamento Proposito/Swiper Home:", err);
-        }
-      };
-
-      if (!("IntersectionObserver" in window)) {
-        setTimeout(loadSwiper, 8000);
-        return;
+  home: {
+    execute: function () {
+      if (!window.isBarbaTransition) {
+        OnLoadHeroDefault();
       }
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
+      const bp = window.bp;
+      const isDesktop = !!bp?.is?.("lgUp");
+      const isTouchDown = !!bp?.is?.("touchDown");
 
-          observer.disconnect();
-          loadSwiper();
-        },
-        {
-          rootMargin: "900px 0px",
-          threshold: 0,
-        },
-      );
+      function setupHomeSwiperLazyLoad() {
+        const trigger = document.querySelector("#studio-wrapper");
+        if (!trigger) return;
 
-      observer.observe(trigger);
+        let hasLoaded = false;
+        let loadPromise = null;
 
-      window.pageSpecificListeners?.push(() => {
-        observer.disconnect();
-      });
-    }
+        const loadSwiper = async () => {
+          if (hasLoaded) return;
+          hasLoaded = true;
 
-    if (isDesktop) {
-      window.safeRequestIdleCallback(() => {
-        ctaStickyTransition.reset();
-        window.menuNavigation.heroMenuHover();
-        scrollProgressLine();
-      });
-    } else if (isTouchDown) {
-      window.safeRequestIdleCallback(() => {
-        showcasePanelsScrollMobile();
-        showcaseTextContentMobile();
-        setupVerticalShowcaseButtons();
-      });
-    }
+          try {
+            if (!loadPromise) {
+              loadPromise = (async () => {
+                if (!window.propositoAnimation) {
+                  await loadScript(`${CTA_CDN}/cta-proposito.js`);
+                }
 
-    window.safeRequestIdleCallback(() => {
-      setupPrimaryButtons();
-      setupShowcaseButtons();
-    });
+                if (!window.Swiper) {
+                  await loadScript(
+                    "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
+                  );
+                }
+              })();
+            }
 
-    setTimeout(() => {
-      window.safeRequestIdleCallback(() => {
-        try {
-          window.serviceIntroAnimation?.init();
-          initStudioWrapperIntro();
-          initCtaContactsIntro();
-          initPropositoHeaderIntro();
+            await loadPromise;
 
-          setupHomeSwiperLazyLoad();
+            window.propositoAnimation?.initializeSwiper?.();
+          } catch (err) {
+            console.error("Errore caricamento Proposito/Swiper Home:", err);
+          }
+        };
 
-          window.footerManager?.refresh?.();
-        } catch (err) {
-          console.error("Errore esecuzione funzioni differite:", err);
-        } finally {
-          window.runFinalBoot?.();
+        if (!("IntersectionObserver" in window)) {
+          setTimeout(loadSwiper, 8000);
+          return;
         }
-      });
-    }, 2500);
-  },
 
-  cleanup: function () {
-    cleanUpTriggers();
-    cleanUpPageListeners();
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+
+            observer.disconnect();
+            loadSwiper();
+          },
+          {
+            rootMargin: "900px 0px",
+            threshold: 0,
+          },
+        );
+
+        observer.observe(trigger);
+
+        window.pageSpecificListeners?.push(() => {
+          observer.disconnect();
+        });
+      }
+
+      if (isDesktop) {
+        window.safeRequestIdleCallback(() => {
+          ctaStickyTransition.reset();
+          window.menuNavigation.heroMenuHover();
+          scrollProgressLine();
+        });
+      } else if (isTouchDown) {
+        window.safeRequestIdleCallback(() => {
+          showcasePanelsScrollMobile();
+          showcaseTextContentMobile();
+          setupVerticalShowcaseButtons();
+        });
+      }
+
+      window.safeRequestIdleCallback(() => {
+        setupPrimaryButtons();
+        setupShowcaseButtons();
+      });
+
+      setTimeout(() => {
+        window.safeRequestIdleCallback(() => {
+          try {
+            window.serviceIntroAnimation?.init();
+            initStudioWrapperIntro();
+            initCtaContactsIntro();
+            initPropositoHeaderIntro();
+
+            setupHomeSwiperLazyLoad();
+
+            window.footerManager?.refresh?.();
+          } catch (err) {
+            console.error("Errore esecuzione funzioni differite:", err);
+          } finally {
+            window.runFinalBoot?.();
+          }
+        });
+      }, 2500);
+    },
+
+    cleanup: function () {
+      cleanUpTriggers();
+      cleanUpPageListeners();
+    },
   },
-},
   competenze: {
     execute: function () {
       if (!window.isBarbaTransition) {
@@ -1415,6 +1415,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1447,6 +1449,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1478,6 +1482,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1509,6 +1515,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1540,6 +1548,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1573,6 +1583,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1604,6 +1616,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1635,6 +1649,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1666,6 +1682,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1696,6 +1714,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1729,6 +1749,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1759,6 +1781,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1784,6 +1808,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1810,6 +1836,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1836,6 +1864,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1876,6 +1906,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1907,6 +1939,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1941,6 +1975,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1970,6 +2006,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -1999,6 +2037,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -2022,6 +2062,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -2039,6 +2081,9 @@ home: {
       FirebaseAppManager.initLoginForm();
       window.AppPasswordToggleLogin.init();
       setupPrimaryButtons();
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
       window.pageSpecificListeners.push({
         cleanup: () => {
           window.FormSubmitLock?.unlock?.();
@@ -2059,6 +2104,9 @@ home: {
       window.AppForms.init();
       window.AppPasswordToggle.init();
       setupPrimaryButtons();
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
       window.pageSpecificListeners.push({
         cleanup: () => {
           window.FormSubmitLock?.unlock?.();
@@ -2078,6 +2126,9 @@ home: {
       MultiStepForm.init();
       window.AppResetPassword.init();
       setupPrimaryButtons();
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
       window.pageSpecificListeners.push({
         cleanup: () => {
           window.FormSubmitLock?.unlock?.();
@@ -2098,6 +2149,9 @@ home: {
       window.AppUpdatePassword.init();
       window.AppPasswordToggle.init();
       setupPrimaryButtons();
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
       window.pageSpecificListeners.push({
         cleanup: () => {
           window.FormSubmitLock?.unlock?.();
@@ -2114,6 +2168,9 @@ home: {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
     },
     cleanup: function () {
       cleanUpTriggers();
@@ -2125,6 +2182,9 @@ home: {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
     },
     cleanup: function () {
       cleanUpTriggers();
@@ -2137,6 +2197,9 @@ home: {
         window.pageEnterFx?.introGenericPage?.();
       }
       window.DashboardManager.init();
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
       //toggleFaq();
     },
     cleanup: function () {
@@ -2152,6 +2215,9 @@ home: {
       window.AssessmentManager.init();
       window.MultiStepForm.init();
       window.AppAssessmentForms.init();
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
       //toggleFaq();
     },
     cleanup: function () {
@@ -2183,6 +2249,8 @@ home: {
           }
         } catch (err) {
           console.error("Errore esecuzione funzioni differite:", err);
+        } finally {
+          window.runFinalBoot?.();
         }
       }, 2000);
     },
@@ -2199,6 +2267,9 @@ home: {
       MultiStepForm.init();
       window.AppGeneralForms.init();
       setupPrimaryButtons();
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
       window.pageSpecificListeners.push({
         cleanup: () => {
           window.FormSubmitLock?.unlock?.();
@@ -2212,6 +2283,9 @@ home: {
         window.pageEnterFx?.introGenericPage?.();
       }
       setupPrimaryButtons();
+      setTimeout(() => {
+        window.runFinalBoot?.();
+      }, 2000);
     },
     cleanup: function () {
       cleanUpTriggers();
@@ -2241,6 +2315,8 @@ window.runFinalBoot = function () {
         window.FirebaseAppManager?.init?.();
       } catch (err) {
         console.error("Errore caricamento/init cta-auth:", err);
+      } finally {
+        window.startCookieManager?.();
       }
     }, 1000);
   });
