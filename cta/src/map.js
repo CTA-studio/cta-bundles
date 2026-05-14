@@ -1,6 +1,11 @@
-const CTA_BUNDLE_VER = "v-1.1.1-beta";
+const CTA_BUNDLE_VER = "v-1.1.2-beta";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
+window.safeRequestIdleCallback =
+  window.safeRequestIdleCallback ||
+  function (cb) {
+    setTimeout(cb, 50);
+  };
 
 // Assicuriamoci che le variabili globali esistano
 if (typeof window.previousPageID === "undefined") {
@@ -51,63 +56,63 @@ window.pageSpecificFunctionsMap = {
   "69e73f5e181c527386af4272": {
     name: "competenze",
     jsonKey: "69e73f5e181c527386af4272",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //siti WEB
   "69e7b9cf98343dd874c7f1e4": {
     name: "sitiWeb",
     jsonKey: "69e7b9cf98343dd874c7f1e4",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //siti WEB / SITI VETRINA
   "69f4d2f18a7b4ccc15b480e0": {
     name: "sitiVetrina",
     jsonKey: "69f4d2f18a7b4ccc15b480e0",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //siti WEB / SITI E-COMMERCE
   "69f8927640f544f41a0d88ac": {
     name: "sitiEcommerce",
     jsonKey: "69f8927640f544f41a0d88ac",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //siti WEB / webapp
   "69f8b3cc0310547fd0d5178d": {
     name: "webApp",
     jsonKey: "69f8b3cc0310547fd0d5178d",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //design
   "69ef91c66b6ff4580d64fb0e": {
     name: "design",
     jsonKey: "69ef91c66b6ff4580d64fb0e",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //design / brand identity
   "69f8c2d7833bddcdc45fcb08": {
     name: "brandIdentity",
     jsonKey: "69f8c2d7833bddcdc45fcb08",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //design / visual identity
   "69f9ae70e72a1a5569b5fcd9": {
     name: "visualIdentity",
     jsonKey: "69f9ae70e72a1a5569b5fcd9",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //design / visual identity
   "69f9debcd358d5504e0ddfdb": {
     name: "logoDesign",
     jsonKey: "69f9debcd358d5504e0ddfdb",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
 
@@ -115,14 +120,14 @@ window.pageSpecificFunctionsMap = {
   "69f1db4d0bc3f2a13ffe24e4": {
     name: "direzioneArtistica",
     jsonKey: "69f1db4d0bc3f2a13ffe24e4",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //progetti
   "69fb4ddff499fbbabf81ec26": {
     name: "progetti",
     jsonKey: "69fb4ddff499fbbabf81ec26",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //contatti
@@ -130,6 +135,7 @@ window.pageSpecificFunctionsMap = {
     name: "contatti",
     jsonKey: "68b2e6c65a7f2a0ef027f54b",
     scripts: [
+      `${CTA_CDN}/cta-page-functions.js`,
       `${CTA_CDN}/cta-form.js`,
       "https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js",
     ],
@@ -139,7 +145,7 @@ window.pageSpecificFunctionsMap = {
   "69e23192e5a6a6ccf16b5c2a": {
     name: "studio",
     jsonKey: "69e23192e5a6a6ccf16b5c2a",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   //PROPOSITO
@@ -147,6 +153,7 @@ window.pageSpecificFunctionsMap = {
     name: "Proposito",
     jsonKey: "68b2e6c65a7f2a0ef027f553",
     scripts: [
+      `${CTA_CDN}/cta-proposito.js`,
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -157,6 +164,7 @@ window.pageSpecificFunctionsMap = {
     name: "blogPost",
     jsonKey: "",
     scripts: [
+      `${CTA_CDN}/cta-proposito.js`,
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -167,6 +175,7 @@ window.pageSpecificFunctionsMap = {
     name: "blogCategory",
     jsonKey: "",
     scripts: [
+      `${CTA_CDN}/cta-proposito.js`,
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -177,6 +186,7 @@ window.pageSpecificFunctionsMap = {
     name: "blogTag",
     jsonKey: "",
     scripts: [
+      `${CTA_CDN}/cta-proposito.js`,
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
@@ -192,32 +202,32 @@ window.pageSpecificFunctionsMap = {
   "67af596455154a4f0335f5e0": {
     name: "verify",
     jsonKey: "",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-auth.js`],
     styles: [],
   },
   "68b2e6c65a7f2a0ef027f562": {
     name: "userPendingApproval",
     jsonKey: "",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-auth.js`],
     styles: [],
   },
   "66f3c6fe1fbe616545b964bd": {
     name: "dashboard",
     jsonKey: "",
-    scripts: [`${CTA_CDN}/cta-form.js`],
+    scripts: [`${CTA_CDN}/cta-auth.js`, `${CTA_CDN}/cta-form.js`],
     styles: [],
   },
   "66f3c74d69405c8d610cb8ed": {
     name: "assessment",
     jsonKey: "",
-    scripts: [`${CTA_CDN}/cta-form.js`],
+    scripts: [`${CTA_CDN}/cta-auth.js`, `${CTA_CDN}/cta-form.js`],
     styles: [],
   },
   //LANDING
   "68b2e6c65a7f2a0ef027f563": {
     name: "landing",
     jsonKey: "",
-    scripts: [],
+    scripts: [`${CTA_CDN}/cta-page-functions.js`],
     styles: [],
   },
   // PROJECT art director
@@ -254,28 +264,28 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f55a": {
     name: "loginPage",
     jsonKey: "",
-    scripts: [`${CTA_CDN}/cta-form.js`],
+    scripts: [`${CTA_CDN}/cta-auth.js`, `${CTA_CDN}/cta-form.js`],
     styles: [],
   },
   //Regiistrazione
   "68b2e6c65a7f2a0ef027f55b": {
     name: "registrazione",
     jsonKey: "",
-    scripts: [`${CTA_CDN}/cta-form.js`],
+    scripts: [`${CTA_CDN}/cta-auth.js`, `${CTA_CDN}/cta-form.js`],
     styles: [],
   },
   //Reset Password
   "68b2e6c65a7f2a0ef027f55c": {
     name: "resetPassword",
     jsonKey: "",
-    scripts: [`${CTA_CDN}/cta-form.js`],
+    scripts: [`${CTA_CDN}/cta-auth.js`, `${CTA_CDN}/cta-form.js`],
     styles: [],
   },
   //Update Password
   "68b2e6c65a7f2a0ef027f55d": {
     name: "updatePassword",
     jsonKey: "",
-    scripts: [`${CTA_CDN}/cta-form.js`],
+    scripts: [`${CTA_CDN}/cta-auth.js`, `${CTA_CDN}/cta-form.js`],
     styles: [],
   },
   //valutazione
@@ -1269,144 +1279,152 @@ window.jsonPageMap = {
 
 // Funzioni specifiche per ciascuna pagina
 window.pageFunctions = {
-home: {
-  execute: function () {
-    const perfLog = (name, fn) => {
-      const start = performance.now();
-
-      try {
-        return fn?.();
-      } finally {
-        const duration = Math.round(performance.now() - start);
-
-        if (duration > 25) {
-          console.log(`[HOME PERF] ${name}: ${duration}ms`);
-        }
-      }
-    };
-
-    if (!window.isBarbaTransition) {
-      perfLog("OnLoadHeroDefault", () => OnLoadHeroDefault());
-    }
-
-    const bp = window.bp;
-    const isDesktop = !!bp?.is?.("lgUp");
-    const isTouchDown = !!bp?.is?.("touchDown");
-
-    function setupHomeSwiperLazyLoad() {
-      const trigger = document.querySelector("#studio-wrapper");
-      if (!trigger) return;
-
-      let hasLoaded = false;
-      let loadPromise = null;
-
-      const loadSwiper = async () => {
-        if (hasLoaded) return;
-        hasLoaded = true;
+  home: {
+    execute: function () {
+      const perfLog = (name, fn) => {
+        const start = performance.now();
 
         try {
-          if (!loadPromise) {
-            loadPromise = (async () => {
-              if (!window.propositoAnimation) {
-                await loadScript(`${CTA_CDN}/cta-proposito.js`);
-              }
+          return fn?.();
+        } finally {
+          const duration = Math.round(performance.now() - start);
 
-              if (!window.Swiper) {
-                await loadScript(
-                  "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
-                );
-              }
-            })();
+          if (duration > 25) {
+            console.log(`[HOME PERF] ${name}: ${duration}ms`);
           }
-
-          await loadPromise;
-
-          perfLog("propositoAnimation.initializeSwiper", () => {
-            window.propositoAnimation?.initializeSwiper?.();
-          });
-        } catch (err) {
-          console.error("Errore caricamento Proposito/Swiper Home:", err);
         }
       };
 
-      if (!("IntersectionObserver" in window)) {
-        setTimeout(loadSwiper, 8000);
-        return;
+      if (!window.isBarbaTransition) {
+        perfLog("OnLoadHeroDefault", () => OnLoadHeroDefault());
       }
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
+      const bp = window.bp;
+      const isDesktop = !!bp?.is?.("lgUp");
+      const isTouchDown = !!bp?.is?.("touchDown");
 
-          observer.disconnect();
-          loadSwiper();
-        },
-        {
-          rootMargin: "900px 0px",
-          threshold: 0,
-        },
-      );
+      function setupHomeSwiperLazyLoad() {
+        const trigger = document.querySelector("#studio-wrapper");
+        if (!trigger) return;
 
-      observer.observe(trigger);
+        let hasLoaded = false;
+        let loadPromise = null;
 
-      window.pageSpecificListeners?.push(() => {
-        observer.disconnect();
-      });
-    }
+        const loadSwiper = async () => {
+          if (hasLoaded) return;
+          hasLoaded = true;
 
-    if (isDesktop) {
-      window.safeRequestIdleCallback(() => {
-        perfLog("ctaStickyTransition.reset", () => ctaStickyTransition.reset());
-        perfLog("menuNavigation.heroMenuHover", () =>
-          window.menuNavigation.heroMenuHover(),
-        );
-        perfLog("scrollProgressLine", () => scrollProgressLine());
-      });
-    } else if (isTouchDown) {
-      window.safeRequestIdleCallback(() => {
-        perfLog("showcasePanelsScrollMobile", () => showcasePanelsScrollMobile());
-        perfLog("showcaseTextContentMobile", () => showcaseTextContentMobile());
-        perfLog("setupVerticalShowcaseButtons", () =>
-          setupVerticalShowcaseButtons(),
-        );
-      });
-    }
+          try {
+            if (!loadPromise) {
+              loadPromise = (async () => {
+                if (!window.propositoAnimation) {
+                  await loadScript(`${CTA_CDN}/cta-proposito.js`);
+                }
 
-    window.safeRequestIdleCallback(() => {
-      perfLog("setupPrimaryButtons", () => setupPrimaryButtons());
-      perfLog("setupShowcaseButtons", () => setupShowcaseButtons());
-    });
+                if (!window.Swiper) {
+                  await loadScript(
+                    "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
+                  );
+                }
+              })();
+            }
 
-    setTimeout(() => {
-      window.safeRequestIdleCallback(() => {
-        try {
-          perfLog("serviceIntroAnimation.init", () =>
-            window.serviceIntroAnimation?.init(),
-          );
+            await loadPromise;
 
-          perfLog("initStudioWrapperIntro", () => initStudioWrapperIntro());
-          perfLog("initCtaContactsIntro", () => initCtaContactsIntro());
-          perfLog("initPropositoHeaderIntro", () => initPropositoHeaderIntro());
+            perfLog("propositoAnimation.initializeSwiper", () => {
+              window.propositoAnimation?.initializeSwiper?.();
+            });
+          } catch (err) {
+            console.error("Errore caricamento Proposito/Swiper Home:", err);
+          }
+        };
 
-          perfLog("setupHomeSwiperLazyLoad", () => setupHomeSwiperLazyLoad());
-
-          perfLog("footerManager.refresh", () =>
-            window.footerManager?.refresh?.(),
-          );
-        } catch (err) {
-          console.error("Errore esecuzione funzioni differite:", err);
-        } finally {
-          window.runFinalBoot?.();
+        if (!("IntersectionObserver" in window)) {
+          setTimeout(loadSwiper, 8000);
+          return;
         }
-      });
-    }, 2500);
-  },
 
-  cleanup: function () {
-    cleanUpTriggers();
-    cleanUpPageListeners();
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+
+            observer.disconnect();
+            loadSwiper();
+          },
+          {
+            rootMargin: "900px 0px",
+            threshold: 0,
+          },
+        );
+
+        observer.observe(trigger);
+
+        window.pageSpecificListeners?.push(() => {
+          observer.disconnect();
+        });
+      }
+
+      if (isDesktop) {
+        window.safeRequestIdleCallback(() => {
+          perfLog("ctaStickyTransition.reset", () =>
+            ctaStickyTransition.reset(),
+          );
+          perfLog("menuNavigation.heroMenuHover", () =>
+            window.menuNavigation.heroMenuHover(),
+          );
+          perfLog("scrollProgressLine", () => scrollProgressLine());
+        });
+      } else if (isTouchDown) {
+        window.safeRequestIdleCallback(() => {
+          perfLog("showcasePanelsScrollMobile", () =>
+            showcasePanelsScrollMobile(),
+          );
+          perfLog("showcaseTextContentMobile", () =>
+            showcaseTextContentMobile(),
+          );
+          perfLog("setupVerticalShowcaseButtons", () =>
+            setupVerticalShowcaseButtons(),
+          );
+        });
+      }
+
+      window.safeRequestIdleCallback(() => {
+        perfLog("setupPrimaryButtons", () => setupPrimaryButtons());
+        perfLog("setupShowcaseButtons", () => setupShowcaseButtons());
+      });
+
+      setTimeout(() => {
+        window.safeRequestIdleCallback(() => {
+          try {
+            perfLog("serviceIntroAnimation.init", () =>
+              window.serviceIntroAnimation?.init(),
+            );
+
+            perfLog("initStudioWrapperIntro", () => initStudioWrapperIntro());
+            perfLog("initCtaContactsIntro", () => initCtaContactsIntro());
+            perfLog("initPropositoHeaderIntro", () =>
+              initPropositoHeaderIntro(),
+            );
+
+            perfLog("setupHomeSwiperLazyLoad", () => setupHomeSwiperLazyLoad());
+
+            perfLog("footerManager.refresh", () =>
+              window.footerManager?.refresh?.(),
+            );
+          } catch (err) {
+            console.error("Errore esecuzione funzioni differite:", err);
+          } finally {
+            window.runFinalBoot?.();
+          }
+        });
+      }, 2500);
+    },
+
+    cleanup: function () {
+      cleanUpTriggers();
+      cleanUpPageListeners();
+    },
   },
-},
   competenze: {
     execute: function () {
       if (!window.isBarbaTransition) {
@@ -2261,12 +2279,6 @@ window.runFinalBoot = function () {
     }, 1000);
   });
 };
-
-window.safeRequestIdleCallback =
-  window.safeRequestIdleCallback ||
-  function (cb) {
-    setTimeout(cb, 50);
-  };
 
 (function () {
   if (window.bp) return;

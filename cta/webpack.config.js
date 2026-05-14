@@ -3,6 +3,7 @@ const path = require("path");
 module.exports = {
   entry: {
     "cta-base": "./src/index.js",
+    "cta-page-functions": "./src/page-functions.js",
     "cta-auth": "./src/auth.js",
     "cta-proposito": "./src/proposito.js",
     "cta-projects": "./src/projects.js",
