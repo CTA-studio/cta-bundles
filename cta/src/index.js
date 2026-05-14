@@ -4,3 +4,4 @@ import "./core";
 import "./app";
 import "./functions";
 import "./home";
+import "./page-functions";
