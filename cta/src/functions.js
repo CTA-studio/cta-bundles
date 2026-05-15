@@ -15,15 +15,21 @@ window.customCursor =
     const api = {};
 
     api.state = {
-      bound: false, // global listeners bind una sola volta
+      bound: false,
       cursorVisible: true,
       current: "normal", // "normal" | "grab" | "grabbing"
+
       // cache elementi
       cursor: null,
       cursorNormal: null,
       cursorGrab: null,
       cursorGrabbing: null,
       pulse: null,
+
+      // ultima posizione nota
+      lastX: window.innerWidth / 2,
+      lastY: window.innerHeight / 2,
+
       // handler globali
       handlePointerMove: null,
       onDocMouseLeave: null,
@@ -32,6 +38,8 @@ window.customCursor =
       onBlur: null,
       onFocus: null,
       onVisibility: null,
+      onPageHide: null,
+      onPageShow: null,
       handlePointerOver: null,
       handlePointerOut: null,
     };
@@ -64,6 +72,25 @@ window.customCursor =
       ) {
         return false;
       }
+
+      return true;
+    };
+
+    api.ensureReady = function () {
+      if (!api.shouldEnable()) {
+        document.documentElement.classList.remove("cursor-on");
+        return false;
+      }
+
+      document.documentElement.classList.add("cursor-on");
+
+      const currentCursor = api.state.cursor;
+
+      // utile dopo Barba / Safari bfcache / DOM refresh
+      if (!currentCursor || !document.documentElement.contains(currentCursor)) {
+        return api.cacheElements();
+      }
+
       return true;
     };
 
@@ -79,21 +106,24 @@ window.customCursor =
         cursorGrabbing.style.opacity = 0;
         return;
       }
+
       if (next === "grab") {
         cursorNormal.style.opacity = 0;
         cursorGrab.style.opacity = 1;
         cursorGrabbing.style.opacity = 0;
         return;
       }
+
       if (next === "grabbing") {
         cursorNormal.style.opacity = 0;
         cursorGrab.style.opacity = 0;
         cursorGrabbing.style.opacity = 1;
-        return;
       }
     };
 
     api.reset = function () {
+      if (!api.ensureReady()) return;
+
       const { cursorNormal, cursorGrab, cursorGrabbing, pulse } = api.state;
       if (!cursorNormal || !cursorGrab || !cursorGrabbing) return;
 
@@ -117,23 +147,38 @@ window.customCursor =
       });
     };
 
-    // ---------- show/hide + snap ----------
+    // ============================================================
+    // SHOW / HIDE / SNAP
+    // ============================================================
     api._snapToEvent = function (e) {
-      if (!e) return;
+      if (!api.ensureReady()) return;
+
       const c = api.state.cursor;
       if (!c) return;
 
+      if (e && typeof e.clientX === "number" && typeof e.clientY === "number") {
+        api.state.lastX = e.clientX;
+        api.state.lastY = e.clientY;
+      }
+
       gsap.killTweensOf(c);
-      gsap.set(c, { x: e.clientX, y: e.clientY });
+      gsap.set(c, {
+        x: api.state.lastX,
+        y: api.state.lastY,
+      });
     };
 
     api._show = function (e) {
+      if (!api.ensureReady()) return;
+
       api._snapToEvent(e);
-      if (api.state.cursorVisible) return;
+
       api.state.cursorVisible = true;
 
       const c = api.state.cursor;
       if (!c) return;
+
+      gsap.killTweensOf(c, "autoAlpha");
       gsap.to(c, {
         autoAlpha: 1,
         duration: 0.12,
@@ -143,11 +188,12 @@ window.customCursor =
     };
 
     api._hide = function () {
-      if (!api.state.cursorVisible) return;
       api.state.cursorVisible = false;
 
       const c = api.state.cursor;
       if (!c) return;
+
+      gsap.killTweensOf(c, "autoAlpha");
       gsap.to(c, {
         autoAlpha: 0,
         duration: 0.12,
@@ -157,7 +203,7 @@ window.customCursor =
     };
 
     // ============================================================
-    // 1) INIT GLOBAL (una volta sola)
+    // 1) INIT GLOBAL — una volta sola
     // ============================================================
     api.initGlobal = function () {
       if (!api.shouldEnable()) {
@@ -167,7 +213,6 @@ window.customCursor =
 
       document.documentElement.classList.add("cursor-on");
 
-      // cache iniziale
       if (!api.cacheElements()) {
         console.warn("customCursor: elementi non trovati (initGlobal)");
         return;
@@ -176,50 +221,79 @@ window.customCursor =
       if (api.state.bound) return;
       api.state.bound = true;
 
-      // stato coerente
       api.state.cursorVisible = true;
+
       if (api.state.cursor) {
-        gsap.set(api.state.cursor, { autoAlpha: 1 });
+        gsap.set(api.state.cursor, {
+          autoAlpha: 1,
+          x: api.state.lastX,
+          y: api.state.lastY,
+        });
       }
 
-      // handler movimento: niente più quickTo, usiamo gsap.to
       api.state.handlePointerMove = (e) => {
+        if (!api.ensureReady()) return;
+
         const c = api.state.cursor;
         if (!c) return;
+
+        api.state.lastX = e.clientX;
+        api.state.lastY = e.clientY;
+
+        // Safari recovery: se mouseenter/focus non si attivano,
+        // al primo movimento il cursore torna visibile.
+        if (!api.state.cursorVisible) {
+          api._show(e);
+          return;
+        }
+
         gsap.to(c, {
-          x: e.clientX,
-          y: e.clientY,
+          x: api.state.lastX,
+          y: api.state.lastY,
           duration: 0.2,
           ease: "power2.out",
           overwrite: "auto",
         });
       };
 
-      api.state.onDocMouseLeave = () => api._hide();
-      api.state.onDocMouseEnter = (e) => api._show(e);
-
-      api.state.onWindowMouseOut = (e) => {
-        if (!e.relatedTarget && !e.toElement) api._hide();
+      api.state.onDocMouseLeave = () => {
+        api._hide();
       };
 
-      api.state.onBlur = () => api._hide();
-      api.state.onFocus = () => {
-        if (!api.state.cursorVisible) {
-          api.state.cursorVisible = true;
-          const c = api.state.cursor;
-          if (!c) return;
-          gsap.to(c, {
-            autoAlpha: 1,
-            duration: 0.12,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
+      api.state.onDocMouseEnter = (e) => {
+        api._show(e);
+      };
+
+      api.state.onWindowMouseOut = (e) => {
+        if (!e.relatedTarget && !e.toElement) {
+          api._hide();
         }
       };
 
+      api.state.onBlur = () => {
+        api._hide();
+      };
+
+      api.state.onFocus = () => {
+        if (!api.ensureReady()) return;
+        api._show();
+      };
+
       api.state.onVisibility = () => {
-        if (document.hidden) api._hide();
-        else api.state.onFocus();
+        if (document.hidden) {
+          api._hide();
+        } else {
+          api._show();
+        }
+      };
+
+      api.state.onPageHide = () => {
+        api._hide();
+      };
+
+      api.state.onPageShow = () => {
+        if (!api.ensureReady()) return;
+        api._show();
       };
 
       const interactiveSelector =
@@ -235,6 +309,7 @@ window.customCursor =
           ease: "power2.out",
           overwrite: "auto",
         });
+
         gsap.to(api.state.pulse, {
           fill: "#ff006e",
           scale: 1.3,
@@ -255,6 +330,7 @@ window.customCursor =
           ease: "power2.out",
           overwrite: "auto",
         });
+
         gsap.to(api.state.pulse, {
           fill: "#ffffff",
           scale: 1,
@@ -265,33 +341,49 @@ window.customCursor =
       };
 
       api.state.handlePointerOver = (e) => {
+        if (!api.ensureReady()) return;
+
         const target = e.target.closest(interactiveSelector);
         if (!target) return;
         if (target.contains(e.relatedTarget)) return;
+
         animateInteractiveEnter();
       };
 
       api.state.handlePointerOut = (e) => {
+        if (!api.ensureReady()) return;
+
         const target = e.target.closest(interactiveSelector);
         if (!target) return;
         if (target.contains(e.relatedTarget)) return;
+
         animateInteractiveLeave();
       };
 
-      // GLOBAL listeners (non entrano nel cleanup)
-      window.addEventListener("pointermove", api.state.handlePointerMove);
+      // GLOBAL listeners — non entrano nel cleanup pagina
+      window.addEventListener("pointermove", api.state.handlePointerMove, {
+        passive: true,
+      });
+
       document.addEventListener("mouseleave", api.state.onDocMouseLeave);
       document.addEventListener("mouseenter", api.state.onDocMouseEnter);
+
       window.addEventListener("mouseout", api.state.onWindowMouseOut);
       window.addEventListener("blur", api.state.onBlur);
       window.addEventListener("focus", api.state.onFocus);
+
+      // Safari / bfcache / browser back-forward
+      window.addEventListener("pagehide", api.state.onPageHide);
+      window.addEventListener("pageshow", api.state.onPageShow);
+
       document.addEventListener("visibilitychange", api.state.onVisibility);
+
       document.addEventListener("pointerover", api.state.handlePointerOver);
       document.addEventListener("pointerout", api.state.handlePointerOut);
     };
 
     // ============================================================
-    // 2) REFRESH (dopo ogni transizione Barba)
+    // 2) REFRESH — dopo ogni transizione Barba
     // ============================================================
     api.refresh = function () {
       if (!api.shouldEnable()) {
@@ -301,35 +393,47 @@ window.customCursor =
 
       document.documentElement.classList.add("cursor-on");
 
-      // rinfresca refs DOM (importante con Barba)
       if (!api.cacheElements()) {
         console.warn("customCursor: elementi non trovati (refresh)");
         return;
       }
 
-      // riallinea stato visivo
       api.reset();
 
-      // rebind swiper per la nuova pagina
+      // stato coerente dopo Barba
+      api.state.cursorVisible = true;
+
+      if (api.state.cursor) {
+        gsap.killTweensOf(api.state.cursor);
+        gsap.set(api.state.cursor, {
+          autoAlpha: 1,
+          x: api.state.lastX,
+          y: api.state.lastY,
+        });
+      }
+
       api.bindSwiperPage();
       api.bindRailPage();
     };
 
     // ============================================================
-    // 3-A) PAGE-SPECIFIC SWIPER (si pulisce con pageSpecificListeners)
+    // 3-A) PAGE-SPECIFIC SWIPER
     // ============================================================
     api.bindSwiperPage = function () {
       if (!api.shouldEnable()) return;
+
       if (
         !api.state.cursorNormal ||
         !api.state.cursorGrab ||
         !api.state.cursorGrabbing
-      )
+      ) {
         return;
+      }
 
       api.ensurePageSpecificArray();
 
       const swiperWrappers = document.querySelectorAll(".swiper-wrapper");
+
       swiperWrappers.forEach((wrapper) => {
         if (wrapper.dataset.cursorSwiperBound === "1") return;
         wrapper.dataset.cursorSwiperBound = "1";
@@ -348,12 +452,12 @@ window.customCursor =
           { element: wrapper, event: "pointerenter", handler: onEnter },
           { element: wrapper, event: "pointerleave", handler: onLeave },
           { element: wrapper, event: "pointerdown", handler: onDown },
-          { element: wrapper, event: "pointerup", handler: onUp },
+          { element: wrapper, event: "pointerup", handler: onUp }
         );
       });
 
       const swiperInteractive = document.querySelectorAll(
-        ".swiper-wrapper a, .swiper-wrapper button, .swiper-wrapper [role='button'], .swiper-wrapper input, .swiper-wrapper select, .swiper-wrapper textarea",
+        ".swiper-wrapper a, .swiper-wrapper button, .swiper-wrapper [role='button'], .swiper-wrapper input, .swiper-wrapper select, .swiper-wrapper textarea"
       );
 
       swiperInteractive.forEach((el) => {
@@ -368,16 +472,17 @@ window.customCursor =
 
         window.pageSpecificListeners.push(
           { element: el, event: "pointerenter", handler: onIEnter },
-          { element: el, event: "pointerleave", handler: onILeave },
+          { element: el, event: "pointerleave", handler: onILeave }
         );
       });
     };
 
     // ============================================================
-    // 3-B) Slider Custom (si pulisce con pageSpecificListeners)
+    // 3-B) Slider Custom
     // ============================================================
     api.bindRailPage = function () {
       if (!api.shouldEnable()) return;
+
       if (
         !api.state.cursorNormal ||
         !api.state.cursorGrab ||
@@ -408,12 +513,12 @@ window.customCursor =
           { element: host, event: "pointerenter", handler: onEnter },
           { element: host, event: "pointerleave", handler: onLeave },
           { element: host, event: "pointerdown", handler: onDown },
-          { element: host, event: "pointerup", handler: onUp },
+          { element: host, event: "pointerup", handler: onUp }
         );
       });
 
       const railInteractive = document.querySelectorAll(
-        ".exp_slider a, .exp_slider button, .exp_slider [role='button'], .exp_slider input, .exp_slider select, .exp_slider textarea",
+        ".exp_slider a, .exp_slider button, .exp_slider [role='button'], .exp_slider input, .exp_slider select, .exp_slider textarea"
       );
 
       railInteractive.forEach((el) => {
@@ -428,22 +533,35 @@ window.customCursor =
 
         window.pageSpecificListeners.push(
           { element: el, event: "pointerenter", handler: onIEnter },
-          { element: el, event: "pointerleave", handler: onILeave },
+          { element: el, event: "pointerleave", handler: onILeave }
         );
       });
     };
 
     // ============================================================
-    // 4) CLEANUP PAGE (solo roba page-specific)
+    // 4) CLEANUP PAGE — solo roba page-specific
     // ============================================================
     api.cleanupPage = function () {
       if (Array.isArray(window.pageSpecificListeners)) {
-        window.pageSpecificListeners.forEach(({ element, event, handler }) => {
-          element?.removeEventListener?.(event, handler);
+        window.pageSpecificListeners.forEach((entry) => {
+          if (!entry) return;
+
+          if (typeof entry.cleanup === "function") {
+            try {
+              entry.cleanup();
+            } catch (err) {
+              console.warn("customCursor.cleanupPage: errore cleanup", err);
+            }
+            return;
+          }
+
+          const { element, event, handler, options } = entry;
+          element?.removeEventListener?.(event, handler, options);
         });
       }
+
       window.pageSpecificListeners = [];
-      api.reset(); // stato coerente per la transizione
+      api.reset();
     };
 
     return api;

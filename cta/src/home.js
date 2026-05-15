@@ -1,9 +1,11 @@
 /** HOME */
-const snapPx = window.snapPx || ((v) => {
-  const dpr = window.devicePixelRatio || 1;
-  const n = parseFloat(v);
-  return Math.round(n * dpr) / dpr + "px";
-});
+const snapPx =
+  window.snapPx ||
+  ((v) => {
+    const dpr = window.devicePixelRatio || 1;
+    const n = parseFloat(v);
+    return Math.round(n * dpr) / dpr + "px";
+  });
 
 const header = window.header || {};
 const transitionElementsObj = window.transitionElementsObj || {};
@@ -24,7 +26,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
 
     this.scrollWrapperV = document.getElementById("vertical-scroll-wrapper");
     this.scrollContainerV = document.querySelector(
-      ".vertical-scroll-container"
+      ".vertical-scroll-container",
     );
     this.verticalPath = document.querySelector(".vertical-path");
 
@@ -35,7 +37,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
     // Popoliamo gli array solo se gli elementi sono stati trovati
     this.panelArray = [this.verticalPath, this.panelTerzo].filter(Boolean);
     this.contentArray = [this.scrollContainerH, this.verticalPath].filter(
-      Boolean
+      Boolean,
     );
 
     // Se gli elementi sono validi, rilancio le animazioni
@@ -43,7 +45,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
       this.init();
     } else {
       console.warn(
-        "reset(): Alcuni elementi non sono stati trovati, animazioni non riavviate."
+        "reset(): Alcuni elementi non sono stati trovati, animazioni non riavviate.",
       );
     }
   },
@@ -153,7 +155,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
 
     if (!SplitText) {
       console.warn(
-        "showcaseVerticalScroll: SplitText GSAP non disponibile (plugin non caricato)"
+        "showcaseVerticalScroll: SplitText GSAP non disponibile (plugin non caricato)",
       );
       return;
     }
@@ -168,24 +170,27 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
     }
     const pointValues = gsap.utils.toArray("#value-desk .point-value");
     const lineTitles = gsap.utils.toArray(
-      "#value-desk .line-title.text-par.red"
+      "#value-desk .line-title.text-par.red",
     );
 
     // Manteniamo le stesse classi .line che usavi con SplitType
     const splitLines = new SplitText("#value-desk .value-text", {
       type: "lines",
       linesClass: "line",
+      aria: "none",
     });
 
     const splitLinesMiss = new SplitText("#value-desk .miss-text", {
       type: "lines",
       linesClass: "line",
+      aria: "none",
     });
     const h2Project = new SplitText("#value-desk .h2.project", {
       type: "chars",
       charsClass: "chars",
       autoSplit: true,
       mask: "chars",
+      aria: "none",
     });
 
     const lineText = splitLines.lines;
@@ -319,7 +324,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
                   stagger: { amount: 0.2 },
                   ease: "power2.out",
                 },
-                0
+                0,
               )
               .to(
                 lineText,
@@ -330,7 +335,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
                   stagger: { amount: 0.2 },
                   ease: "power2.out",
                 },
-                "<=+0.2"
+                "<=+0.2",
               )
               .to(
                 pointValues,
@@ -340,7 +345,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
                   stagger: 0.2,
                   ease: "power2.out",
                 },
-                "<"
+                "<",
               )
               .to(
                 lineTextMiss,
@@ -351,7 +356,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
                   stagger: { amount: 0.2 },
                   ease: "power2.out",
                 },
-                "<=+0.2"
+                "<=+0.2",
               );
           },
           onLeaveBack: () => {
@@ -370,7 +375,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
                   duration: 0.4,
                   ease: "power2.in",
                 },
-                "<"
+                "<",
               )
               .to(
                 lineText,
@@ -380,7 +385,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
                   duration: 0.4,
                   ease: "power2.in",
                 },
-                "<"
+                "<",
               )
               .to(
                 h2,
@@ -391,18 +396,18 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
                   stagger: { amount: 0.2 },
                   ease: "power2.out",
                 },
-                "<"
+                "<",
               );
           },
         },
-      }
+      },
     );
   },
 
   showcaseExpandPanels() {
     if (!this.panelPrimo) {
       console.warn(
-        "showcaseExpandPanels: Il trigger principale non è stato trovato."
+        "showcaseExpandPanels: Il trigger principale non è stato trovato.",
       );
       return;
     }
@@ -447,7 +452,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
   showcaseScaleImages() {
     if (!this.panelPrimo) {
       console.warn(
-        " showcaseScaleImages: il trigger principale non è stato trovato"
+        " showcaseScaleImages: il trigger principale non è stato trovato",
       );
       return;
     }
@@ -497,7 +502,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
   showcaseTextContent() {
     if (!this.panelPrimo) {
       console.warn(
-        "showcaseTextContent: Il trigger principale non è stato trovato."
+        "showcaseTextContent: Il trigger principale non è stato trovato.",
       );
       return;
     }
@@ -508,7 +513,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
 
     if (!SplitText) {
       console.warn(
-        "showcaseTextContent: SplitText GSAP non disponibile (plugin non caricato)"
+        "showcaseTextContent: SplitText GSAP non disponibile (plugin non caricato)",
       );
       return;
     }
@@ -517,6 +522,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
     new SplitText(".panel-title", {
       type: "chars",
       charsClass: "char",
+      aria: "none",
     });
 
     const textTriggers = [
@@ -582,12 +588,12 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             .to(
               descriptionContainer,
               { y: 0, duration: 0.6, ease: "power2.out" },
-              "<"
+              "<",
             )
             .to(
               button,
               { scale: 1, duration: 0.4, ease: "power2.out" },
-              "-=0.2"
+              "-=0.2",
             );
         },
         onLeaveBack: () => {
@@ -602,7 +608,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             .to(
               descriptionContainer,
               { y: 200, duration: 0.4, ease: "power1.in" },
-              "<"
+              "<",
             )
             .to(button, { scale: 0, duration: 0.3, ease: "power1.in" });
         },
@@ -631,7 +637,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
 
       if (!panelItemV || !itemVTitle) {
         console.warn(
-          "panelHoverEffect: elementi interni mancanti in un panel-item-hov"
+          "panelHoverEffect: elementi interni mancanti in un panel-item-hov",
         );
         return;
       }
@@ -653,7 +659,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             duration: 0.3,
             ease: "power2.out",
           },
-          0
+          0,
         )
         .to(
           [panelItemV, itemVTitle],
@@ -662,7 +668,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             duration: 0.4,
             ease: "power2.out",
           },
-          0
+          0,
         );
 
       if (button) {
@@ -674,7 +680,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             duration: 0.4,
             ease: "power2.out",
           },
-          0
+          0,
         );
 
         if (arrowHover) {
@@ -685,7 +691,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
               duration: 0.35,
               ease: "power2.out",
             },
-            0.25
+            0.25,
           );
         }
       }
@@ -699,7 +705,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             duration: 0.5,
             ease: "power2.in",
           },
-          0
+          0,
         )
         .to(
           panelItemV,
@@ -708,7 +714,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             duration: 0.5,
             ease: "power2.in",
           },
-          0
+          0,
         )
         .to(
           h,
@@ -717,7 +723,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             duration: 0.3,
             ease: "power2.inOut",
           },
-          0.2
+          0.2,
         );
 
       if (button) {
@@ -729,7 +735,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
             duration: 0.35,
             ease: "power2.in",
           },
-          0
+          0,
         );
 
         if (arrowHover) {
@@ -740,7 +746,7 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
               duration: 0.3,
               ease: "power2.in",
             },
-            0
+            0,
           );
         }
       }
@@ -781,409 +787,393 @@ window.ctaStickyTransition = window.ctaStickyTransition || {
 
       window.pageSpecificListeners.push(
         { element: panel, event: "mouseenter", handler: handleMouseEnter },
-        { element: panel, event: "mouseleave", handler: handleMouseLeave }
+        { element: panel, event: "mouseleave", handler: handleMouseLeave },
       );
     });
   },
-showcaseProjectButton() {
-  const trigger = document.querySelector("#v-trigger-f");
-  if (!trigger) {
-    console.warn("showcaseProjectButton: trigger #v-trigger-f non trovato");
-    return;
-  }
+  showcaseProjectButton() {
+    const trigger = document.querySelector("#v-trigger-f");
+    if (!trigger) {
+      console.warn("showcaseProjectButton: trigger #v-trigger-f non trovato");
+      return;
+    }
 
-  if (!this.lastPanel) {
-    console.warn("showcaseProjectButton: this.lastPanel non trovato");
-    return;
-  }
+    if (!this.lastPanel) {
+      console.warn("showcaseProjectButton: this.lastPanel non trovato");
+      return;
+    }
 
-  const btn = this.lastPanel.querySelector(
-    '.btn-primary[data-btn="project"]'
-  );
-  if (!btn) {
-    console.warn(
-      "showcaseProjectButton: .btn-primary[data-btn='project'] non trovato in lastPanel"
+    const btn = this.lastPanel.querySelector(
+      '.btn-primary[data-btn="project"]',
     );
-    return;
-  }
+    if (!btn) {
+      console.warn(
+        "showcaseProjectButton: .btn-primary[data-btn='project'] non trovato in lastPanel",
+      );
+      return;
+    }
 
-  const border = btn.querySelector(".btn-border");
-  const label = btn.querySelector(".btn-label");
-  const btnDot = btn.querySelector(".btn");
-  const arrow = btn.querySelector(".btnn-ar") || btn.querySelector(".btn-ar");
+    const border = btn.querySelector(".btn-border");
+    const label = btn.querySelector(".btn-label");
+    const btnDot = btn.querySelector(".btn");
+    const arrow = btn.querySelector(".btnn-ar") || btn.querySelector(".btn-ar");
 
-  if (!border || !label) {
-    console.warn(
-      "showcaseProjectButton: .btn-border o .btn-label mancanti dentro al bottone"
-    );
-    return;
-  }
+    if (!border || !label) {
+      console.warn(
+        "showcaseProjectButton: .btn-border o .btn-label mancanti dentro al bottone",
+      );
+      return;
+    }
 
-  if (!Array.isArray(window.pageSpecificListeners)) {
-    window.pageSpecificListeners = [];
-  }
+    if (!Array.isArray(window.pageSpecificListeners)) {
+      window.pageSpecificListeners = [];
+    }
 
-  // ==== Stati iniziali ================================================
-  gsap.set(border, { "--clip-x": "50%" });
-  gsap.set(label, {
-    rotationX: 90,
-    yPercent: 35,
-    opacity: 0,
-    transformOrigin: "50% 50%",
-    transformPerspective: 600,
-    force3D: true,
-  });
-
-  gsap.set(btn, {
-    "--btn-scale": 0,
-    "--btn-mix": "0%",
-    "--btn-origin-y": "100%",
-  });
-
-  if (arrow) {
-    gsap.set(arrow, {
-      x: 0,
-      y: 0,
-      scale: 0,
-      transformOrigin: "bottom left",
+    // ==== Stati iniziali ================================================
+    gsap.set(border, { "--clip-x": "50%" });
+    gsap.set(label, {
+      rotationX: 90,
+      yPercent: 35,
+      opacity: 0,
+      transformOrigin: "50% 50%",
+      transformPerspective: 600,
+      force3D: true,
     });
-  }
 
-  // ==== TL ingresso ====================================================
-  const tl = gsap.timeline({ paused: true });
-
-  tl.to(border, {
-    duration: 0.35,
-    ease: "power2.out",
-    "--clip-x": "0%",
-  })
-    .to(
-      label,
-      {
-        rotationX: 0,
-        yPercent: 0,
-        opacity: 1,
-        duration: 0.45,
-        ease: "power2.out",
-        force3D: true,
-      },
-      0.22
-    )
-    .to(
-      btnDot,
-      {
-        scale: 0.3,
-        duration: 0.4,
-        ease: "back.out(1.6)",
-      },
-      "-=0.3"
-    );
-
-  if (window.ScrollTrigger) {
-    ScrollTrigger.create({
-      trigger,
-      start: "top 125%",
-      end: "bottom bottom",
-      onEnter: () => tl.play(),
-      onLeaveBack: () => tl.reverse(),
+    gsap.set(btn, {
+      "--btn-scale": 0,
+      "--btn-mix": "0%",
+      "--btn-origin-y": "100%",
     });
-  }
 
-  // ==== Hover IN / OUT ================================================
-  const hoverTl = gsap.timeline({ paused: true });
-  const leaveTl = gsap.timeline({ paused: true });
-
-  let hoverTimeout;
-  let isHovered = false;
-  let isInside = false;
-
-  hoverTl
-    .set(
-      btn,
-      {
-        "--btn-origin-y": "100%",
-      },
-      0
-    )
-    .to(
-      btn,
-      {
-        "--btn-scale": 1,
-        duration: 0.35,
-        ease: "power2.out",
-      },
-      0
-    )
-    .to(
-      btn,
-      {
-        "--btn-mix": "100%",
-        duration: 0.15,
-        ease: "power2.in",
-      },
-      0
-    );
-
-  if (btnDot) {
-    hoverTl.to(
-      btnDot,
-      {
-        scale: 0.9,
-        duration: 0.35,
-        ease: "power2.out",
-      },
-      0.15
-    );
-  }
-
-  if (arrow) {
-    hoverTl.to(
-      arrow,
-      {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-        transformOrigin: "bottom left",
-      },
-      0.25
-    );
-  }
-
-  leaveTl
-    .set(
-      btn,
-      {
-        "--btn-origin-y": "0%",
-      },
-      0
-    )
-    .to(
-      btn,
-      {
-        "--btn-mix": "0%",
-        duration: 0.15,
-        ease: "power2.in",
-      },
-      0.15
-    )
-    .to(
-      btn,
-      {
-        "--btn-scale": 0,
-        duration: 0.3,
-        ease: "power2.in",
-      },
-      0
-    );
-
-  if (btnDot) {
-    leaveTl.to(
-      btnDot,
-      {
-        scale: 0.3,
-        duration: 0.3,
-        ease: "power2.in",
-      },
-      0
-    );
-  }
-
-  if (arrow) {
-    leaveTl.to(
-      arrow,
-      {
+    if (arrow) {
+      gsap.set(arrow, {
+        x: 0,
+        y: 0,
         scale: 0,
-        duration: 0.3,
-        ease: "power2.in",
-        transformOrigin: "top right",
-      },
-      0
-    );
-  }
-
-  const handleMouseEnter = () => {
-    clearTimeout(hoverTimeout);
-    isInside = true;
-
-    if (leaveTl.isActive()) {
-      leaveTl.progress(1, false);
+        transformOrigin: "bottom left",
+      });
     }
 
-    if (!isHovered) {
-      hoverTl.restart();
-      isHovered = true;
+    // ==== TL ingresso ====================================================
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to(border, {
+      duration: 0.35,
+      ease: "power2.out",
+      "--clip-x": "0%",
+    })
+      .to(
+        label,
+        {
+          rotationX: 0,
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.45,
+          ease: "power2.out",
+          force3D: true,
+        },
+        0.22,
+      )
+      .to(
+        btnDot,
+        {
+          scale: 0.3,
+          duration: 0.4,
+          ease: "back.out(1.6)",
+        },
+        "-=0.3",
+      );
+
+    if (window.ScrollTrigger) {
+      ScrollTrigger.create({
+        trigger,
+        start: "top 125%",
+        end: "bottom bottom",
+        onEnter: () => tl.play(),
+        onLeaveBack: () => tl.reverse(),
+      });
     }
-  };
 
-  const handleMouseLeave = () => {
-    isInside = false;
+    // ==== Hover IN / OUT ================================================
+    const hoverTl = gsap.timeline({ paused: true });
+    const leaveTl = gsap.timeline({ paused: true });
 
-    hoverTimeout = setTimeout(() => {
-      if (!isInside) {
-        if (hoverTl.isActive()) {
-          hoverTl.progress(1, false);
-        }
-        leaveTl.restart();
-        isHovered = false;
+    let hoverTimeout;
+    let isHovered = false;
+    let isInside = false;
+
+    hoverTl
+      .set(
+        btn,
+        {
+          "--btn-origin-y": "100%",
+        },
+        0,
+      )
+      .to(
+        btn,
+        {
+          "--btn-scale": 1,
+          duration: 0.35,
+          ease: "power2.out",
+        },
+        0,
+      )
+      .to(
+        btn,
+        {
+          "--btn-mix": "100%",
+          duration: 0.15,
+          ease: "power2.in",
+        },
+        0,
+      );
+
+    if (btnDot) {
+      hoverTl.to(
+        btnDot,
+        {
+          scale: 0.9,
+          duration: 0.35,
+          ease: "power2.out",
+        },
+        0.15,
+      );
+    }
+
+    if (arrow) {
+      hoverTl.to(
+        arrow,
+        {
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out",
+          transformOrigin: "bottom left",
+        },
+        0.25,
+      );
+    }
+
+    leaveTl
+      .set(
+        btn,
+        {
+          "--btn-origin-y": "0%",
+        },
+        0,
+      )
+      .to(
+        btn,
+        {
+          "--btn-mix": "0%",
+          duration: 0.15,
+          ease: "power2.in",
+        },
+        0.15,
+      )
+      .to(
+        btn,
+        {
+          "--btn-scale": 0,
+          duration: 0.3,
+          ease: "power2.in",
+        },
+        0,
+      );
+
+    if (btnDot) {
+      leaveTl.to(
+        btnDot,
+        {
+          scale: 0.3,
+          duration: 0.3,
+          ease: "power2.in",
+        },
+        0,
+      );
+    }
+
+    if (arrow) {
+      leaveTl.to(
+        arrow,
+        {
+          scale: 0,
+          duration: 0.3,
+          ease: "power2.in",
+          transformOrigin: "top right",
+        },
+        0,
+      );
+    }
+
+    const handleMouseEnter = () => {
+      clearTimeout(hoverTimeout);
+      isInside = true;
+
+      if (leaveTl.isActive()) {
+        leaveTl.progress(1, false);
       }
-    }, 50);
-  };
 
-  btn.addEventListener("mouseenter", handleMouseEnter);
-  btn.addEventListener("mouseleave", handleMouseLeave);
+      if (!isHovered) {
+        hoverTl.restart();
+        isHovered = true;
+      }
+    };
 
-  window.pageSpecificListeners.push(
-    { element: btn, event: "mouseenter", handler: handleMouseEnter },
-    { element: btn, event: "mouseleave", handler: handleMouseLeave }
-  );
-},
+    const handleMouseLeave = () => {
+      isInside = false;
+
+      hoverTimeout = setTimeout(() => {
+        if (!isInside) {
+          if (hoverTl.isActive()) {
+            hoverTl.progress(1, false);
+          }
+          leaveTl.restart();
+          isHovered = false;
+        }
+      }, 50);
+    };
+
+    btn.addEventListener("mouseenter", handleMouseEnter);
+    btn.addEventListener("mouseleave", handleMouseLeave);
+
+    window.pageSpecificListeners.push(
+      { element: btn, event: "mouseenter", handler: handleMouseEnter },
+      { element: btn, event: "mouseleave", handler: handleMouseLeave },
+    );
+  },
   createScrollTriggerHero() {
-    const mm = gsap.matchMedia();
+    const isDesktop = !!window.bp?.is?.("lgUp");
+    if (!isDesktop) return;
+
     const trigger = this.panelPrimo;
     const start = "left 30%";
     const end = "left 20%";
     const scrollBar = document.getElementById("scroll-bar-home");
     const logoLetters = gsap.utils.toArray(".logo-svg.cta");
-    const logoDot = document.querySelector(".logo-svg.dot");
+    const logoDotCircle = document.querySelector("#clip-l-dot-circle");
 
-    mm.add("(min-width: 992px)", () => {
-      ScrollTrigger.create({
-        trigger: trigger,
-        start: start,
-        end: end,
-        containerAnimation: this.horizontalScrollTL,
-        scrub: true,
-        id: "hero-trigger",
-        onEnter: () => {
-          gsap
-            .timeline({
-              onComplete: () => {
-                header.burgerBlock?.setAttribute("data-burger", "page");
-                header.logoMenu?.setAttribute("data-logo", "page");
-              },
-            })
-            .to(
-              scrollBar,
-              {
-                opacity: 1,
-                ease: "power2.out",
-                duration: 0.6,
-              },
-              0.3
-            )
-            .to(
-              header.burgerBlock,
-              {
-                scale: 1,
-                duration: 0.5,
-                ease: "power2.inOut",
-              },
-              0.5
-            )
-            .to(
-              logoLetters,
-              {
-                y: 0,
-                duration: 0.5,
-                ease: "power2.out",
-                stagger: 0.08,
-              },
-              0
-            )
-            .to(
-              logoDot,
-              {
-                "--r-scale": "32.392",
-                duration: 0.5,
-                ease: "power1.out",
-              },
-              "-=0.4"
-            );
-        },
-        onLeaveBack: () => {
-          gsap
-            .timeline({
-              onComplete: () => {
-                header.burgerBlock?.setAttribute("data-burger", "home");
-                header.logoMenu?.setAttribute("data-logo", "home");
-              },
-            })
-            .to(header.burgerBlock, {
-              scale: 0,
-              duration: 0.4,
+    if (!trigger || !this.horizontalScrollTL) return;
+
+    if (logoDotCircle) {
+      gsap.set(logoDotCircle, { attr: { r: 0 } });
+    }
+
+    const heroTargets = [
+      scrollBar,
+      header.burgerBlock,
+      logoDotCircle,
+      ...logoLetters,
+    ].filter(Boolean);
+
+    function killHeroTweens() {
+      gsap.killTweensOf(heroTargets);
+    }
+
+    ScrollTrigger.create({
+      trigger: trigger,
+      start: start,
+      end: end,
+      containerAnimation: this.horizontalScrollTL,
+      id: "hero-trigger",
+
+      onEnter: () => {
+        killHeroTweens();
+
+        gsap
+          .timeline({
+            defaults: { overwrite: "auto" },
+            onComplete: () => {
+              header.burgerBlock?.setAttribute("data-burger", "page");
+              header.logoMenu?.setAttribute("data-logo", "page");
+            },
+          })
+          .to(
+            scrollBar,
+            {
+              opacity: 1,
+              ease: "power2.out",
+              duration: 0.6,
+            },
+            0.3,
+          )
+          .to(
+            header.burgerBlock,
+            {
+              scale: 1,
+              duration: 0.5,
               ease: "power2.inOut",
-            })
-            .to(
-              scrollBar,
-              {
-                opacity: 0,
-                ease: "power2.out",
-                duration: 0.2,
-              },
-              0
-            )
-            .to(
-              logoLetters,
-              {
-                y: 100,
-                duration: 0.5,
-                ease: "power2.out",
-                stagger: { each: 0.08, from: "end" },
-              },
-              "<"
-            )
-            .to(
-              logoDot,
-              {
-                "--r-scale": "0",
-                duration: 0.35,
-                ease: "power2.out",
-              },
-              "<"
-            );
-        },
-      });
-    });
+            },
+            0.5,
+          )
+          .to(
+            logoLetters,
+            {
+              y: 0,
+              duration: 0.5,
+              ease: "power2.out",
+              stagger: 0.08,
+            },
+            0,
+          )
+          .to(
+            logoDotCircle,
+            {
+              attr: { r: 32.392 },
+              duration: 0.5,
+              ease: "power1.out",
+            },
+            "-=0.4",
+          );
+      },
 
-    /**const tlScroll = gsap.timeline({
-        scrollTrigger: {
-          trigger: "#service",
-          start: "top top",
-          end: "bottom 20%",
-          scrub: true,
-        },
-      });
-      mm.add("(min-width: 992px)", () => {
-        tlScroll
-          .to(".sphere", { scale: 1.8, duration: 1 })
+      onLeaveBack: () => {
+        killHeroTweens();
+
+        gsap
+          .timeline({
+            defaults: { overwrite: "auto" },
+            onComplete: () => {
+              header.burgerBlock?.setAttribute("data-burger", "home");
+              header.logoMenu?.setAttribute("data-logo", "home");
+            },
+          })
+          .to(header.burgerBlock, {
+            scale: 0,
+            duration: 0.4,
+            ease: "power2.inOut",
+          })
           .to(
-            ".square",
-            { scale: 0.5, y: 200, duration: 1, transformOrigin: "bottom right" },
-            "<"
+            scrollBar,
+            {
+              opacity: 0,
+              ease: "power2.out",
+              duration: 0.2,
+            },
+            0,
           )
-          .to(".arrow", { rotateZ: 90, y: 150, duration: 1 }, "<");
-      });
-      mm.add("(min-width: 768px) and (max-width: 991px)", () => {
-        tlScroll
-          .to(".sphere", { scale: 1.5, duration: 1 })
           .to(
-            ".square",
-            { scale: 0.6, y: 200, duration: 1, transformOrigin: "bottom left" },
-            "<"
+            logoLetters,
+            {
+              y: 100,
+              duration: 0.5,
+              ease: "power2.out",
+              stagger: { each: 0.08, from: "end" },
+            },
+            "<",
           )
-          .to(".arrow", { rotateZ: 90, y: 150, duration: 1 }, "<");
-      });
-      mm.add("(max-width: 767px)", () => {
-        tlScroll
-          .to(".sphere", { scale: 2, duration: 1.5 })
           .to(
-            ".square",
-            { scale: 0.4, y: 200, transformOrigin: "bottom left", duration: 2 },
-            "<"
-          )
-          .to(".arrow", { rotateZ: 90, y: 150, duration: 1.5 }, "<");
-      });
-    */
+            logoDotCircle,
+            {
+              attr: { r: 0 },
+              duration: 0.35,
+              ease: "power2.out",
+            },
+            "<",
+          );
+      },
+    });
   },
 };
 
@@ -1232,7 +1222,7 @@ function showcaseTextContentMobile() {
               duration: 0.4,
               ease: "power1.out",
             },
-            "<"
+            "<",
           );
       },
     });
@@ -1248,7 +1238,7 @@ function showcaseTextContentMobile() {
 
   if (!missTrigger || !lineTitles || !pointValues) {
     console.warn(
-      "showcaseTextContentMobile: .value-text o .miss-text mancanti."
+      "showcaseTextContentMobile: .value-text o .miss-text mancanti.",
     );
     return;
   }
@@ -1256,11 +1246,13 @@ function showcaseTextContentMobile() {
   const splitLines = new SplitText("#value-mobile .value-text", {
     type: "lines",
     linesClass: "line",
+    aria: "none",
   });
 
   const splitLinesMiss = new SplitText("#value-mobile .miss-text", {
     type: "lines",
     linesClass: "line",
+    aria: "none",
   });
 
   const lineText = splitLines.lines || [];
@@ -1268,7 +1260,7 @@ function showcaseTextContentMobile() {
 
   if (!lineText.length || !lineTextMiss.length) {
     console.warn(
-      "showcaseTextContentMobile: Nessuna linea trovata dopo SplitText."
+      "showcaseTextContentMobile: Nessuna linea trovata dopo SplitText.",
     );
     return;
   }
@@ -1301,7 +1293,7 @@ function showcaseTextContentMobile() {
             stagger: { amount: 0.2 },
             ease: "power2.out",
           },
-          "<+=0.2"
+          "<+=0.2",
         )
         .to(
           pointValues,
@@ -1312,7 +1304,7 @@ function showcaseTextContentMobile() {
             stagger: 0.2,
             ease: "power2.out",
           },
-          "<"
+          "<",
         );
     },
   });
@@ -1347,7 +1339,7 @@ function showcasePanelsScrollMobile() {
 
   if (!gs || !ST || !SplitText) {
     console.warn(
-      "showcasePanelsScrollMobile: gsap / SplitText / ScrollTrigger mancanti"
+      "showcasePanelsScrollMobile: gsap / SplitText / ScrollTrigger mancanti",
     );
     return;
   }
@@ -1367,7 +1359,7 @@ function showcasePanelsScrollMobile() {
 
     if (!panelEl || !triggerEl) {
       console.warn(
-        `showcasePanelsScrollMobile: Pannello o Trigger non trovati per ${panel}`
+        `showcasePanelsScrollMobile: Pannello o Trigger non trovati per ${panel}`,
       );
       return;
     }
@@ -1387,6 +1379,7 @@ function showcasePanelsScrollMobile() {
     if (!split) {
       split = new SplitText(titleEl, {
         type: "chars",
+        aria: "none",
       });
       titleEl._gsSplit = split;
     }
@@ -1394,7 +1387,7 @@ function showcasePanelsScrollMobile() {
     const titleChars = split.chars || [];
     if (!titleChars.length) {
       console.warn(
-        `showcasePanelsScrollMobile: nessun char disponibile in ${panel}`
+        `showcasePanelsScrollMobile: nessun char disponibile in ${panel}`,
       );
       return;
     }
@@ -1424,7 +1417,7 @@ function showcasePanelsScrollMobile() {
           duration: 0.5,
           ease: "power2.out",
         },
-        "-=0.2"
+        "-=0.2",
       )
       .to(
         kindJobText,
@@ -1434,7 +1427,7 @@ function showcasePanelsScrollMobile() {
           duration: 0.4,
           ease: "power2.out",
         },
-        "-=0.3"
+        "-=0.3",
       );
 
     if (button) {
@@ -1445,7 +1438,7 @@ function showcasePanelsScrollMobile() {
           duration: 0.3,
           ease: "power2.out",
         },
-        "<"
+        "<",
       );
     }
 
@@ -1467,7 +1460,6 @@ function showcasePanelsScrollMobile() {
  * == su desktop è ok anche su mobile a meno che non cambiamo i buttons.
  */
 function setupShowcaseButtons() {
-  // const mm = gsap.matchMedia(); // rimosso: non usiamo più matchMedia per breakpoint
 
   if (!Array.isArray(window.pageSpecificListeners)) {
     window.pageSpecificListeners = [];
@@ -1500,7 +1492,7 @@ function setupShowcaseButtons() {
 
       if (!button || !imgPanel) {
         console.warn(
-          `setupShowcaseButtons: Elementi mancanti per ${buttonId} e ${imgId}`
+          `setupShowcaseButtons: Elementi mancanti per ${buttonId} e ${imgId}`,
         );
         return;
       }
@@ -1511,7 +1503,7 @@ function setupShowcaseButtons() {
 
       if (!hoverDiv || !arrowHover || !arrowDefault) {
         console.warn(
-          `setupShowcaseButtons: Elementi interni mancanti per ${buttonId}`
+          `setupShowcaseButtons: Elementi interni mancanti per ${buttonId}`,
         );
         return;
       }
@@ -1546,7 +1538,7 @@ function setupShowcaseButtons() {
             ease: "power2.out",
             transformOrigin: "bottom left",
           },
-          0.2
+          0.2,
         )
         .set([hoverDiv, arrowHover], { clearProps: "transformOrigin" });
 
@@ -1587,7 +1579,7 @@ function setupShowcaseButtons() {
         { element: button, event: "mouseenter", handler: handleMouseEnter },
         { element: imgPanel, event: "mouseenter", handler: handleMouseEnter },
         { element: button, event: "mouseleave", handler: handleMouseLeave },
-        { element: imgPanel, event: "mouseleave", handler: handleMouseLeave }
+        { element: imgPanel, event: "mouseleave", handler: handleMouseLeave },
       );
     });
 
@@ -1618,7 +1610,7 @@ function setupShowcaseButtons() {
 
     if (!hoverDiv || !arrowHover || !arrowDefault) {
       console.warn(
-        `setupShowcaseButtons (mobile): Elementi interni mancanti per ${buttonId}`
+        `setupShowcaseButtons (mobile): Elementi interni mancanti per ${buttonId}`,
       );
       return;
     }
@@ -1650,7 +1642,7 @@ function setupShowcaseButtons() {
           ease: "power2.out",
           transformOrigin: "bottom left",
         },
-        0.1
+        0.1,
       )
       .set([hoverDiv, arrowHover], { clearProps: "transformOrigin" });
 
@@ -1709,9 +1701,6 @@ function setupVerticalShowcaseButtons() {
     console.warn("setupVerticalShowcaseButtons: Nessun pannello trovato.");
     return;
   }
-
-  // const mm = gsap.matchMedia(); // rimosso: non usiamo più matchMedia per breakpoint
-
   // Breakpoint via bp (>= 992)
   const isDesktop = window.bp?.is("lgUp"); // >= 992
 
@@ -1768,7 +1757,7 @@ function setupVerticalShowcaseButtons() {
 
       window.pageSpecificListeners.push(
         { element: button, event: "click", handler: handleButtonClick },
-        { element: panel, event: "click", handler: handlePanelClick }
+        { element: panel, event: "click", handler: handlePanelClick },
       );
     });
   }
@@ -1908,12 +1897,14 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
         charsClass: "serv-char",
         wordsClass: "serv-title-word",
         mask: bp.touchDown ? "words" : "chars",
+        aria: "none",
       });
 
       const subSplit = new SplitText(sub, {
         type: "words",
         wordsClass: "serv-word",
         mask: "words",
+        aria: "none",
       });
 
       const titleTargets = bp.touchDown
@@ -1947,7 +1938,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
               duration: 0.55,
               ease: "power2.out",
             },
-            "<+=0.02"
+            "<+=0.02",
           )
           .to(
             words,
@@ -1958,7 +1949,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
               stagger: { amount: 0.12 },
               ease: "power2.out",
             },
-            "<+=0.08"
+            "<+=0.08",
           );
       } else {
         tl.to(titleTargets, {
@@ -1974,7 +1965,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
               duration: 0.8,
               ease: "power2.out",
             },
-            "<+=0.05"
+            "<+=0.05",
           )
           .to(
             words,
@@ -1985,7 +1976,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
               stagger: { amount: 0.2 },
               ease: "power2.out",
             },
-            "<+=0.08"
+            "<+=0.08",
           );
       }
 
@@ -2016,7 +2007,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
                 duration: 0.6,
                 ease: "power2.out",
               },
-              0
+              0,
             );
           }
 
@@ -2028,7 +2019,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
               stagger: { amount: 0.2 },
               ease: "power2.out",
             },
-            0.05
+            0.05,
           );
 
           ScrollTrigger.create({
@@ -2046,7 +2037,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
       // ==================================================
       const servAnimation = wrap.querySelector(".serv_animation");
       const circlePattern = servAnimation?.querySelector(
-        ".service_circle_pattern"
+        ".service_circle_pattern",
       );
       const expImg = servAnimation?.querySelector(".exp_img");
 
@@ -2066,7 +2057,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
               ease: bp.touchDown ? "power1.out" : "power1.inOut",
               force3D: true,
             },
-            0
+            0,
           )
           .to(
             expImg,
@@ -2076,7 +2067,7 @@ window.serviceIntroAnimation = window.serviceIntroAnimation || {
               ease: bp.touchDown ? "power1.out" : "power1.out",
               force3D: true,
             },
-            0.2
+            0.2,
           );
 
         ScrollTrigger.create({
@@ -2124,12 +2115,14 @@ function initCtaContactsIntro() {
       type: "chars",
       charsClass: "cta-contact-char",
       mask: "chars",
+      aria: "none",
     });
 
     const subSplit = new SplitText(sub, {
       type: "words",
       wordsClass: "cta-contact-word",
       mask: "words",
+      aria: "none",
     });
 
     const chars = titleSplit.chars || [];
@@ -2210,6 +2203,7 @@ function initStudioWrapperIntro() {
       type: "chars",
       charsClass: "studio-char",
       mask: "chars",
+      aria: "none",
     });
 
     const chars = titleSplit.chars || [];
@@ -2242,6 +2236,7 @@ function initStudioWrapperIntro() {
     const parSplit = new SplitText(par, {
       type: "lines",
       linesClass: "line",
+      aria: "none",
     });
 
     const lines = parSplit.lines || [];
@@ -2278,6 +2273,7 @@ function initStudioWrapperIntro() {
       type: "words",
       wordsClass: "studio-word",
       mask: "words",
+      aria: "none",
     });
 
     const words = preSplit.words || [];
@@ -2306,7 +2302,7 @@ function initStudioWrapperIntro() {
                 duration: 0.8,
                 ease: "power2.out",
               },
-              "<+=0.05"
+              "<+=0.05",
             );
         },
       });
@@ -2330,6 +2326,7 @@ function initStudioWrapperIntro() {
     const valueSplit = new SplitText(valueText, {
       type: "lines",
       linesClass: "line",
+      aria: "none",
     });
 
     const lines = valueSplit.lines || [];
@@ -2362,7 +2359,7 @@ function initStudioWrapperIntro() {
             stagger: { amount: 0.2 },
             ease: "power2.out",
           },
-          "<+=0.2"
+          "<+=0.2",
         );
 
         if (valueTextHighlight) {
@@ -2374,7 +2371,7 @@ function initStudioWrapperIntro() {
               duration: 0.6,
               ease: "power2.out",
             },
-            "<"
+            "<",
           );
         }
 
@@ -2387,7 +2384,7 @@ function initStudioWrapperIntro() {
             stagger: 0.2,
             ease: "power2.out",
           },
-          "<"
+          "<",
         );
       },
     });
@@ -2430,12 +2427,14 @@ function initPropositoHeaderIntro() {
     type: "chars",
     charsClass: "proposito-char",
     mask: "chars",
+    aria: "none",
   });
 
   const subSplit = new SplitText(sub, {
     type: "words",
     wordsClass: "proposito-word",
     mask: "words",
+    aria: "none",
   });
 
   const chars = titleSplit.chars || [];
@@ -2461,7 +2460,7 @@ function initPropositoHeaderIntro() {
         duration: 0.8,
         ease: "power2.out",
       },
-      "<+=0.05"
+      "<+=0.05",
     )
     .to(
       words,
@@ -2472,7 +2471,7 @@ function initPropositoHeaderIntro() {
         stagger: { amount: 0.2 },
         ease: "power2.out",
       },
-      "<+=0.1"
+      "<+=0.1",
     );
 
   ScrollTrigger.create({
@@ -2482,7 +2481,6 @@ function initPropositoHeaderIntro() {
     onEnter: () => tl.play(),
   });
 }
-
 
 Object.assign(window, {
   showcaseTextContentMobile,

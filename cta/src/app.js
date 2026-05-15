@@ -145,7 +145,7 @@ function initBarbaWithGSAP() {
 
     // Wrapper generico letters
     const letters = wrapper ? gsap.utils.toArray(".l-svg.letter", wrapper) : [];
-    const dot = wrapper?.querySelector(".l-svg.dot") || null;
+    const dot = wrapper?.querySelector("#clip-punto-circle") || null;
 
     // Wrapper home
     const wrapperH = document.getElementById("home-transition") || null;
@@ -219,13 +219,7 @@ function initBarbaWithGSAP() {
       clearProps: "transform",
     });
 
-    if (dot) {
-      gsap.set(dot, {
-        clearProps: "transform,--r-scale",
-        "--r-scale": 0,
-      });
-      wrapper.setAttribute("data-cover", "");
-    }
+    wrapper.setAttribute("data-cover", "");
   }
   function resetPropoTransitionElements() {
     const wrapperPropo = transitionElementsObj?.propoWrapper || null;
@@ -324,6 +318,7 @@ function initBarbaWithGSAP() {
     wrapper.setAttribute("data-cover", "active");
 
     gsap.set(wrapper, { y: "100vh" });
+    gsap.set(dot, { attr: { r: 0 } });
 
     const tl = gsap.timeline({
       paused: true,
@@ -380,7 +375,7 @@ function initBarbaWithGSAP() {
       .to(
         dot,
         {
-          "--r-scale": "32.392",
+          attr: { r: 32.392 },
           duration: 0.5,
           ease: "power1.inOut",
         },
@@ -415,7 +410,7 @@ function initBarbaWithGSAP() {
       onStart: () => {
         gsap.set(logoLetters, { y: 0 });
         if (logoDot) {
-          gsap.set(logoDot, { "--r-scale": "32.392" });
+          gsap.set(logoDot, { attr: { r: 32.392 } });
         }
         if (header?.burgerBlock) {
           gsap.to(header.burgerBlock, { scale: 1, duration: 0.3 });
@@ -494,7 +489,7 @@ function initBarbaWithGSAP() {
       onStart: () => {
         gsap.set(logoLetters, { y: 0 });
         if (logoDot) {
-          gsap.set(logoDot, { "--r-scale": "32.392" });
+          gsap.set(logoDot, { attr: { r: 32.392 } });
         }
         if (header?.burgerBlock) {
           gsap.to(header.burgerBlock, { scale: 1, duration: 0.3 });
@@ -823,7 +818,7 @@ function initBarbaWithGSAP() {
       onStart: () => {
         gsap.set(logoLetters, { y: 0 });
         if (logoDot) {
-          gsap.set(logoDot, { "--r-scale": "32.392" });
+          gsap.set(logoDot, { attr: { r: 32.392 } });
         }
         if (header?.burgerBlock) {
           gsap.to(header.burgerBlock, { scale: 1, duration: 0.3 });
@@ -991,7 +986,7 @@ function initBarbaWithGSAP() {
         gsap.set(logoLetters, { y: 0 });
 
         if (logoDot) {
-          gsap.set(logoDot, { "--r-scale": "32.392" });
+          gsap.set(logoDot, { attr: { r: 32.392 } });
         }
 
         if (header?.burgerBlock) {
@@ -1227,7 +1222,7 @@ function initBarbaWithGSAP() {
         gsap.set(logoLetters, { y: 0 });
 
         if (logoDot) {
-          gsap.set(logoDot, { "--r-scale": "32.392" });
+          gsap.set(logoDot, { attr: { r: 32.392 } });
         }
 
         if (header?.burgerBlock) {
@@ -1403,6 +1398,7 @@ function initBarbaWithGSAP() {
           type: "lines",
           linesClass: "par-line",
           mask: "lines",
+          aria: "none",
         });
       }
 
@@ -1422,7 +1418,7 @@ function initBarbaWithGSAP() {
         gsap.set(logoLetters, { y: 0 });
 
         if (logoDot) {
-          gsap.set(logoDot, { "--r-scale": "32.392" });
+          gsap.set(logoDot, { attr: { r: 32.392 } });
         }
 
         if (header?.burgerBlock) {
@@ -1584,6 +1580,7 @@ function initBarbaWithGSAP() {
           type: "lines",
           linesClass: "par-line",
           mask: "lines",
+          aria: "none",
         });
       }
 
@@ -1737,6 +1734,7 @@ function initBarbaWithGSAP() {
           type: "lines",
           linesClass: "par-line",
           mask: "lines",
+          aria: "none",
         });
       }
 
@@ -1756,7 +1754,7 @@ function initBarbaWithGSAP() {
         gsap.set(logoLetters, { y: 0 });
 
         if (logoDot) {
-          gsap.set(logoDot, { "--r-scale": "32.392" });
+          gsap.set(logoDot, { attr: { r: 32.392 } });
         }
 
         if (header?.burgerBlock) {
@@ -2324,6 +2322,7 @@ function OnLoadHeroDefault() {
     uspSplit = new SplitText(els.uspText, {
       type: "lines",
       linesClass: "usp-line",
+      aria: "none",
     });
 
     gsap.set(uspSplit.lines, { y: -200 });
@@ -2783,7 +2782,7 @@ window.pageEnterFx =
           gsap.set(logoLetters, { y: 0 });
 
           if (logoDot) {
-            gsap.set(logoDot, { "--r-scale": "32.392" });
+            gsap.set(logoDot, { attr: { r: 32.392 } });
           }
 
           if (header?.burgerBlock) {
@@ -2863,6 +2862,7 @@ window.pageEnterFx =
             type: "lines",
             linesClass: "par-line",
             mask: "lines",
+            aria: "none",
           });
         }
 
@@ -3314,7 +3314,7 @@ window.pageEnterFx =
           gsap.set(logoLetters, { y: 0 });
 
           if (logoDot) {
-            gsap.set(logoDot, { "--r-scale": "32.392" });
+            gsap.set(logoDot, { attr: { r: 32.392 } });
           }
 
           if (header?.burgerBlock) {

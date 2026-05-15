@@ -114,6 +114,7 @@ async function setupContactLinkButtons() {
           type: "lines",
           linesClass: "contact-sub-line",
           mask: "lines",
+           aria: "none",
         });
         sub.dataset.contactSubSplit = "1";
       }
@@ -379,6 +380,7 @@ function expertisePanelsReveal() {
       type: "chars",
       charsClass: "exp-h2-char",
       mask: "chars",
+       aria: "none",
     });
 
     const chars = titleSplit.chars || [];
@@ -561,6 +563,7 @@ function initSkillWrapperIntro() {
       type: "chars",
       charsClass: "skill-char",
       mask: "chars",
+       aria: "none",
     });
 
     const chars = titleSplit.chars || [];
@@ -656,6 +659,7 @@ function initSectionEmo() {
         type: "lines",
         linesClass: "emo-line",
         mask: "lines",
+         aria: "none",
       });
     }
 
@@ -1539,6 +1543,7 @@ function initStudioMsBlocks() {
     const valueSplit = new SplitText(valueText, {
       type: "lines",
       linesClass: "line",
+       aria: "none",
     });
 
     const lines = valueSplit.lines || [];
@@ -1641,6 +1646,7 @@ function initTeamCards() {
         type: "chars",
         charsClass: "team-char",
         mask: "chars",
+         aria: "none",
       });
 
       const chars = titleSplit.chars || [];
@@ -1674,6 +1680,7 @@ function initTeamCards() {
         type: "lines",
         linesClass: "line",
         mask: "lines",
+         aria: "none",
       });
 
       const lines = parSplit.lines || [];
