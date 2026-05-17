@@ -1,4 +1,4 @@
-const CTA_BUNDLE_VER = "ver-15052026";
+const CTA_BUNDLE_VER = "ver-17052026";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 window.safeRequestIdleCallback =
@@ -198,7 +198,7 @@ window.pageSpecificFunctionsMap = {
     scripts: [],
     styles: [],
   },
-  "67af596455154a4f0335f5e0": {
+  "68b2e6c65a7f2a0ef027f561": {
     name: "verify",
     jsonKey: "",
     scripts: [`${CTA_CDN}/cta-auth.js`],
@@ -2077,9 +2077,9 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      MultiStepForm.init();
-      FirebaseAppManager.initLoginForm();
-      window.AppPasswordToggleLogin.init();
+      window.MultiStepForm?.init?.();
+      window.FirebaseAppManager?.initLoginForm?.();
+      window.AppPasswordToggle?.init?.("loginPassword");
       setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
@@ -2100,9 +2100,9 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      MultiStepForm.init();
-      window.AppForms.init();
-      window.AppPasswordToggle.init();
+       window.MultiStepForm?.init?.();
+      window.AppForms?.init?.();
+     window.AppPasswordToggle?.init?.("password");
       setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
@@ -2123,8 +2123,8 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      MultiStepForm.init();
-      window.AppResetPassword.init();
+       window.MultiStepForm?.init?.();
+      window.AppResetPassword?.init?.();
       setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
@@ -2145,9 +2145,9 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      MultiStepForm.init();
-      window.AppUpdatePassword.init();
-      window.AppPasswordToggle.init();
+       window.MultiStepForm?.init?.();
+      window.AppUpdatePassword?.init?.();
+     window.AppPasswordToggle?.init?.("password");
       setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
@@ -2168,6 +2168,8 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
+            window.FormSubmitOverlay?.startAnimation?.();
+      setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
       }, 2000);
@@ -2182,6 +2184,7 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
+      setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
       }, 2000);
@@ -2196,7 +2199,7 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      window.DashboardManager.init();
+      window.DashboardManager?.init?.();
       setTimeout(() => {
         window.runFinalBoot?.();
       }, 2000);
@@ -2212,9 +2215,9 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      window.AssessmentManager.init();
-      window.MultiStepForm.init();
-      window.AppAssessmentForms.init();
+      window.AssessmentManager?.init?.();
+       window.MultiStepForm?.init?.();
+      window.AppAssessmentForms?.init?.();
       setTimeout(() => {
         window.runFinalBoot?.();
       }, 2000);
@@ -2264,8 +2267,8 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      MultiStepForm.init();
-      window.AppGeneralForms.init();
+       window.MultiStepForm?.init?.();
+      window.AppGeneralForms?.init?.();
       setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();

@@ -1,6 +1,7 @@
 window.FirebaseAppManager = window.FirebaseAppManager || {
   configUrl:
     "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/getFirebaseConfig",
+
   firebaseApp: null,
   auth: null,
   database: null,
@@ -13,6 +14,7 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
       if (typeof firebase === "undefined") {
         throw new Error("Firebase non è stato caricato correttamente!");
       }
+
       const response = await fetch(this.configUrl);
       let config = await response.json();
       config = this.cleanFirebaseConfig(config);
@@ -26,34 +28,45 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
       this.auth = firebase.auth();
       this.database = firebase.database();
 
-      // ** Monitoraggio dello stato utente**
+      // fallback immediati
+      this.updateLoginLinks(null);
+      await this.updateDashboardLinks(null);
+
       firebase.auth().onAuthStateChanged(async (user) => {
         this.userStatus.loggedIn = !!user;
-        this.updateLoginLinks();
-        this.updateDashboardLinks();
+        this.userStatus.approved = false;
+
+        this.updateLoginLinks(user);
+        await this.updateDashboardLinks(user);
 
         if (user) {
-          const token = await user.getIdToken();
-          const response = await fetch(
-            "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/getUserCmsPage",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({ uid: user.uid, token }),
-            },
-          );
+          try {
+            const token = await user.getIdToken();
+            const response = await fetch(
+              "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/getUserCmsPage",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ uid: user.uid, token }),
+              }
+            );
 
-          const data = await response.json();
-          this.userStatus.approved = !!(data.success && data.approved);
-        } else {
-          this.userStatus.approved = false;
+            const data = await response.json();
+            this.userStatus.approved = !!(data.success && data.approved);
+          } catch (error) {
+            console.error("❌ Errore nel controllo approved:", error);
+          }
         }
       });
     } catch (error) {
       console.error("❌ Errore durante l'inizializzazione di Firebase:", error);
+
+      // fallback anche in caso di errore
+      this.updateLoginLinks(null);
+      await this.updateDashboardLinks(null);
     }
   },
 
@@ -69,13 +82,13 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
   loadFirebaseScripts: async function () {
     try {
       await loadScript(
-        "https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js",
+        "https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"
       );
       await loadScript(
-        "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js",
+        "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"
       );
       await loadScript(
-        "https://www.gstatic.com/firebasejs/10.0.0/firebase-database-compat.js",
+        "https://www.gstatic.com/firebasejs/10.0.0/firebase-database-compat.js"
       );
 
       await new Promise((resolve) => {
@@ -92,33 +105,30 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
     }
   },
 
-  updateLoginLinks: function () {
-    firebase.auth().onAuthStateChanged((user) => {
-      const logLinks = document.querySelectorAll("[log-link]");
+  updateLoginLinks: function (user) {
+    const logLinks = document.querySelectorAll("[log-link]");
 
-      logLinks.forEach((link) => {
-        if (user) {
-          link.textContent = "Logout";
-          link.href = "#";
-          link.onclick = (event) => {
-            event.preventDefault();
-            FirebaseAppManager.logoutUser();
-          };
-        } else {
-          link.textContent = "Login";
-          link.href = "/log-in";
-          link.onclick = null;
-        }
-      });
+    logLinks.forEach((link) => {
+      if (user) {
+        link.textContent = "Logout";
+        link.href = "#";
+        link.onclick = (event) => {
+          event.preventDefault();
+          window.FirebaseAppManager.logoutUser();
+        };
+      } else {
+        link.textContent = "Login";
+        link.href = "/log-in";
+        link.onclick = null;
+      }
     });
   },
 
-  updateDashboardLinks: async function () {
+  updateDashboardLinks: async function (userArg = null) {
     try {
-      const user = firebase.auth().currentUser;
+      const user = userArg || firebase.auth().currentUser;
       const dashboardLinks = document.querySelectorAll("[dashboard-link]");
 
-      // Reset iniziale del link
       dashboardLinks.forEach((link) => (link.href = "/user-pending-approval"));
 
       if (!user) {
@@ -140,12 +150,12 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ uid: user.uid, token }),
-        },
+        }
       );
 
       if (!response.ok) {
         throw new Error(
-          `Errore HTTP: ${response.status} - ${await response.text()}`,
+          `Errore HTTP: ${response.status} - ${await response.text()}`
         );
       }
 
@@ -154,12 +164,10 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
       if (data?.cmsPage && data.approved) {
         const currentHostname = window.location.hostname;
         const baseDomain = currentHostname.includes("webflow.io")
-          ? "https://ctastudio.webflow.io"
+          ? "https://ctastudio-v3.webflow.io"
           : "https://www.ctastudio.it";
 
         const userDashboardLink = `${baseDomain}${data.cmsPage.toLowerCase()}`;
-
-        // 🔗 Aggiorna i link con il nuovo percorso
         dashboardLinks.forEach((link) => (link.href = userDashboardLink));
       }
     } catch (error) {
@@ -169,70 +177,68 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
 
   initLoginForm: function () {
     const loginForm = document.getElementById("login-form");
+    if (!loginForm) return;
+    if (loginForm.dataset.firebaseLoginBound === "1") return;
 
-    if (!loginForm) {
-      return;
-    }
-
+    loginForm.dataset.firebaseLoginBound = "1";
     loginForm.removeAttribute("action");
     loginForm.setAttribute("method", "POST");
 
-    loginForm.addEventListener("submit", async function (event) {
+    const submitHandler = async function (event) {
       event.preventDefault();
       event.stopImmediatePropagation();
 
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
+      if (window.isFormSubmitting) return;
+      window.isFormSubmitting = true;
+
+      const email = document.getElementById("loginEmail")?.value?.trim() || "";
+      const password =
+        document.getElementById("loginPassword")?.value?.trim() || "";
+
       const loginWrapper = document.getElementById("login-wrapper");
       const successMessage = document.querySelector(".w-form-done");
       const errorMessage = document.querySelector(".w-form-fail");
       const dashboardButton = document.querySelector("[dashboard-link]");
-      const lottieWaiting = document.querySelector(".lottie-waiting");
 
-      // Nascondiamo i messaggi all'inizio
       if (errorMessage) errorMessage.style.display = "none";
       if (successMessage) successMessage.style.display = "none";
 
-      // Mostriamo il loader Lottie
-      if (lottieWaiting) {
-        lottieWaiting.style.visibility = "visible";
-        lottieWaiting.style.opacity = "1";
-      }
-
       if (!email || !password) {
         if (errorMessage) errorMessage.style.display = "block";
-        if (lottieWaiting) {
-          lottieWaiting.style.visibility = "hidden";
-          lottieWaiting.style.opacity = "0";
-        }
+        window.isFormSubmitting = false;
         return;
       }
 
+      window.FormSubmitOverlay?.show?.();
+      window.FormSubmitLock?.lock?.();
+
       try {
-        const userCredential = await firebase
-          .auth()
-          .signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        await window.FirebaseAppManager.updateDashboardLinks();
 
-        // Aggiorniamo i link e aspettiamo il completamento
-        await FirebaseAppManager.updateDashboardLinks();
-
-        // Mostriamo il messaggio di successo solo dopo aver aggiornato il link
         if (loginWrapper) loginWrapper.style.display = "none";
         if (successMessage) successMessage.style.display = "block";
-
-        // Assicuriamo che il bottone diventi visibile
         if (dashboardButton) dashboardButton.style.display = "block";
       } catch (error) {
         console.error("❌ Errore di login:", error);
         if (errorMessage) errorMessage.style.display = "block";
       } finally {
-        // Nascondiamo il loader Lottie alla fine della richiesta
-        if (lottieWaiting) {
-          lottieWaiting.style.visibility = "hidden";
-          lottieWaiting.style.opacity = "0";
-        }
+        window.FormSubmitLock?.unlock?.();
+        window.FormSubmitOverlay?.hide?.();
+        window.isFormSubmitting = false;
       }
+    };
+
+    loginForm.addEventListener("submit", submitHandler);
+
+    if (!Array.isArray(window.pageSpecificListeners)) {
+      window.pageSpecificListeners = [];
+    }
+
+    window.pageSpecificListeners.push({
+      element: loginForm,
+      event: "submit",
+      handler: submitHandler,
     });
   },
 
@@ -242,7 +248,6 @@ window.FirebaseAppManager = window.FirebaseAppManager || {
       .signOut()
       .then(() => {
         console.log("👋 Logout effettuato con successo!");
-        FirebaseAppManager.updateLoginLinks();
         window.location.reload();
       })
       .catch((error) => {

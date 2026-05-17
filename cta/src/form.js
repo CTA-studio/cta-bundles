@@ -1,55 +1,66 @@
 window.AppForms = window.AppForms || {
+  actionUrl:
+    "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/registerUser",
+
   init: function () {
-    // Assicuriamoci che l'array dei listener esista
     if (!window.pageSpecificListeners) {
       window.pageSpecificListeners = [];
     }
 
     this.handleForms();
+
+    window.pageSpecificListeners.push({
+      cleanup: () => {
+        window.FormSubmitLock?.unlock?.();
+        window.FormSubmitOverlay?.hide?.();
+        window.isFormSubmitting = false;
+      },
+    });
   },
 
   handleForms: function () {
-    jQuery('form[action*="registerUser"]').each(function (i, el) {
-      var form = jQuery(el)[0]; // Converto in nodo puro
+    const self = this;
 
-      // **🔹 Rimuove action e method per evitare reindirizzamenti**
+    jQuery('form[action*="registerUser"]').each(function (_, el) {
+      const form = jQuery(el)[0];
+
       form.removeAttribute("action");
       form.removeAttribute("method");
 
-      // **🔹 Creiamo il nuovo handler di submit**
       const submitHandler = function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        jQuery(".lottie-waiting").css({
-          visibility: "visible",
-          opacity: "1",
-        });
+        if (window.isFormSubmitting) return;
+        window.isFormSubmitting = true;
 
-        var data = AppForms.convertFormToJSON(form);
-        var action =
-          "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/registerUser";
+        const data = self.convertFormToJSON(form);
+
+        window.FormSubmitOverlay?.show?.();
+        window.FormSubmitLock?.lock?.();
 
         jQuery.ajax({
-          url: action,
+          url: self.actionUrl,
           method: "POST",
           data: JSON.stringify(data),
           contentType: "application/json",
           dataType: "json",
+
           success: function (response) {
-            if (response.success) {
+            if (response?.success) {
               console.log("✅ Registrazione avvenuta con successo!");
               jQuery(form).hide();
               jQuery(form).parent().children(".w-form-done").fadeIn();
             } else {
-              console.warn("❌ Errore di registrazione:", response.error);
+              console.warn("❌ Errore di registrazione:", response?.error);
               jQuery(form)
                 .parent()
                 .children(".w-form-fail")
                 .fadeIn()
-                .text(response.error);
+                .text(response?.error || "Errore durante la registrazione.");
             }
           },
+
           error: function (jqXHR, textStatus, errorThrown) {
             console.error(
               "❌ Errore registrazione:",
@@ -57,23 +68,24 @@ window.AppForms = window.AppForms || {
               errorThrown,
               jqXHR.responseText
             );
+
             jQuery(form)
               .parent()
               .children(".w-form-fail")
               .fadeIn()
               .text("Errore durante la registrazione. Riprova.");
           },
+
           complete: function () {
-            jQuery(".lottie-waiting").css({
-              visibility: "hidden",
-              opacity: "0",
-            });
+            window.FormSubmitLock?.unlock?.();
+            window.FormSubmitOverlay?.hide?.();
+            window.isFormSubmitting = false;
           },
         });
       };
 
-      // **Aggiungiamo il nuovo listener e lo registriamo nell'array globale**
       form.addEventListener("submit", submitHandler);
+
       window.pageSpecificListeners.push({
         element: form,
         event: "submit",
@@ -83,16 +95,21 @@ window.AppForms = window.AppForms || {
   },
 
   convertFormToJSON: function (form) {
-    var array = jQuery(form).serializeArray();
-    var json = {};
+    const array = jQuery(form).serializeArray();
+    const json = {};
+
     jQuery.each(array, function () {
       json[this.name] = this.value || "";
     });
+
     return json;
   },
 };
 
 window.AppResetPassword = window.AppResetPassword || {
+  actionUrl:
+    "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/sendPasswordResetEmail",
+
   init: function () {
     console.log("🔑 Inizializzazione AppResetPassword...");
 
@@ -101,11 +118,21 @@ window.AppResetPassword = window.AppResetPassword || {
     }
 
     this.handleForms();
+
+    window.pageSpecificListeners.push({
+      cleanup: () => {
+        window.FormSubmitLock?.unlock?.();
+        window.FormSubmitOverlay?.hide?.();
+        window.isFormSubmitting = false;
+      },
+    });
   },
 
   handleForms: function () {
-    jQuery('form[action*="sendPasswordResetEmail"]').each(function (i, el) {
-      var form = jQuery(el)[0];
+    const self = this;
+
+    jQuery('form[action*="sendPasswordResetEmail"]').each(function (_, el) {
+      const form = jQuery(el)[0];
 
       form.removeAttribute("action");
       form.removeAttribute("method");
@@ -114,41 +141,40 @@ window.AppResetPassword = window.AppResetPassword || {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        jQuery(".lottie-waiting").css({
-          visibility: "visible",
-          opacity: "1",
-        });
+        if (window.isFormSubmitting) return;
+        window.isFormSubmitting = true;
 
-        var data = AppResetPassword.convertFormToJSON(form);
-        var action =
-          "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/sendPasswordResetEmail";
+        const data = self.convertFormToJSON(form);
 
-        jQuery
-          .ajax({
-            url: action,
-            method: "POST",
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            dataType: "json",
-          })
-          .done(function (response) {
-            if (response.success) {
+        window.FormSubmitOverlay?.show?.();
+        window.FormSubmitLock?.lock?.();
+
+        jQuery.ajax({
+          url: self.actionUrl,
+          method: "POST",
+          data: JSON.stringify(data),
+          contentType: "application/json",
+          dataType: "json",
+
+          success: function (response) {
+            if (response?.success) {
               console.log("✅ Email di reset inviata con successo!");
               jQuery(form).hide();
               jQuery(form).parent().children(".w-form-done").fadeIn();
             } else {
               console.warn(
                 "❌ Errore nell'invio della richiesta:",
-                response.error
+                response?.error
               );
               jQuery(form)
                 .parent()
                 .children(".w-form-fail")
                 .fadeIn()
-                .text(response.error);
+                .text(response?.error || "Errore durante l'invio della richiesta.");
             }
-          })
-          .fail(function (jqXHR, textStatus, errorThrown) {
+          },
+
+          error: function (jqXHR, textStatus, errorThrown) {
             console.error(
               "❌ Errore richiesta reset password:",
               textStatus,
@@ -160,16 +186,16 @@ window.AppResetPassword = window.AppResetPassword || {
               .children(".w-form-fail")
               .fadeIn()
               .text("Errore durante l'invio della richiesta. Riprova.");
-          })
-          .always(function () {
-            jQuery(".lottie-waiting").css({
-              visibility: "hidden",
-              opacity: "0",
-            });
-          });
+          },
+
+          complete: function () {
+            window.FormSubmitLock?.unlock?.();
+            window.FormSubmitOverlay?.hide?.();
+            window.isFormSubmitting = false;
+          },
+        });
       };
 
-      // **🔹 Aggiungiamo il nuovo listener e lo registriamo nell'array globale**
       form.addEventListener("submit", submitHandler);
       window.pageSpecificListeners.push({
         element: form,
@@ -180,8 +206,8 @@ window.AppResetPassword = window.AppResetPassword || {
   },
 
   convertFormToJSON: function (form) {
-    var array = jQuery(form).serializeArray();
-    var json = {};
+    const array = jQuery(form).serializeArray();
+    const json = {};
     jQuery.each(array, function () {
       json[this.name] = this.value || "";
     });
@@ -190,6 +216,9 @@ window.AppResetPassword = window.AppResetPassword || {
 };
 
 window.AppUpdatePassword = window.AppUpdatePassword || {
+  actionUrl:
+    "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/updatePassword",
+
   init: function () {
     console.log("🔑 Inizializzazione AppUpdatePassword...");
 
@@ -198,18 +227,25 @@ window.AppUpdatePassword = window.AppUpdatePassword || {
     }
 
     this.handleForms();
+
+    window.pageSpecificListeners.push({
+      cleanup: () => {
+        window.FormSubmitLock?.unlock?.();
+        window.FormSubmitOverlay?.hide?.();
+        window.isFormSubmitting = false;
+      },
+    });
   },
 
   handleForms: function () {
-    jQuery('form[action*="updatePassword"]').each(function (i, el) {
-      var form = jQuery(el)[0];
+    const self = this;
 
-      // **🔹 Rimuove action e method per evitare reindirizzamenti**
+    jQuery('form[action*="updatePassword"]').each(function (_, el) {
+      const form = jQuery(el)[0];
+
       form.removeAttribute("action");
       form.removeAttribute("method");
 
-      // **🔹 Recupera il token dalla URL**
-      // 🔹 Recupera il token e l'email dalla URL
       const urlParams = new URLSearchParams(window.location.search);
       let token = urlParams.get("token");
       let email = urlParams.get("email");
@@ -226,55 +262,51 @@ window.AppUpdatePassword = window.AppUpdatePassword || {
 
       token = decodeURIComponent(token).trim();
       email = decodeURIComponent(email).trim();
-      //console.log("📌 Token ricevuto:", token);
-      //console.log("📧 Email ricevuta:", email);
 
-      // **🔹 Creiamo il nuovo handler di submit**
-      const submitHandler = async function (e) {
+      const submitHandler = function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        jQuery(".lottie-waiting").css({
-          visibility: "visible",
-          opacity: "1",
-        });
+        if (window.isFormSubmitting) return;
+        window.isFormSubmitting = true;
 
-        // **🔹 Recupera la password dal form**
-        // 🔹 Aggiungiamo email, token e nuova password
-        var data = AppUpdatePassword.convertFormToJSON(form);
+        const data = self.convertFormToJSON(form);
         data.token = token;
         data.email = email;
         data.newPassword = data.password;
         delete data.password;
 
-        console.log("📌 Dati inviati:", data);
-
-        var action =
-          "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/updatePassword";
+        window.FormSubmitOverlay?.show?.();
+        window.FormSubmitLock?.lock?.();
 
         jQuery.ajax({
-          url: action,
+          url: self.actionUrl,
           method: "POST",
           data: JSON.stringify(data),
           contentType: "application/json",
           dataType: "json",
+
           success: function (response) {
-            if (response.success) {
+            if (response?.success) {
               console.log("✅ Password aggiornata con successo!");
               jQuery(form).hide();
               jQuery(form).parent().children(".w-form-done").fadeIn();
             } else {
               console.warn(
                 "❌ Errore nell'aggiornamento della password:",
-                response.error
+                response?.error
               );
               jQuery(form)
                 .parent()
                 .children(".w-form-fail")
                 .fadeIn()
-                .text(response.error);
+                .text(
+                  response?.error ||
+                    "Errore durante l'aggiornamento della password."
+                );
             }
           },
+
           error: function (jqXHR, textStatus, errorThrown) {
             console.error(
               "❌ Errore nell'aggiornamento della password:",
@@ -288,11 +320,11 @@ window.AppUpdatePassword = window.AppUpdatePassword || {
               .fadeIn()
               .text("Errore durante l'aggiornamento della password. Riprova.");
           },
+
           complete: function () {
-            jQuery(".lottie-waiting").css({
-              visibility: "hidden",
-              opacity: "0",
-            });
+            window.FormSubmitLock?.unlock?.();
+            window.FormSubmitOverlay?.hide?.();
+            window.isFormSubmitting = false;
           },
         });
       };
@@ -307,8 +339,8 @@ window.AppUpdatePassword = window.AppUpdatePassword || {
   },
 
   convertFormToJSON: function (form) {
-    var array = jQuery(form).serializeArray();
-    var json = {};
+    const array = jQuery(form).serializeArray();
+    const json = {};
     jQuery.each(array, function () {
       json[this.name] = this.value || "";
     });
@@ -317,70 +349,78 @@ window.AppUpdatePassword = window.AppUpdatePassword || {
 };
 
 window.AppAssessmentForms = window.AppAssessmentForms || {
+  actionUrl:
+    "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/webhook",
+
   init: function () {
     if (!window.pageSpecificListeners) {
       window.pageSpecificListeners = [];
     }
 
     this.handleForms();
+
+    window.pageSpecificListeners.push({
+      cleanup: () => {
+        window.FormSubmitLock?.unlock?.();
+        window.FormSubmitOverlay?.hide?.();
+        window.isFormSubmitting = false;
+      },
+    });
   },
 
   handleForms: function () {
-    jQuery(
-      'form[action="https://us-central1-webflow-project---calltoaction.cloudfunctions.net/webhook"]'
-    ).each(function (i, el) {
-      var form = jQuery(el)[0]; // Converto in nodo puro
+    const self = this;
 
-      // ** Rimuove action e method per evitare reindirizzamenti**
+    jQuery(`form[action="${this.actionUrl}"]`).each(function (_, el) {
+      const form = jQuery(el)[0];
+
       form.removeAttribute("action");
       form.removeAttribute("method");
 
-      // ** Creiamo il nuovo handler di submit**
-      const submitHandler = async function (e) {
+      const submitHandler = function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        jQuery(".lottie-waiting").css({
-          visibility: "visible",
-          opacity: "1",
-        });
+        if (window.isFormSubmitting) return;
+        window.isFormSubmitting = true;
 
-        //  **Recupera l'UID dell'utente loggato**
         const user = firebase.auth().currentUser;
-        const userId = user ? user.uid : null; // Se non c'è UID, lo lascia null
+        const userId = user ? user.uid : null;
 
-        var data = AppAssessmentForms.convertFormToJSON(form);
-        data.formId = form.id || "unknown-form"; // Se il form non ha ID, assegna un valore di default
-        data.uid = userId; //  **Aggiunge l'UID dell'utente loggato**
+        const data = self.convertFormToJSON(form);
+        data.formId = form.id || "unknown-form";
+        data.uid = userId;
 
-        var action =
-          "https://us-central1-webflow-project---calltoaction.cloudfunctions.net/webhook";
+        window.FormSubmitOverlay?.show?.();
+        window.FormSubmitLock?.lock?.();
 
         jQuery.ajax({
-          url: action,
+          url: self.actionUrl,
           method: "POST",
           data: JSON.stringify(data),
           contentType: "application/json",
           dataType: "json",
+
           success: function (response) {
-            console.log("✅ Invio form avvenuto con successo:");
+            console.log("✅ Invio assessment avvenuto con successo:", response);
             jQuery(form).hide();
             jQuery(form).parent().children(".w-form-done").fadeIn();
           },
+
           error: function (jqXHR, textStatus, errorThrown) {
             console.error(
-              "❌ Errore invio form:",
+              "❌ Errore invio assessment:",
               textStatus,
               errorThrown,
               jqXHR.responseText
             );
             jQuery(form).parent().children(".w-form-fail").fadeIn();
           },
+
           complete: function () {
-            jQuery(".lottie-waiting").css({
-              visibility: "hidden",
-              opacity: "0",
-            });
+            window.FormSubmitLock?.unlock?.();
+            window.FormSubmitOverlay?.hide?.();
+            window.isFormSubmitting = false;
           },
         });
       };
@@ -395,79 +435,46 @@ window.AppAssessmentForms = window.AppAssessmentForms || {
   },
 
   convertFormToJSON: function (form) {
-    var array = jQuery(form).serializeArray();
-    var json = {};
+    const array = jQuery(form).serializeArray();
+    const json = {};
+
     jQuery.each(array, function () {
       json[this.name] = this.value || "";
     });
+
     return json;
   },
 };
 
-window.AppPasswordToggleLogin = window.AppPasswordToggleLogin || {
-  init: function () {
-    // Seleziona gli elementi
-    var passwordField = document.getElementById("loginPassword");
-    var eyeButton = document.getElementById("eye-button");
-    var eyeOpen = document.getElementById("pass-eye");
-    var eyeClosed = document.getElementById("pass-eye-none");
-
-    if (!passwordField || !eyeButton || !eyeOpen || !eyeClosed) {
-      console.warn("⚠️ Elementi per il toggle password non trovati.");
-      return;
-    }
-
-    eyeOpen.style.display = "none"; // Nasconde l'occhio aperto all'inizio
-
-    const togglePasswordHandler = function () {
-      if (passwordField.type === "password") {
-        passwordField.type = "text";
-        eyeClosed.style.display = "none"; // Nasconde l'occhio sbarrato
-        eyeOpen.style.display = "block"; // Mostra l'occhio aperto
-      } else {
-        passwordField.type = "password";
-        eyeOpen.style.display = "none"; // Nasconde l'occhio aperto
-        eyeClosed.style.display = "block"; // Mostra l'occhio sbarrato
-      }
-    };
-
-    eyeButton.addEventListener("click", togglePasswordHandler);
-    window.pageSpecificListeners.push({
-      element: eyeButton,
-      event: "click",
-      handler: togglePasswordHandler,
-    });
-  },
-};
-
 window.AppPasswordToggle = window.AppPasswordToggle || {
-  init: function () {
-    // Seleziona gli elementi
-    var passwordField = document.getElementById("password");
-    var eyeButton = document.getElementById("eye-button");
-    var eyeOpen = document.getElementById("pass-eye");
-    var eyeClosed = document.getElementById("pass-eye-none");
+  init: function (passwordFieldId = "password") {
+    const passwordField = document.getElementById(passwordFieldId);
+    const eyeButton = document.getElementById("eye-button");
+    const eyeOpen = document.getElementById("pass-eye");
+    const eyeClosed = document.getElementById("pass-eye-none");
 
     if (!passwordField || !eyeButton || !eyeOpen || !eyeClosed) {
       console.warn("⚠️ Elementi per il toggle password non trovati.");
       return;
     }
 
-    eyeOpen.style.display = "none"; // Nasconde l'occhio aperto all'inizio
+    eyeOpen.style.display = "none";
+    eyeClosed.style.display = "block";
 
     const togglePasswordHandler = function () {
-      if (passwordField.type === "password") {
-        passwordField.type = "text";
-        eyeClosed.style.display = "none"; // Nasconde l'occhio sbarrato
-        eyeOpen.style.display = "block"; // Mostra l'occhio aperto
-      } else {
-        passwordField.type = "password";
-        eyeOpen.style.display = "none"; // Nasconde l'occhio aperto
-        eyeClosed.style.display = "block"; // Mostra l'occhio sbarrato
-      }
+      const isPassword = passwordField.type === "password";
+
+      passwordField.type = isPassword ? "text" : "password";
+      eyeClosed.style.display = isPassword ? "none" : "block";
+      eyeOpen.style.display = isPassword ? "block" : "none";
     };
 
     eyeButton.addEventListener("click", togglePasswordHandler);
+
+    if (!Array.isArray(window.pageSpecificListeners)) {
+      window.pageSpecificListeners = [];
+    }
+
     window.pageSpecificListeners.push({
       element: eyeButton,
       event: "click",
@@ -475,7 +482,6 @@ window.AppPasswordToggle = window.AppPasswordToggle || {
     });
   },
 };
-
 /** Form richiesta appuntamenti/proposito generale webhook */
 window.AppGeneralForms = window.AppGeneralForms || {
   actionUrl:
@@ -724,38 +730,25 @@ window.FormSubmitOverlay =
       return document.querySelector(".img-loading-overlay");
     }
 
-    function show() {
-      const el = getEl();
+    function startAnimation() {
       const logo = getLogo();
+      if (!logo || !window.gsap) return;
 
-      if (!el) return;
+      logoTween?.kill();
 
-      el.classList.add("is-active");
-      el.setAttribute("aria-hidden", "false");
+      gsap.set(logo, { scale: 0.9 });
 
-      if (logo && window.gsap) {
-        logoTween?.kill();
-
-        gsap.set(logo, { scale: 0.9 });
-
-        logoTween = gsap.to(logo, {
-          scale: 1,
-          duration: 0.9,
-          ease: "power1.inOut",
-          repeat: -1,
-          yoyo: true,
-        });
-      }
+      logoTween = gsap.to(logo, {
+        scale: 1,
+        duration: 0.9,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
     }
 
-    function hide() {
-      const el = getEl();
+    function stopAnimation() {
       const logo = getLogo();
-
-      if (!el) return;
-
-      el.classList.remove("is-active");
-      el.setAttribute("aria-hidden", "true");
 
       if (logoTween) {
         logoTween.kill();
@@ -767,7 +760,30 @@ window.FormSubmitOverlay =
       }
     }
 
-    return { show, hide };
+    function show() {
+      const el = getEl();
+      if (!el) return;
+
+      el.classList.add("is-active");
+      el.setAttribute("aria-hidden", "false");
+      startAnimation();
+    }
+
+    function hide() {
+      const el = getEl();
+      if (!el) return;
+
+      el.classList.remove("is-active");
+      el.setAttribute("aria-hidden", "true");
+      stopAnimation();
+    }
+
+    return {
+      show,
+      hide,
+      startAnimation,
+      stopAnimation,
+    };
   })();
 /** Form Multistep e Calendar */
 window.MultiStepForm =
