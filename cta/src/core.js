@@ -202,6 +202,8 @@ function updatePageMetaAndInteractions(newPageHTML) {
 
   // 9. Interazioni Webflow
   restartWebflowInteractions();
+  // 10. Invia page_view virtuale a GTM / GA4 dopo transizione Barba
+   trackPageView();
 }
 
 // Meta tag: aggiorna o crea
@@ -275,15 +277,17 @@ function restartWebflowInteractions() {
 }
 
 function trackPageView() {
-  if (window.dataLayer) {
-    window.dataLayer.push({
-      event: "page_view",
-      page_path: window.location.pathname,
-      page_title: document.title,
-    });
-  } else {
+  if (!window.dataLayer) {
     console.warn("Data Layer non è disponibile.");
+    return;
   }
+
+  window.dataLayer.push({
+    event: "virtual_page_view",
+    page_path: window.location.pathname,
+    page_location: window.location.href,
+    page_title: document.title,
+  });
 }
 
 //Funzioni per lo Scroll
