@@ -1,4 +1,4 @@
-const CTA_BUNDLE_VER = "CTAv3-18-05-2026";
+const CTA_BUNDLE_VER = "CTAsutdio-v3.1-20-05-2026";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 window.safeRequestIdleCallback =
@@ -2100,9 +2100,9 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-       window.MultiStepForm?.init?.();
+      window.MultiStepForm?.init?.();
       window.AppForms?.init?.();
-     window.AppPasswordToggle?.init?.("password");
+      window.AppPasswordToggle?.init?.("password");
       setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
@@ -2123,7 +2123,7 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-       window.MultiStepForm?.init?.();
+      window.MultiStepForm?.init?.();
       window.AppResetPassword?.init?.();
       setupPrimaryButtons();
       setTimeout(() => {
@@ -2145,9 +2145,9 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-       window.MultiStepForm?.init?.();
+      window.MultiStepForm?.init?.();
       window.AppUpdatePassword?.init?.();
-     window.AppPasswordToggle?.init?.("password");
+      window.AppPasswordToggle?.init?.("password");
       setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
@@ -2168,7 +2168,7 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-            window.FormSubmitOverlay?.startAnimation?.();
+      window.FormSubmitOverlay?.startAnimation?.();
       setupPrimaryButtons();
       setTimeout(() => {
         window.runFinalBoot?.();
@@ -2216,7 +2216,7 @@ window.pageFunctions = {
         window.pageEnterFx?.introGenericPage?.();
       }
       window.AssessmentManager?.init?.();
-       window.MultiStepForm?.init?.();
+      window.MultiStepForm?.init?.();
       window.AppAssessmentForms?.init?.();
       setTimeout(() => {
         window.runFinalBoot?.();
@@ -2236,14 +2236,16 @@ window.pageFunctions = {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           setupPrimaryButtons();
+          initSectionEmo();
+          window.expertiseMarquee.init();
           initSkillWrapperIntro();
           expertisePanelsReveal();
         });
       });
       setTimeout(async () => {
         try {
-          initSectionEmo();
-          window.expertiseMarquee.init();
+          initProcessAccordion();
+          initCtaContactsIntro();
           if (
             window.footerManager &&
             typeof window.footerManager.refresh === "function"
@@ -2267,7 +2269,7 @@ window.pageFunctions = {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-       window.MultiStepForm?.init?.();
+      window.MultiStepForm?.init?.();
       window.AppGeneralForms?.init?.();
       setupPrimaryButtons();
       setTimeout(() => {
