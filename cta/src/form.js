@@ -66,7 +66,7 @@ window.AppForms = window.AppForms || {
               "❌ Errore registrazione:",
               textStatus,
               errorThrown,
-              jqXHR.responseText
+              jqXHR.responseText,
             );
 
             jQuery(form)
@@ -164,13 +164,15 @@ window.AppResetPassword = window.AppResetPassword || {
             } else {
               console.warn(
                 "❌ Errore nell'invio della richiesta:",
-                response?.error
+                response?.error,
               );
               jQuery(form)
                 .parent()
                 .children(".w-form-fail")
                 .fadeIn()
-                .text(response?.error || "Errore durante l'invio della richiesta.");
+                .text(
+                  response?.error || "Errore durante l'invio della richiesta.",
+                );
             }
           },
 
@@ -179,7 +181,7 @@ window.AppResetPassword = window.AppResetPassword || {
               "❌ Errore richiesta reset password:",
               textStatus,
               errorThrown,
-              jqXHR.responseText
+              jqXHR.responseText,
             );
             jQuery(form)
               .parent()
@@ -294,7 +296,7 @@ window.AppUpdatePassword = window.AppUpdatePassword || {
             } else {
               console.warn(
                 "❌ Errore nell'aggiornamento della password:",
-                response?.error
+                response?.error,
               );
               jQuery(form)
                 .parent()
@@ -302,7 +304,7 @@ window.AppUpdatePassword = window.AppUpdatePassword || {
                 .fadeIn()
                 .text(
                   response?.error ||
-                    "Errore durante l'aggiornamento della password."
+                    "Errore durante l'aggiornamento della password.",
                 );
             }
           },
@@ -312,7 +314,7 @@ window.AppUpdatePassword = window.AppUpdatePassword || {
               "❌ Errore nell'aggiornamento della password:",
               textStatus,
               errorThrown,
-              jqXHR.responseText
+              jqXHR.responseText,
             );
             jQuery(form)
               .parent()
@@ -412,7 +414,7 @@ window.AppAssessmentForms = window.AppAssessmentForms || {
               "❌ Errore invio assessment:",
               textStatus,
               errorThrown,
-              jqXHR.responseText
+              jqXHR.responseText,
             );
             jQuery(form).parent().children(".w-form-fail").fadeIn();
           },
@@ -536,6 +538,31 @@ window.AppGeneralForms = window.AppGeneralForms || {
 
           success: function (response) {
             console.log("Invio form avvenuto con successo:", response);
+
+            const isSuccess = response && response.success === true;
+            const isContactForm = data.formId === "wf-form-Progetto";
+
+            if (isSuccess && isContactForm) {
+              window.dataLayer = window.dataLayer || [];
+
+              window.dataLayer.push({
+                event: "form_submit_contact",
+                form_name: data.formId,
+                form_location: window.location.pathname,
+                page_path: window.location.pathname,
+                page_url: window.location.href,
+                page_title: document.title,
+              });
+
+              console.log(
+                "📊 Evento GA4 form_submit_contact inviato a dataLayer",
+                {
+                  form_name: data.formId,
+                  page_path: window.location.pathname,
+                },
+              );
+            }
+
             jQuery(form).hide();
             jQuery(form).parent().children(".w-form-done").fadeIn();
           },
@@ -545,7 +572,7 @@ window.AppGeneralForms = window.AppGeneralForms || {
               "❌ Errore invio form:",
               textStatus,
               errorThrown,
-              jqXHR.responseText
+              jqXHR.responseText,
             );
             jQuery(form).parent().children(".w-form-fail").fadeIn();
           },
@@ -817,13 +844,13 @@ window.MultiStepForm =
 
     function setupEvents() {
       const nextButtons = formElement.querySelectorAll(
-        "[data-form='next-btn']"
+        "[data-form='next-btn']",
       );
       const backButtons = formElement.querySelectorAll(
-        "[data-form='back-btn']"
+        "[data-form='back-btn']",
       );
       const submitButton = formElement.querySelector(
-        "[data-form='submit-btn']"
+        "[data-form='submit-btn']",
       );
 
       nextButtons.forEach((button) => {
@@ -888,9 +915,12 @@ window.MultiStepForm =
       if (radioInputs.length > 0) {
         radioInputs.forEach((radio) => {
           radio.addEventListener("change", () => {
-            setTimeout(() => {
-              nextStep();
-            }, parseInt(radio.dataset.radioDelay || "0", 10));
+            setTimeout(
+              () => {
+                nextStep();
+              },
+              parseInt(radio.dataset.radioDelay || "0", 10),
+            );
           });
         });
       }
@@ -923,7 +953,7 @@ window.MultiStepForm =
         phoneInputs.forEach((input) => {
           const maxLength = parseInt(
             input.getAttribute("data-phone-autoformat"),
-            10
+            10,
           );
 
           input.addEventListener("input", () => {
@@ -967,7 +997,7 @@ window.MultiStepForm =
       let isValid = true;
 
       const requiredInputs = currentStep.querySelectorAll(
-        "input[required], textarea[required], select[required]"
+        "input[required], textarea[required], select[required]",
       );
 
       requiredInputs.forEach((input) => {
@@ -980,7 +1010,7 @@ window.MultiStepForm =
 
         if (type === "radio") {
           const group = currentStep.querySelectorAll(
-            `input[type="radio"][name="${input.name}"]`
+            `input[type="radio"][name="${input.name}"]`,
           );
           const oneChecked = Array.from(group).some((radio) => radio.checked);
           if (!oneChecked) isValid = false;
@@ -993,14 +1023,14 @@ window.MultiStepForm =
       });
 
       const requiredCheckboxes = currentStep.querySelectorAll(
-        "input[type='checkbox'][data-checkbox]"
+        "input[type='checkbox'][data-checkbox]",
       );
 
       if (requiredCheckboxes.length > 0) {
         const requiredCount =
           parseInt(currentStep.getAttribute("data-checkbox"), 10) || 0;
         const checkedCount = Array.from(requiredCheckboxes).filter(
-          (checkbox) => checkbox.checked
+          (checkbox) => checkbox.checked,
         ).length;
 
         if (checkedCount < requiredCount) isValid = false;
@@ -1011,7 +1041,7 @@ window.MultiStepForm =
 
     function updateStepButtonState(step) {
       const actionButton = step.querySelector(
-        "[data-form='next-btn'], [data-form='submit-btn']"
+        "[data-form='next-btn'], [data-form='submit-btn']",
       );
 
       if (!actionButton) return;
@@ -1019,7 +1049,7 @@ window.MultiStepForm =
       let isValid = true;
 
       const requiredInputs = step.querySelectorAll(
-        "input[required], textarea[required], select[required]"
+        "input[required], textarea[required], select[required]",
       );
 
       requiredInputs.forEach((input) => {
@@ -1032,7 +1062,7 @@ window.MultiStepForm =
 
         if (type === "radio") {
           const group = step.querySelectorAll(
-            `input[type="radio"][name="${input.name}"]`
+            `input[type="radio"][name="${input.name}"]`,
           );
           const oneChecked = Array.from(group).some((radio) => radio.checked);
           if (!oneChecked) isValid = false;
@@ -1045,13 +1075,13 @@ window.MultiStepForm =
       });
 
       const requiredCheckboxes = step.querySelectorAll(
-        "input[type='checkbox'][data-checkbox]"
+        "input[type='checkbox'][data-checkbox]",
       );
       if (requiredCheckboxes.length > 0) {
         const requiredCount =
           parseInt(step.getAttribute("data-checkbox"), 10) || 0;
         const checkedCount = Array.from(requiredCheckboxes).filter(
-          (checkbox) => checkbox.checked
+          (checkbox) => checkbox.checked,
         ).length;
 
         if (checkedCount < requiredCount) isValid = false;
@@ -1089,7 +1119,7 @@ window.MultiStepForm =
 
       // ✅ Seleziona gli indicatori personalizzati
       const customIndicators = formElement.querySelectorAll(
-        "[data-form='custom-progress-indicator']"
+        "[data-form='custom-progress-indicator']",
       );
 
       if (customIndicators.length === 0) {
@@ -1108,13 +1138,13 @@ window.MultiStepForm =
 
       // ✅ Controlla se il form ha una progress bar
       const progressContainer = formElement.querySelector(
-        "[data-form='progress']"
+        "[data-form='progress']",
       );
       const progressIndicator = formElement.querySelector(
-        "[data-form='progress-indicator']"
+        "[data-form='progress-indicator']",
       );
       const progressTextElements = formElement.querySelectorAll(
-        "[data-form='progress-percent']"
+        "[data-form='progress-percent']",
       );
 
       if (!progressContainer || !progressIndicator) {
@@ -1123,7 +1153,7 @@ window.MultiStepForm =
 
       const totalSteps = steps.length;
       const progressPercentage = Math.round(
-        ((currentStepIndex + 1) / totalSteps) * 100
+        ((currentStepIndex + 1) / totalSteps) * 100,
       );
 
       // ✅ Aggiorna la barra di avanzamento (se esiste)
@@ -1177,7 +1207,7 @@ window.MultiStepForm =
 
       function refresh() {
         const selected = step.querySelector(
-          "input[name='contact-preference']:checked"
+          "input[name='contact-preference']:checked",
         )?.value;
 
         step.classList.toggle("is-call-selected", selected === "call");
@@ -1294,7 +1324,7 @@ window.MultiStepForm =
       currentStepIndex = 0;
 
       const contactRadios = formElement.querySelectorAll(
-        "input[name='contact-preference']"
+        "input[name='contact-preference']",
       );
 
       contactRadios.forEach((radio) => {
@@ -1306,7 +1336,7 @@ window.MultiStepForm =
       });
 
       const finalCheckboxes = formElement.querySelectorAll(
-        "[data-contact-step] input[type='checkbox']"
+        "[data-contact-step] input[type='checkbox']",
       );
 
       finalCheckboxes.forEach((checkbox) => {
@@ -1361,7 +1391,7 @@ function calendar() {
   const dateStep = document.querySelector('[data-cal-step="date"]');
   const timeStep = document.querySelector('[data-cal-step="time"]');
   const selectedDayLabel = document.querySelector(
-    "[data-calendar-selected-day]"
+    "[data-calendar-selected-day]",
   );
   const backBtn = document.querySelector("[data-calendar-back]");
 
@@ -1595,23 +1625,23 @@ function calendar() {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.innerText = `${String(time.hour).padStart(2, "0")}:${String(
-          time.minute
+          time.minute,
         ).padStart(2, "0")}`;
 
         btn.addEventListener("click", function () {
           if (currentInputField && selectedDate) {
             currentInputField.value = `${String(
-              selectedDate.getDate()
+              selectedDate.getDate(),
             ).padStart(2, "0")}/${String(selectedDate.getMonth() + 1).padStart(
               2,
-              "0"
+              "0",
             )}/${selectedDate.getFullYear()} ${btn.innerText}`;
 
             currentInputField.dispatchEvent(
-              new Event("input", { bubbles: true })
+              new Event("input", { bubbles: true }),
             );
             currentInputField.dispatchEvent(
-              new Event("change", { bubbles: true })
+              new Event("change", { bubbles: true }),
             );
           }
 
@@ -1641,7 +1671,7 @@ function calendar() {
   }
   function scrollCalendarToTop() {
     const modalScrollBox = document.querySelector(
-      ".calendar-overlay .form_modal"
+      ".calendar-overlay .form_modal",
     );
     if (!modalScrollBox) return;
 
@@ -1735,7 +1765,7 @@ function calendar() {
               timeMin: fetchInfo.startStr,
               timeMax: fetchInfo.endStr,
             }),
-          }
+          },
         );
 
         if (!response.ok) throw new Error(`Errore HTTP: ${response.status}`);
@@ -1759,24 +1789,24 @@ function calendar() {
   currentInputField =
     inputFields[0] || document.querySelector(".form-text-field-2");
 
-if (backBtn) {
-  const handleBackClick = (e) => {
-    e.preventDefault();
-    updateCalStep("date");
-  };
+  if (backBtn) {
+    const handleBackClick = (e) => {
+      e.preventDefault();
+      updateCalStep("date");
+    };
 
-  backBtn.addEventListener("click", handleBackClick);
+    backBtn.addEventListener("click", handleBackClick);
 
-  if (!Array.isArray(window.pageSpecificListeners)) {
-    window.pageSpecificListeners = [];
+    if (!Array.isArray(window.pageSpecificListeners)) {
+      window.pageSpecificListeners = [];
+    }
+
+    window.pageSpecificListeners.push({
+      element: backBtn,
+      event: "click",
+      handler: handleBackClick,
+    });
   }
-
-  window.pageSpecificListeners.push({
-    element: backBtn,
-    event: "click",
-    handler: handleBackClick,
-  });
-}
 
   updateCalStep("date");
   window.__calendarCleanup = () => {
