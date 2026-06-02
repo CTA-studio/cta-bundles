@@ -1,4 +1,4 @@
-const CTA_BUNDLE_VER = "CTA-v3-1_02062026";
+const CTA_BUNDLE_VER = "CTA-v4-1_02062026";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 window.safeRequestIdleCallback =
