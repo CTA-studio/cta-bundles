@@ -2482,6 +2482,296 @@ function initPropositoHeaderIntro() {
   });
 }
 
+function initWhereAccordion() {
+  if (!window.gsap) return null;
+
+  const { gsap } = window;
+
+  if (!Array.isArray(window.pageSpecificListeners)) {
+    window.pageSpecificListeners = [];
+  }
+
+  const section = document.querySelector(".where_section");
+  if (!section) {
+    console.warn("initWhereAccordion: .where_section non trovata");
+    return null;
+  }
+
+  const items = gsap.utils.toArray(".accordion_path", section);
+  if (!items.length) return null;
+
+  const entries = [];
+  let openEntry = null;
+  let firstInitiallyOpenFound = false;
+
+  function createButtonTimelines(button) {
+    if (!button) return null;
+
+    const hoverDiv = button.querySelector(".btn-bg");
+    const arrowHover = button.querySelector(".cta-ar-h");
+    const arrowDefault = button.querySelector(".cta-ar");
+
+    if (!hoverDiv || !arrowHover || !arrowDefault) {
+      return null;
+    }
+
+    gsap.set([hoverDiv, arrowHover, arrowDefault], {
+      transformOrigin: "50% 50%",
+    });
+
+    const enterTl = gsap.timeline({ paused: true });
+    const leaveTl = gsap.timeline({ paused: true });
+
+    enterTl
+      .to(
+        [hoverDiv, arrowHover],
+        {
+          scale: 1,
+          duration: 0.35,
+          ease: "power2.out",
+          stagger: 0.05,
+          overwrite: "auto",
+        },
+        0
+      )
+      .to(
+        arrowDefault,
+        {
+          scale: 0,
+          duration: 0.25,
+          ease: "power2.out",
+          overwrite: "auto",
+        },
+        0.2
+      );
+
+    leaveTl
+      .to(
+        arrowDefault,
+        {
+          scale: 1,
+          duration: 0.2,
+          ease: "power2.in",
+          overwrite: "auto",
+        },
+        0
+      )
+      .to(
+        [hoverDiv, arrowHover],
+        {
+          scale: 0,
+          duration: 0.3,
+          ease: "power2.out",
+          stagger: 0.05,
+          overwrite: "auto",
+        },
+        0.2
+      );
+
+    return {
+      hoverDiv,
+      arrowHover,
+      arrowDefault,
+      enterTl,
+      leaveTl,
+    };
+  }
+
+  function setButtonState(entry, isOpen) {
+    if (!entry?.btnFx) return;
+
+    const { hoverDiv, arrowHover, arrowDefault, enterTl, leaveTl } =
+      entry.btnFx;
+
+    if (isOpen) {
+      if (leaveTl.isActive()) leaveTl.progress(1, false);
+      gsap.set([hoverDiv, arrowHover], { scale: 1 });
+      gsap.set(arrowDefault, { scale: 0 });
+    } else {
+      if (enterTl.isActive()) enterTl.progress(1, false);
+      gsap.set(arrowDefault, { scale: 1 });
+      gsap.set([hoverDiv, arrowHover], { scale: 0 });
+    }
+  }
+
+  items.forEach((item, index) => {
+    if (item.dataset.whereAccordionBound === "1") return;
+    item.dataset.whereAccordionBound = "1";
+
+    const trigger = item.querySelector(".accordion-open");
+    const buttonFx = item.querySelector(".btn-simple");
+    const panel = item.querySelector(".acc_wrapper");
+
+    if (!trigger || !panel) {
+      console.warn("initWhereAccordion: elementi mancanti", {
+        item,
+        trigger,
+        panel,
+      });
+      return;
+    }
+
+    const panelId = panel.id || `where-acc-panel-${index + 1}`;
+    const triggerId = trigger.id || `where-acc-trigger-${index + 1}`;
+
+    panel.id = panelId;
+    trigger.id = triggerId;
+
+    trigger.setAttribute("role", "button");
+    trigger.setAttribute("tabindex", "0");
+    trigger.setAttribute("aria-controls", panelId);
+    panel.setAttribute("aria-labelledby", triggerId);
+
+    let wantsOpen =
+      item.classList.contains("is-open") ||
+      trigger.getAttribute("aria-expanded") === "true";
+
+    if (wantsOpen && firstInitiallyOpenFound) {
+      wantsOpen = false;
+    }
+
+    if (wantsOpen) firstInitiallyOpenFound = true;
+
+    trigger.setAttribute("aria-expanded", wantsOpen ? "true" : "false");
+    panel.setAttribute("aria-hidden", wantsOpen ? "false" : "true");
+
+    gsap.set(panel, {
+      height: wantsOpen ? "auto" : 0,
+      overflow: "hidden",
+    });
+
+    const entry = {
+      item,
+      trigger,
+      panel,
+      isOpen: wantsOpen,
+      btnFx: createButtonTimelines(buttonFx),
+    };
+
+    setButtonState(entry, wantsOpen);
+
+    if (wantsOpen) openEntry = entry;
+
+    entries.push(entry);
+  });
+
+  function openAccordion(entry) {
+    if (!entry || entry.isOpen) return;
+
+    if (openEntry && openEntry !== entry) {
+      closeAccordion(openEntry);
+    }
+
+    entry.isOpen = true;
+    openEntry = entry;
+
+    entry.trigger.setAttribute("aria-expanded", "true");
+    entry.panel.setAttribute("aria-hidden", "false");
+    entry.item.classList.add("is-open");
+
+    if (entry.btnFx) {
+      if (entry.btnFx.leaveTl.isActive()) {
+        entry.btnFx.leaveTl.progress(1, false);
+      }
+      entry.btnFx.enterTl.restart();
+    }
+
+    gsap.killTweensOf(entry.panel);
+
+    const startHeight = entry.panel.offsetHeight;
+    gsap.set(entry.panel, { height: "auto" });
+    const endHeight = entry.panel.offsetHeight;
+    gsap.set(entry.panel, { height: startHeight });
+
+    gsap.to(entry.panel, {
+      height: endHeight,
+      duration: 0.6,
+      ease: "power2.inOut",
+      overwrite: "auto",
+      onComplete: () => {
+        if (entry.isOpen) {
+          gsap.set(entry.panel, { height: "auto" });
+        }
+      },
+    });
+  }
+
+  function closeAccordion(entry) {
+    if (!entry || !entry.isOpen) return;
+
+    entry.isOpen = false;
+    if (openEntry === entry) openEntry = null;
+
+    entry.trigger.setAttribute("aria-expanded", "false");
+    entry.panel.setAttribute("aria-hidden", "true");
+    entry.item.classList.remove("is-open");
+
+    if (entry.btnFx) {
+      if (entry.btnFx.enterTl.isActive()) {
+        entry.btnFx.enterTl.progress(1, false);
+      }
+      entry.btnFx.leaveTl.restart();
+    }
+
+    gsap.killTweensOf(entry.panel);
+
+    const currentHeight = entry.panel.offsetHeight;
+    gsap.set(entry.panel, { height: currentHeight });
+
+    gsap.to(entry.panel, {
+      height: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+      overwrite: "auto",
+    });
+  }
+
+  function toggleAccordion(entry) {
+    if (!entry) return;
+
+    if (entry.isOpen) {
+      closeAccordion(entry);
+    } else {
+      openAccordion(entry);
+    }
+  }
+
+  entries.forEach((entry) => {
+    const handleClick = () => toggleAccordion(entry);
+
+    const handleKeydown = (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      toggleAccordion(entry);
+    };
+
+    entry.trigger.addEventListener("click", handleClick);
+    entry.trigger.addEventListener("keydown", handleKeydown);
+
+    window.pageSpecificListeners.push(
+      {
+        element: entry.trigger,
+        event: "click",
+        handler: handleClick,
+      },
+      {
+        element: entry.trigger,
+        event: "keydown",
+        handler: handleKeydown,
+      }
+    );
+  });
+
+  return {
+    open: openAccordion,
+    close: closeAccordion,
+    toggle: toggleAccordion,
+    get entries() {
+      return entries;
+    },
+  };
+}
+
 Object.assign(window, {
   showcaseTextContentMobile,
   showcasePanelsScrollMobile,
@@ -2491,4 +2781,5 @@ Object.assign(window, {
   initCtaContactsIntro,
   initStudioWrapperIntro,
   initPropositoHeaderIntro,
+  initWhereAccordion,
 });
