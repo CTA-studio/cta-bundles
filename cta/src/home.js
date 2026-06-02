@@ -2505,8 +2505,6 @@ function initWhereAccordion() {
   let firstInitiallyOpenFound = false;
 
   function createButtonTimelines(button) {
-    if (!button) return null;
-
     const hoverDiv = button.querySelector(".btn-bg");
     const arrowHover = button.querySelector(".cta-ar-h");
     const arrowDefault = button.querySelector(".cta-ar");
@@ -2515,7 +2513,13 @@ function initWhereAccordion() {
       return null;
     }
 
-    gsap.set([hoverDiv, arrowHover, arrowDefault], {
+    gsap.set([hoverDiv, arrowHover], {
+      scale: 0,
+      transformOrigin: "50% 50%",
+    });
+
+    gsap.set(arrowDefault, {
+      scale: 1,
       transformOrigin: "50% 50%",
     });
 
@@ -2589,8 +2593,8 @@ function initWhereAccordion() {
       gsap.set(arrowDefault, { scale: 0 });
     } else {
       if (enterTl.isActive()) enterTl.progress(1, false);
-      gsap.set(arrowDefault, { scale: 1 });
       gsap.set([hoverDiv, arrowHover], { scale: 0 });
+      gsap.set(arrowDefault, { scale: 1 });
     }
   }
 
@@ -2598,33 +2602,34 @@ function initWhereAccordion() {
     if (item.dataset.whereAccordionBound === "1") return;
     item.dataset.whereAccordionBound = "1";
 
-    const trigger = item.querySelector(".accordion-open");
-    const buttonFx = item.querySelector(".btn-simple");
+    const button = item.querySelector(".btn-simple.accordion");
     const panel = item.querySelector(".acc_wrapper");
 
-    if (!trigger || !panel) {
+    if (!button || !panel) {
       console.warn("initWhereAccordion: elementi mancanti", {
         item,
-        trigger,
+        button,
         panel,
       });
       return;
     }
 
+    if (!button.getAttribute("type")) {
+      button.setAttribute("type", "button");
+    }
+
     const panelId = panel.id || `where-acc-panel-${index + 1}`;
-    const triggerId = trigger.id || `where-acc-trigger-${index + 1}`;
+    const buttonId = button.id || `where-acc-trigger-${index + 1}`;
 
     panel.id = panelId;
-    trigger.id = triggerId;
+    button.id = buttonId;
 
-    trigger.setAttribute("role", "button");
-    trigger.setAttribute("tabindex", "0");
-    trigger.setAttribute("aria-controls", panelId);
-    panel.setAttribute("aria-labelledby", triggerId);
+    button.setAttribute("aria-controls", panelId);
+    panel.setAttribute("aria-labelledby", buttonId);
 
     let wantsOpen =
       item.classList.contains("is-open") ||
-      trigger.getAttribute("aria-expanded") === "true";
+      button.getAttribute("aria-expanded") === "true";
 
     if (wantsOpen && firstInitiallyOpenFound) {
       wantsOpen = false;
@@ -2632,20 +2637,21 @@ function initWhereAccordion() {
 
     if (wantsOpen) firstInitiallyOpenFound = true;
 
-    trigger.setAttribute("aria-expanded", wantsOpen ? "true" : "false");
+    button.setAttribute("aria-expanded", wantsOpen ? "true" : "false");
     panel.setAttribute("aria-hidden", wantsOpen ? "false" : "true");
 
     gsap.set(panel, {
-      height: wantsOpen ? "auto" : 0,
+      display: "block",
       overflow: "hidden",
+      height: wantsOpen ? "auto" : 0,
     });
 
     const entry = {
       item,
-      trigger,
+      button,
       panel,
       isOpen: wantsOpen,
-      btnFx: createButtonTimelines(buttonFx),
+      btnFx: createButtonTimelines(button),
     };
 
     setButtonState(entry, wantsOpen);
@@ -2665,7 +2671,7 @@ function initWhereAccordion() {
     entry.isOpen = true;
     openEntry = entry;
 
-    entry.trigger.setAttribute("aria-expanded", "true");
+    entry.button.setAttribute("aria-expanded", "true");
     entry.panel.setAttribute("aria-hidden", "false");
     entry.item.classList.add("is-open");
 
@@ -2678,10 +2684,15 @@ function initWhereAccordion() {
 
     gsap.killTweensOf(entry.panel);
 
-    const startHeight = entry.panel.offsetHeight;
-    gsap.set(entry.panel, { height: "auto" });
-    const endHeight = entry.panel.offsetHeight;
-    gsap.set(entry.panel, { height: startHeight });
+    gsap.set(entry.panel, {
+      display: "block",
+      overflow: "hidden",
+      height: "auto",
+    });
+
+    const endHeight = entry.panel.scrollHeight;
+
+    gsap.set(entry.panel, { height: 0 });
 
     gsap.to(entry.panel, {
       height: endHeight,
@@ -2702,7 +2713,7 @@ function initWhereAccordion() {
     entry.isOpen = false;
     if (openEntry === entry) openEntry = null;
 
-    entry.trigger.setAttribute("aria-expanded", "false");
+    entry.button.setAttribute("aria-expanded", "false");
     entry.panel.setAttribute("aria-hidden", "true");
     entry.item.classList.remove("is-open");
 
@@ -2715,8 +2726,11 @@ function initWhereAccordion() {
 
     gsap.killTweensOf(entry.panel);
 
-    const currentHeight = entry.panel.offsetHeight;
-    gsap.set(entry.panel, { height: currentHeight });
+    gsap.set(entry.panel, {
+      display: "block",
+      overflow: "hidden",
+      height: entry.panel.scrollHeight,
+    });
 
     gsap.to(entry.panel, {
       height: 0,
@@ -2737,29 +2751,19 @@ function initWhereAccordion() {
   }
 
   entries.forEach((entry) => {
-    const handleClick = () => toggleAccordion(entry);
-
-    const handleKeydown = (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
+    const handleClick = (event) => {
       event.preventDefault();
+      event.stopPropagation();
       toggleAccordion(entry);
     };
 
-    entry.trigger.addEventListener("click", handleClick);
-    entry.trigger.addEventListener("keydown", handleKeydown);
+    entry.button.addEventListener("click", handleClick);
 
-    window.pageSpecificListeners.push(
-      {
-        element: entry.trigger,
-        event: "click",
-        handler: handleClick,
-      },
-      {
-        element: entry.trigger,
-        event: "keydown",
-        handler: handleKeydown,
-      }
-    );
+    window.pageSpecificListeners.push({
+      element: entry.button,
+      event: "click",
+      handler: handleClick,
+    });
   });
 
   return {
