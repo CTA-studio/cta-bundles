@@ -1,6 +1,7 @@
 // In cima a map cambia la version
 
 git status
+npm run build
 git add .
 git commit -m "Aggiorna CTA Studio v1.0.XX" // Modifica commento
 git push origin main
