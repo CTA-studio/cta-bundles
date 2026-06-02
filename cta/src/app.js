@@ -2254,10 +2254,6 @@ function initBarbaWithGSAP() {
       const url = new URL(href, window.location.href);
       if (url.origin !== window.location.origin) return true;
 
-      // 6) tue esclusioni
-      const excludePatterns = ["/web-studio/"];
-      if (excludePatterns.some((p) => url.pathname.includes(p))) return true;
-
       // 7) data
       if (el?.hasAttribute?.("data-barba-prevent")) return true;
 
