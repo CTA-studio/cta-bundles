@@ -1,4 +1,4 @@
-const CTA_BUNDLE_VER = "CTA-v4-7_10062026";
+const CTA_BUNDLE_VER = "CTA-v4-8_10-06-2026";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 window.safeRequestIdleCallback =
@@ -156,6 +156,13 @@ window.pageSpecificFunctionsMap = {
       "https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js",
       `${CTA_CDN}/cta-form.js`,
     ],
+    styles: [],
+  },
+    //Conferma iscrizione newsletter
+  "6a29664d35bc17c2570ab4f4": {
+    name: "confermaProposito",
+    jsonKey: "68b2e6c65a7f2a0ef027f553",
+    scripts: [],
     styles: [],
   },
   //blog
@@ -1942,6 +1949,21 @@ window.pageFunctions = {
         } finally {
           window.runFinalBoot?.();
         }
+      }, 2000);
+    },
+    cleanup: function () {
+      cleanUpTriggers();
+      cleanUpPageListeners();
+    },
+  },
+  confermaProposito: {
+    execute: function () {
+      if (!window.isBarbaTransition) {
+         window.pageEnterFx?.introProposito?.();
+      }
+      setupPrimaryButtons();
+      setTimeout(() => {
+        window.runFinalBoot?.();
       }, 2000);
     },
     cleanup: function () {

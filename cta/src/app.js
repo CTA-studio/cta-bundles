@@ -2333,6 +2333,7 @@ function OnLoadHeroDefault() {
     uspSplit = new SplitText(els.uspText, {
       type: "lines",
       linesClass: "usp-line",
+      aria: "none",
     });
 
     gsap.set(uspSplit.lines, { y: -200 });
