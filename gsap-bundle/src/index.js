@@ -7,7 +7,6 @@ import { InertiaPlugin } from "gsap/InertiaPlugin";
 
 import barba from "@barba/core";
 import Lenis from "lenis";
-import SplitType from "split-type";
 
 gsap.registerPlugin(
   ScrollTrigger,
@@ -21,7 +20,6 @@ if (typeof window !== "undefined") {
   window.gsap = gsap;
   window.barba = barba;
   window.Lenis = Lenis;
-  window.SplitType = SplitType;
 
   window.ScrollTrigger = ScrollTrigger;
   window.DrawSVGPlugin = DrawSVGPlugin;
