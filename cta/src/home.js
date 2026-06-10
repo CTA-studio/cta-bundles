@@ -2504,6 +2504,47 @@ function initWhereAccordion() {
   let openEntry = null;
   let firstInitiallyOpenFound = false;
 
+  function setPanelInteractive(panel, isOpen) {
+    const focusable = panel.querySelectorAll(
+      'a, button, input, textarea, select, [tabindex]'
+    );
+
+    if (isOpen) {
+      panel.removeAttribute("inert");
+      panel.setAttribute("aria-hidden", "false");
+
+      focusable.forEach((el) => {
+        if (el.hasAttribute("data-original-tabindex")) {
+          const originalTabindex = el.getAttribute("data-original-tabindex");
+
+          if (originalTabindex === "") {
+            el.removeAttribute("tabindex");
+          } else {
+            el.setAttribute("tabindex", originalTabindex);
+          }
+
+          el.removeAttribute("data-original-tabindex");
+        } else {
+          el.removeAttribute("tabindex");
+        }
+      });
+    } else {
+      panel.setAttribute("aria-hidden", "true");
+      panel.setAttribute("inert", "");
+
+      focusable.forEach((el) => {
+        if (!el.hasAttribute("data-original-tabindex")) {
+          el.setAttribute(
+            "data-original-tabindex",
+            el.getAttribute("tabindex") || ""
+          );
+        }
+
+        el.setAttribute("tabindex", "-1");
+      });
+    }
+  }
+
   function createButtonTimelines(button) {
     const hoverDiv = button.querySelector(".btn-bg");
     const arrowHover = button.querySelector(".cta-ar-h");
@@ -2638,7 +2679,7 @@ function initWhereAccordion() {
     if (wantsOpen) firstInitiallyOpenFound = true;
 
     button.setAttribute("aria-expanded", wantsOpen ? "true" : "false");
-    panel.setAttribute("aria-hidden", wantsOpen ? "false" : "true");
+    setPanelInteractive(panel, wantsOpen);
 
     gsap.set(panel, {
       display: "block",
@@ -2672,7 +2713,7 @@ function initWhereAccordion() {
     openEntry = entry;
 
     entry.button.setAttribute("aria-expanded", "true");
-    entry.panel.setAttribute("aria-hidden", "false");
+    setPanelInteractive(entry.panel, true);
     entry.item.classList.add("is-open");
 
     if (entry.btnFx) {
@@ -2714,7 +2755,7 @@ function initWhereAccordion() {
     if (openEntry === entry) openEntry = null;
 
     entry.button.setAttribute("aria-expanded", "false");
-    entry.panel.setAttribute("aria-hidden", "true");
+    setPanelInteractive(entry.panel, false);
     entry.item.classList.remove("is-open");
 
     if (entry.btnFx) {

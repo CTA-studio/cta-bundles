@@ -2275,7 +2275,6 @@ function initBarbaWithGSAP() {
 
 /** Funzioni di caricamento iniziale */
 
-/** Nuova animazione ingresso home */
 function OnLoadHeroDefault() {
   if (!window.gsap) return;
 
@@ -2283,9 +2282,25 @@ function OnLoadHeroDefault() {
   const SplitText =
     (gsap.plugins && gsap.plugins.SplitText) || window.SplitText;
 
-  const isDesktop = !!window.bp?.is?.("lgUp"); // >= 992
-
+  const isDesktop = !!window.bp?.is?.("lgUp");
   const page = document.querySelector(".page-wrapper");
+
+  if (isDesktop) {
+    gsap.set(
+      ["#imgPrimo .show-img", "#imgSecondo .show-img", "#imgTerzo .show-img"],
+      {
+        xPercent: 100,
+        x: 0,
+        force3D: true,
+      }
+    );
+  } else {
+    gsap.set("#imgPrimo .show-img", {
+      yPercent: 100,
+      y: 0,
+      force3D: true,
+    });
+  }
 
   const els = {
     svgLightLetters: gsap.utils.toArray(".svg-light .letter-svg", page),
@@ -2300,11 +2315,11 @@ function OnLoadHeroDefault() {
     ]),
     gruppoSecondo: gsap.utils.toArray([
       "#panelSecondo .bg-panel",
-      "#panelSecondo .show-img",
+      "#imgSecondo .show-img",
     ]),
     gruppoTerzo: gsap.utils.toArray([
       "#panelTerzo .bg-panel",
-      "#panelTerzo .show-img",
+      "#imgTerzo .show-img",
     ]),
 
     burgerBlock: header.burgerBlock,
@@ -2318,7 +2333,6 @@ function OnLoadHeroDefault() {
     uspSplit = new SplitText(els.uspText, {
       type: "lines",
       linesClass: "usp-line",
-      aria: "none",
     });
 
     gsap.set(uspSplit.lines, { y: -200 });
@@ -2357,7 +2371,7 @@ function OnLoadHeroDefault() {
           ease: "power2.in",
           stagger: 0.1,
         },
-        0,
+        0
       )
       .to(
         els.svgLightLetters,
@@ -2367,7 +2381,7 @@ function OnLoadHeroDefault() {
           ease: "power2.in",
           stagger: 0.09,
         },
-        0.4,
+        0.4
       );
 
     // hero-trans SOLO desktop (stesso timing 0.35)
@@ -2375,11 +2389,11 @@ function OnLoadHeroDefault() {
       tlTitle.to(
         els.heroTrans,
         {
-          x: "0vw",
+          x: 0,
           duration: 0.3,
           ease: "power2.inOut",
         },
-        0.35,
+        0.35
       );
     }
 
@@ -2393,7 +2407,7 @@ function OnLoadHeroDefault() {
           ease: "power2.out",
           stagger: 0.08,
         },
-        0.6,
+        0.6
       )
       .to(
         els.svgDarkLetters,
@@ -2403,7 +2417,7 @@ function OnLoadHeroDefault() {
           ease: "power2.out",
           stagger: 0.08,
         },
-        0.6,
+        0.6
       );
 
     // cover: desktop scaleX (origin center left), mobile scaleY (origin top center)
@@ -2416,7 +2430,7 @@ function OnLoadHeroDefault() {
           ease: "power3.inOut",
           transformOrigin: "center left",
         },
-        0,
+        0
       );
     } else {
       tlTitle
@@ -2428,7 +2442,7 @@ function OnLoadHeroDefault() {
             ease: "power3.inOut",
             transformOrigin: "top center",
           },
-          0,
+          0
         )
         .to(
           header.logoHome,
@@ -2437,7 +2451,7 @@ function OnLoadHeroDefault() {
             duration: 0.28,
             ease: "power2.inOut",
           },
-          0.75,
+          0.75
         );
     }
 
@@ -2452,7 +2466,7 @@ function OnLoadHeroDefault() {
           stagger: { amount: 0.06, from: "end" },
           clearProps: "transform",
         },
-        0.6,
+        0.6
       );
     }
 
@@ -2461,41 +2475,37 @@ function OnLoadHeroDefault() {
       tlPanel
         .to(els.gruppoPrimo, {
           scaleX: 1,
-          x: 0,
+          xPercent: 0,
           duration: 0.6,
           stagger: { amount: 0.25 },
           ease: "power2.out",
-          modifiers: { x: snapPx },
         })
         .to(
           els.gruppoSecondo,
           {
             scaleX: 1,
-            x: 0,
+            xPercent: 0,
             duration: 0.6,
             stagger: { amount: 0.25 },
             ease: "power2.out",
-            modifiers: { x: snapPx },
           },
-          "<+0.1",
+          "<+0.1"
         )
         .to(
           els.gruppoTerzo,
           {
             scaleX: 1,
-            x: 0,
+            xPercent: 0,
             duration: 0.6,
             stagger: { amount: 0.25 },
             ease: "power2.out",
-            modifiers: { x: snapPx },
           },
-          "<+0.1",
+          "<+0.1"
         );
     } else {
-      // mobile: SOLO gruppoPrimo (come ora)
       tlPanel.to(els.gruppoPrimo, {
         scaleY: 1,
-        y: 0,
+        yPercent: 0,
         duration: 0.6,
         stagger: { amount: 0.25 },
         ease: "power2.out",
@@ -2512,7 +2522,7 @@ function OnLoadHeroDefault() {
           ease: "power2.out",
           stagger: { amount: 0.2 },
         },
-        0.2,
+        0.2
       );
     }
 
@@ -2526,7 +2536,7 @@ function OnLoadHeroDefault() {
           ease: "power2.out",
           stagger: { amount: 0.2 },
         },
-        0,
+        0
       )
       .to(
         ".l-h",
@@ -2535,7 +2545,7 @@ function OnLoadHeroDefault() {
           duration: 0.4,
           ease: "power2.out",
         },
-        0,
+        0
       );
 
     if (mode === "mobile") {
@@ -2546,7 +2556,7 @@ function OnLoadHeroDefault() {
           duration: 0.4,
           ease: "power2.inOut",
         },
-        0,
+        0
       );
     }
 

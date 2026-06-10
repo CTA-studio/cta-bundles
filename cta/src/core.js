@@ -203,7 +203,7 @@ function updatePageMetaAndInteractions(newPageHTML) {
   // 9. Interazioni Webflow
   restartWebflowInteractions();
   // 10. Invia page_view virtuale a GTM / GA4 dopo transizione Barba
-   trackPageView();
+  trackPageView();
 }
 
 // Meta tag: aggiorna o crea
@@ -465,7 +465,7 @@ window.lenisInstance = window.lenisInstance || {
     );
 
     setTimeout(() => {
-      this.update();
+      this.softUpdate();
     }, 300);
   },
 
@@ -480,6 +480,12 @@ window.lenisInstance = window.lenisInstance || {
     if (this.instance && this.isStopped) {
       this.instance.start();
       this.isStopped = false;
+    }
+  },
+
+  softUpdate() {
+    if (this.instance) {
+      this.instance.raf(performance.now());
     }
   },
 
@@ -530,8 +536,6 @@ window.lenisInstance = window.lenisInstance || {
     });
   },
 };
-
-
 
 Object.assign(window, {
   cleanUpTriggers,
