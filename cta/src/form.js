@@ -391,6 +391,9 @@ window.AppAssessmentForms = window.AppAssessmentForms || {
 
         const data = self.convertFormToJSON(form);
         data.formId = form.id || "unknown-form";
+        console.log("🧩 Assessment submit - form.id:", form.id);
+        console.log("🧩 Assessment submit - data.formId:", data.formId);
+        console.log("🧩 Assessment submit - userId:", userId);
         data.uid = userId;
 
         window.FormSubmitOverlay?.show?.();
@@ -405,6 +408,34 @@ window.AppAssessmentForms = window.AppAssessmentForms || {
 
           success: function (response) {
             console.log("✅ Invio assessment avvenuto con successo:", response);
+
+            const assessmentId = form.id || "unknown-form";
+
+            console.log(
+              "🧩 Assessment success - assessmentId salvato:",
+              assessmentId,
+            );
+            console.log(
+              "🧩 Assessment success - sessionStorage PRIMA:",
+              sessionStorage.getItem("cta_assessment_updates"),
+            );
+
+            const current = JSON.parse(
+              sessionStorage.getItem("cta_assessment_updates") || "{}",
+            );
+
+            current[assessmentId] = true;
+
+            sessionStorage.setItem(
+              "cta_assessment_updates",
+              JSON.stringify(current),
+            );
+
+            console.log(
+              "🧩 Assessment success - sessionStorage DOPO:",
+              sessionStorage.getItem("cta_assessment_updates"),
+            );
+
             jQuery(form).hide();
             jQuery(form).parent().children(".w-form-done").fadeIn();
           },
@@ -757,6 +788,13 @@ window.FormSubmitOverlay =
       return document.querySelector(".img-loading-overlay");
     }
 
+    function clearDashboardStates() {
+      const el = getEl();
+      if (!el) return;
+
+      el.classList.remove("is-success", "is-error", "is-timeout");
+    }
+
     function startAnimation() {
       const logo = getLogo();
       if (!logo || !window.gsap) return;
@@ -787,12 +825,44 @@ window.FormSubmitOverlay =
       }
     }
 
+    function resetDashboardState() {
+      clearDashboardStates();
+    }
+
+    function showDashboardSuccess() {
+      const el = getEl();
+      if (!el) return;
+
+      stopAnimation();
+      clearDashboardStates();
+      el.classList.add("is-success");
+    }
+
+    function showDashboardError() {
+      const el = getEl();
+      if (!el) return;
+
+      stopAnimation();
+      clearDashboardStates();
+      el.classList.add("is-error");
+    }
+
+    function showDashboardTechError() {
+      const el = getEl();
+      if (!el) return;
+
+      stopAnimation();
+      clearDashboardStates();
+      el.classList.add("is-timeout");
+    }
+
     function show() {
       const el = getEl();
       if (!el) return;
 
       el.classList.add("is-active");
       el.setAttribute("aria-hidden", "false");
+      clearDashboardStates();
       startAnimation();
     }
 
@@ -803,6 +873,7 @@ window.FormSubmitOverlay =
       el.classList.remove("is-active");
       el.setAttribute("aria-hidden", "true");
       stopAnimation();
+      clearDashboardStates();
     }
 
     return {
@@ -810,6 +881,10 @@ window.FormSubmitOverlay =
       hide,
       startAnimation,
       stopAnimation,
+      resetDashboardState,
+      showDashboardSuccess,
+      showDashboardError,
+      showDashboardTechError,
     };
   })();
 /** Form Multistep e Calendar */
@@ -818,12 +893,33 @@ window.MultiStepForm =
   (() => {
     let formElement, steps, currentStepIndex, progressElement;
 
-    function init() {
+    function hideInitCover(options = {}) {
+      const selector = options.coverSelector || ".assessment-form-cover";
+      const delay = options.coverDelay ?? 250;
+      const duration = options.coverDuration ?? 0.35;
+
+      const cover = document.querySelector(selector);
+      if (!cover || !window.gsap) return;
+
+      gsap.delayedCall(delay / 1000, () => {
+        gsap.to(cover, {
+          autoAlpha: 0,
+          duration,
+          ease: "power2.out",
+          onStart: () => {
+            gsap.set(cover, { pointerEvents: "none" });
+          },
+        });
+      });
+    }
+
+    function init(options = {}) {
       formElement = document.querySelector("[data-form='multistep']");
       if (!formElement) {
         console.error("Form multi-step non trovato.");
         return;
       }
+
       steps = Array.from(formElement.querySelectorAll("[data-form='step']"));
       if (steps.length === 0) {
         console.error("Nessuno step trovato nel form.");
@@ -840,6 +936,7 @@ window.MultiStepForm =
       setupEvents();
       setupEnterKey();
       updateStep();
+      hideInitCover(options);
     }
 
     function setupEvents() {

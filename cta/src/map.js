@@ -1,4 +1,4 @@
-const CTA_BUNDLE_VER = "CTA-v4-8_10-06-2026";
+const CTA_BUNDLE_VER = "CTA-v4-9_29-06-2026";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 window.safeRequestIdleCallback =
@@ -158,7 +158,7 @@ window.pageSpecificFunctionsMap = {
     ],
     styles: [],
   },
-    //Conferma iscrizione newsletter
+  //Conferma iscrizione newsletter
   "6a29664d35bc17c2570ab4f4": {
     name: "confermaProposito",
     jsonKey: "68b2e6c65a7f2a0ef027f553",
@@ -217,13 +217,13 @@ window.pageSpecificFunctionsMap = {
     scripts: [`${CTA_CDN}/cta-auth.js`],
     styles: [],
   },
-  "66f3c6fe1fbe616545b964bd": {
+  "68b2e6c65a7f2a0ef027f558": {
     name: "dashboard",
     jsonKey: "",
     scripts: [`${CTA_CDN}/cta-auth.js`, `${CTA_CDN}/cta-form.js`],
     styles: [],
   },
-  "66f3c74d69405c8d610cb8ed": {
+  "68b2e6c65a7f2a0ef027f559": {
     name: "assessment",
     jsonKey: "",
     scripts: [`${CTA_CDN}/cta-auth.js`, `${CTA_CDN}/cta-form.js`],
@@ -326,7 +326,7 @@ window.jsonPageMap = {
       "about": {
         "@id": "https://www.ctastudio.it#organization"
       },
-      "description": "Progettiamo siti web professionali ed esperienze digitali su misura, con forte competenza in brand identity e direzione artistica.",
+      "description": "CTA Studio progetta siti web professionali, brand identity e direzione artistica per creare esperienze digitali ad alto impatto visivo ed emozionale.",
       "image": {
         "@type": "ImageObject",
         "url": "https://cdn.prod.website-files.com/68b2e6c65a7f2a0ef027f56f/69eb73731d1319d61fc41f4b_cta-search-image-standard.jpg"
@@ -1959,7 +1959,7 @@ window.pageFunctions = {
   confermaProposito: {
     execute: function () {
       if (!window.isBarbaTransition) {
-         window.pageEnterFx?.introProposito?.();
+        window.pageEnterFx?.introProposito?.();
       }
       setupPrimaryButtons();
       setTimeout(() => {
@@ -2217,34 +2217,74 @@ window.pageFunctions = {
     },
   },
   dashboard: {
-    execute: function () {
+    execute: async function () {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      window.DashboardManager?.init?.();
-      setTimeout(() => {
-        window.runFinalBoot?.();
-      }, 2000);
-      //toggleFaq();
+
+      window.FormSubmitOverlay?.resetDashboardState?.();
+      window.FormSubmitOverlay?.startAnimation?.();
+
+      // Applica subito lo stato locale dei pannelli, senza aspettare Firebase
+      window.DashboardManager?.applyLocalAssessmentState?.();
+
+      try {
+        if (!window.FirebaseAppManager) {
+          window.__authLoadPromise =
+            window.__authLoadPromise ||
+            window.loadScript(`${CTA_CDN}/cta-auth.js`);
+
+          await window.__authLoadPromise;
+        }
+
+        await window.FirebaseAppManager?.init?.();
+        await window.DashboardManager?.init?.();
+      } catch (err) {
+        console.error("Errore init dashboard/auth:", err);
+        window.FormSubmitOverlay?.showDashboardError?.();
+      }
+
+      setupPrimaryButtons();
+      initProcessAccordion();
     },
+
     cleanup: function () {
       cleanUpTriggers();
       cleanUpPageListeners();
     },
   },
   assessment: {
-    execute: function () {
+    execute: async function () {
       if (!window.isBarbaTransition) {
         window.pageEnterFx?.introGenericPage?.();
       }
-      window.AssessmentManager?.init?.();
-      window.MultiStepForm?.init?.();
+
+      setupPrimaryButtons();
+      initProcessAccordion();
+
+      try {
+        if (!window.FirebaseAppManager) {
+          window.__authLoadPromise =
+            window.__authLoadPromise ||
+            window.loadScript(`${CTA_CDN}/cta-auth.js`);
+
+          await window.__authLoadPromise;
+        }
+
+        await window.FirebaseAppManager?.init?.();
+        await window.AssessmentManager?.init?.();
+      } catch (err) {
+        console.error("Errore init assessment/auth:", err);
+      }
+
+      window.MultiStepForm?.init?.({
+        coverSelector: ".assessment-form-cover",
+        coverDelay: 250,
+        coverDuration: 0.35,
+      });
       window.AppAssessmentForms?.init?.();
-      setTimeout(() => {
-        window.runFinalBoot?.();
-      }, 2000);
-      //toggleFaq();
     },
+
     cleanup: function () {
       cleanUpTriggers();
       cleanUpPageListeners();
