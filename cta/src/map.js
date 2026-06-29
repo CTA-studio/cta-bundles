@@ -1,4 +1,4 @@
-const CTA_BUNDLE_VER = "CTA-v4-10_01-07-2026";
+const CTA_BUNDLE_VER = "CTA-v5-22_02-07-2026";
 const CTA_CDN = `https://cdn.jsdelivr.net/gh/CTA-studio/cta-bundles@${CTA_BUNDLE_VER}/cta/dist`;
 
 window.safeRequestIdleCallback =
@@ -208,7 +208,7 @@ window.pageSpecificFunctionsMap = {
   "68b2e6c65a7f2a0ef027f561": {
     name: "verify",
     jsonKey: "",
-    scripts: [`${CTA_CDN}/cta-auth.js`],
+    scripts: [`${CTA_CDN}/cta-form.js`],
     styles: [],
   },
   "68b2e6c65a7f2a0ef027f562": {
