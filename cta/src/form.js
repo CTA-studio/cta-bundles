@@ -391,9 +391,6 @@ window.AppAssessmentForms = window.AppAssessmentForms || {
 
         const data = self.convertFormToJSON(form);
         data.formId = form.id || "unknown-form";
-        console.log("🧩 Assessment submit - form.id:", form.id);
-        console.log("🧩 Assessment submit - data.formId:", data.formId);
-        console.log("🧩 Assessment submit - userId:", userId);
         data.uid = userId;
 
         window.FormSubmitOverlay?.show?.();
@@ -406,34 +403,17 @@ window.AppAssessmentForms = window.AppAssessmentForms || {
           contentType: "application/json",
           dataType: "json",
 
-          success: function (response) {
-            console.log("✅ Invio assessment avvenuto con successo:", response);
-
+          success: function () {
             const assessmentId = form.id || "unknown-form";
-
-            console.log(
-              "🧩 Assessment success - assessmentId salvato:",
-              assessmentId,
-            );
-            console.log(
-              "🧩 Assessment success - sessionStorage PRIMA:",
-              sessionStorage.getItem("cta_assessment_updates"),
-            );
-
             const current = JSON.parse(
-              sessionStorage.getItem("cta_assessment_updates") || "{}",
+              sessionStorage.getItem("cta_assessment_updates") || "{}"
             );
 
             current[assessmentId] = true;
 
             sessionStorage.setItem(
               "cta_assessment_updates",
-              JSON.stringify(current),
-            );
-
-            console.log(
-              "🧩 Assessment success - sessionStorage DOPO:",
-              sessionStorage.getItem("cta_assessment_updates"),
+              JSON.stringify(current)
             );
 
             jQuery(form).hide();
@@ -445,7 +425,7 @@ window.AppAssessmentForms = window.AppAssessmentForms || {
               "❌ Errore invio assessment:",
               textStatus,
               errorThrown,
-              jqXHR.responseText,
+              jqXHR.responseText
             );
             jQuery(form).parent().children(".w-form-fail").fadeIn();
           },

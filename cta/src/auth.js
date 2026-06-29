@@ -324,13 +324,13 @@ window.DashboardManager = window.DashboardManager || {
     const { loggedIn, approved } = FirebaseAppManager.userStatus;
 
     if (!loggedIn) {
-      console.warn("🚫 Utente non autenticato, reindirizzamento a Login...");
+      console.warn("Utente non autenticato, reindirizzamento a Login...");
       this.showAccessDenied(true);
       throw new Error("Utente non autenticato.");
     }
 
     if (!approved) {
-      console.warn("🚫 Utente non approvato, reindirizzamento...");
+      console.warn("Utente non approvato, reindirizzamento...");
       this.showAccessDenied(false);
       throw new Error("Utente non approvato.");
     }
@@ -472,10 +472,10 @@ window.DashboardManager = window.DashboardManager || {
 
       try {
         await firebase.auth().signOut();
-        console.log("👋 Logout effettuato con successo!");
+        console.log("Logout effettuato con successo!");
         this.showAccessDenied(true);
       } catch (error) {
-        console.error("❌ Errore durante il logout:", error);
+        console.error("Errore durante il logout:", error);
       }
     };
 
@@ -516,65 +516,24 @@ window.DashboardManager = window.DashboardManager || {
     return { dotsTween, loadingPanel };
   },
 
-  async resetSingleAssessment(assessmentId) {
-    try {
-      const user = firebase.auth().currentUser;
-      if (!user) {
-        console.error("❌ Utente non autenticato.");
-        return false;
-      }
+  resetResetPanelState: function (panel) {
+  if (!panel || !window.gsap) return;
 
-      const userId = user.uid;
+  const loadingPanel = panel.querySelector(".reset-loading-panel");
+  const dots = panel.querySelectorAll(".reset-dot");
 
-      const response = await fetch(
-        `https://us-central1-webflow-project---calltoaction.cloudfunctions.net/resetSingleAssessmentStatus`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            clientpageId: userId,
-            assessment: assessmentId,
-          }),
-        },
-      );
+  if (loadingPanel) {
+    gsap.set(loadingPanel, {
+      opacity: 0,
+      visibility: "hidden",
+      pointerEvents: "none",
+    });
+  }
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        console.log(`Assessment ${assessmentId} resettato con successo.`);
-        this.updateSingleAssessmentUI(assessmentId, false);
-
-        const panel = document.querySelector(
-          `#assessment-${assessmentId.split("-")[0]} .reset-assessment-panel`,
-        );
-
-        if (panel) {
-          this.closeResetPanel(panel);
-        }
-
-        const current = JSON.parse(
-          sessionStorage.getItem("cta_assessment_updates") || "{}",
-        );
-
-        delete current[assessmentId];
-
-        sessionStorage.setItem(
-          "cta_assessment_updates",
-          JSON.stringify(current),
-        );
-
-        return true;
-      } else {
-        console.error(`Errore nel reset dell'assessment:`, result.error);
-        return false;
-      }
-    } catch (error) {
-      console.error("Errore nella richiesta di reset:", error);
-      return false;
-    }
-  },
+  if (dots.length) {
+    gsap.set(dots, { opacity: 0.25 });
+  }
+},
 
   initAssessmentResetButtons: function () {
     const totalAssessments = 5;
@@ -636,6 +595,7 @@ window.DashboardManager = window.DashboardManager || {
     ];
     return assessmentNames[index - 1] || "Unknown";
   },
+
   async resetSingleAssessment(assessmentId) {
     try {
       const user = firebase.auth().currentUser;
@@ -700,6 +660,7 @@ window.DashboardManager = window.DashboardManager || {
       return false;
     }
   },
+
   updateSingleAssessmentUI: function (assessmentId, completed) {
     const divId = `assessment-${assessmentId.split("-")[0]}`; // Estrarre il numero dall'ID
     const assessmentDiv = document.getElementById(divId);
@@ -707,13 +668,13 @@ window.DashboardManager = window.DashboardManager || {
     if (!assessmentDiv) return;
 
     if (completed) {
-      // 🔹 Mostra il completamento
+      // Mostra il completamento
       gsap.set(assessmentDiv, { display: "flex" });
       gsap.to(assessmentDiv, { opacity: 1, duration: 0.5 });
       assessmentDiv.classList.add("completed");
       assessmentDiv.style.pointerEvents = "auto";
     } else {
-      // 🔹 Resetta la visualizzazione
+      // Resetta la visualizzazione
       gsap.to(assessmentDiv, {
         opacity: 0,
         duration: 0.3,
@@ -729,7 +690,7 @@ window.DashboardManager = window.DashboardManager || {
     );
 
     if (!assessmentContainers.length) {
-      console.warn("🚫 Nessun elemento degli assessment trovato.");
+      console.warn("Nessun elemento degli assessment trovato.");
       return;
     }
 
