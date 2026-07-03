@@ -1942,6 +1942,7 @@ function initProjectGridDirectionalHover() {
     const head = card.querySelector(".grid_cell-head");
     const desc = card.querySelector(".grid_cell-description");
     const imgWrap = card.querySelector(".project_img_wrap");
+    const imgCover = card.querySelector(".project_img_page-cover");
     const img = card.querySelector(".project_img_page");
     const imgName = card.querySelector(".project_img-name");
     const button = card.querySelector(".btn-simple");
@@ -1982,7 +1983,15 @@ function initProjectGridDirectionalHover() {
       }
 
       const animateIn = (side) => {
-        gsap.killTweensOf([overlay, head, desc, imgWrap, img, imgName]);
+        gsap.killTweensOf([
+          overlay,
+          head,
+          desc,
+          imgWrap,
+          img,
+          imgName,
+          imgCover,
+        ]);
 
         gsap.set(overlay, {
           yPercent: getStartY(side),
@@ -2008,7 +2017,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.2,
+            0.2
           );
         }
 
@@ -2022,7 +2031,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.15,
+            0.15
           );
         }
 
@@ -2038,7 +2047,7 @@ function initProjectGridDirectionalHover() {
               ease: "power1.inOut",
               overwrite: "auto",
             },
-            0.1,
+            0.1
           );
         }
 
@@ -2052,7 +2061,20 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0,
+            0
+          );
+        }
+
+        if (imgCover) {
+          tl.to(
+            imgCover,
+            {
+              opacity: 1,
+              duration: 0.3,
+              ease: "power1.inOut",
+              overwrite: "auto",
+            },
+            0.1
           );
         }
 
@@ -2066,13 +2088,21 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.18,
+            0.18
           );
         }
       };
 
       const animateOut = (side) => {
-        gsap.killTweensOf([overlay, head, desc, imgWrap, img, imgName]);
+        gsap.killTweensOf([
+          overlay,
+          head,
+          desc,
+          imgWrap,
+          img,
+          imgName,
+          imgCover,
+        ]);
 
         const tl = gsap.timeline({
           onComplete: () => {
@@ -2092,7 +2122,20 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0,
+            0
+          );
+        }
+
+        if (imgCover) {
+          tl.to(
+            imgCover,
+            {
+              opacity: 0,
+              duration: 0.2,
+              ease: "power2.in",
+              overwrite: "auto",
+            },
+            0
           );
         }
 
@@ -2106,7 +2149,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0,
+            0
           );
         }
 
@@ -2120,7 +2163,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.03,
+            0.03
           );
         }
 
@@ -2136,7 +2179,7 @@ function initProjectGridDirectionalHover() {
               ease: "power2.inOut",
               overwrite: "auto",
             },
-            0.02,
+            0.02
           );
         }
 
@@ -2150,7 +2193,7 @@ function initProjectGridDirectionalHover() {
               overwrite: "auto",
               force3D: true,
             },
-            0.02,
+            0.02
           );
         }
 
@@ -2163,7 +2206,7 @@ function initProjectGridDirectionalHover() {
             overwrite: "auto",
             force3D: true,
           },
-          0.06,
+          0.06
         );
       };
 
@@ -2182,7 +2225,7 @@ function initProjectGridDirectionalHover() {
 
       window.pageSpecificListeners.push(
         { element: card, event: "mouseenter", handler: onEnter },
-        { element: card, event: "mouseleave", handler: onLeave },
+        { element: card, event: "mouseleave", handler: onLeave }
       );
     }
 
@@ -2234,7 +2277,7 @@ function initProjectGridDirectionalHover() {
                 ease: "power2.out",
                 overwrite: "auto",
               },
-              0.15,
+              0.15
             )
             .to(
               arrowDefault,
@@ -2244,7 +2287,7 @@ function initProjectGridDirectionalHover() {
                 ease: "power2.out",
                 overwrite: "auto",
               },
-              0,
+              0
             );
         }
       }
